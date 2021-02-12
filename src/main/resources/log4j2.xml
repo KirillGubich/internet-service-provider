@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration strict="true" name="XMLConfig" packages="com.epam.jwd.provider">
+
+    <Appenders>
+        <RollingFile name="RollingFile" fileName="logs/app.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>%d %p [%c] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="2 kB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+    </Appenders>
+
+    <loggers>
+        <root  level="info">
+            <AppenderRef ref="RollingFile"/>
+        </root>
+    </loggers>
+
+</Configuration>
