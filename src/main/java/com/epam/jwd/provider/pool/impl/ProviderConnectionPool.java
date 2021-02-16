@@ -4,8 +4,6 @@ import com.epam.jwd.provider.domain.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.ConnectionTypeMismatchException;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.util.PropertyReaderUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -29,12 +27,10 @@ public class ProviderConnectionPool implements ConnectionPool {
     private ConnectionPoolProperties properties; //todo ? remake into constants
 
     private static final String URL_CONFIG = "?useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
-    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
 
     private ProviderConnectionPool() {
         freeConnections = new ArrayDeque<>();
         givenAwayConnections = new ArrayList<>();
-        init(); // todo remove
     }
 
     @Override
@@ -71,25 +67,16 @@ public class ProviderConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public void init() {
+    public void init() throws SQLException {
         properties = PropertyReaderUtil.retrieveProperties();
         registerDriver();
-        try {
-            createConnections(properties.getDefaultPoolSize());
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
-        LOGGER.info("Connection pool initialized successfully");
+        createConnections(properties.getDefaultPoolSize());
     }
 
     @Override
-    public void destroyPool() {
+    public void destroyPool() throws SQLException {
         for (ProxyConnection connection : freeConnections) {
-            try {
-                connection.realClose();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage());
-            }
+            connection.realClose();
         }
         deregisterDrivers();
     }
@@ -112,22 +99,19 @@ public class ProviderConnectionPool implements ConnectionPool {
         }
     }
 
-    private void registerDriver() {
+    private void registerDriver() throws SQLException {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             DriverManager.registerDriver(DriverManager.getDriver(properties.getDatabaseUrl()));
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace(); //todo log
         }
     }
 
-    private void deregisterDrivers() {
+    private void deregisterDrivers() throws SQLException {
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
-            try {
-                DriverManager.deregisterDriver(drivers.nextElement());
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage());
-            }
+            DriverManager.deregisterDriver(drivers.nextElement());
         }
     }
 

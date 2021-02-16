@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class PropertyReaderUtil {
     private static final Properties properties = new Properties();
-    private static final String PROPERTY_FILE_NAME = "src/main/resources/connectionPool.properties";
+    private static final String PROPERTY_FILE_NAME = "D:\\Programming\\Idea-projects\\internet-service-provider\\src\\main\\resources\\connectionPool.properties";
 
     private PropertyReaderUtil() {
     }

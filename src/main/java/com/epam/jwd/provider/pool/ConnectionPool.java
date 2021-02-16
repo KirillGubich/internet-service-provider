@@ -11,8 +11,8 @@ public interface ConnectionPool {
 
     void returnConnection(Connection connection) throws ConnectionTypeMismatchException;
 
-    void init();
+    void init() throws SQLException;
 
-    void destroyPool();
+    void destroyPool() throws SQLException;
 
 }
