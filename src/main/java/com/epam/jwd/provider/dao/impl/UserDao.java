@@ -16,6 +16,7 @@ import java.util.Optional;
 public class UserDao implements CommonDao<User> {
 
     private static final String FIND_ALL_USERS_SQL = "SELECT id, login FROM user_list";
+    private static final String FIND_USER_BY_NAME_SQL = "SELECT * FROM user_list WHERE login =";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
 
     @Override
@@ -40,6 +41,18 @@ public class UserDao implements CommonDao<User> {
     }
 
     public Optional<User> findByName(String name) {
-        return Optional.empty();
+        try (final Connection conn = connectionPool.takeConnection();
+             final Statement statement = conn.createStatement();
+             final ResultSet resultSet = statement.executeQuery(FIND_USER_BY_NAME_SQL + "'" + name + "'")) {
+            Optional<User> user = Optional.empty();
+            if (resultSet.next()) {
+                user = Optional.of(new User(resultSet.getInt("id"),
+                        resultSet.getString("login"), resultSet.getString("password")));
+            }
+            return user;
+        } catch (InterruptedException | SQLException e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 }

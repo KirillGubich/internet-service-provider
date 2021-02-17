@@ -19,8 +19,8 @@ public enum LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        final String name = String.valueOf(request.getAttribute("userName"));
-        final String password = String.valueOf(request.getAttribute("userPassword"));
+        final String name = String.valueOf(request.getParameter("userLogin"));
+        final String password = String.valueOf(request.getParameter("userPassword"));
         final Optional<UserDto> user = userService.login(name, password);
         ResponseContext result;
         if (user.isPresent()) {
@@ -28,7 +28,7 @@ public enum LoginCommand implements Command {
             result = new ResponseContext() {
                 @Override
                 public String getPage() {
-                    return "/controller";
+                    return "/controller?command=show_profile";
                 }
 
                 @Override
