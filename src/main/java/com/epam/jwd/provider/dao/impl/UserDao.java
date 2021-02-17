@@ -16,7 +16,7 @@ import java.util.Optional;
 public class UserDao implements CommonDao<User> {
 
     private static final String FIND_ALL_USERS_SQL = "SELECT id, login FROM user_list";
-    private static final String FIND_USER_BY_NAME_SQL = "SELECT * FROM user_list WHERE login =";
+    private static final String FIND_USER_BY_NAME_SQL = "SELECT id, login, password FROM user_list WHERE login =";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
 
     @Override
