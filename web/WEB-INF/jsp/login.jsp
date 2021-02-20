@@ -18,8 +18,9 @@
         </label><br>
         <button type="submit" class="loginbtn">Login</button>
         <div class="signup">
-            <p>Don't have an account? <a href="/controller?command=sign_up">Sign up</a>.</p>
+            <p>Don't have an account? <a href="/controller?command=show_user_sign_up_page">Sign up</a>.</p>
         </div>
+        <h2>${requestScope.errorMessage}</h2>
     </div>
 </form>
 </body>

@@ -17,7 +17,5 @@
 <%--</c:if>--%>
 
 <a href="/controller?command=show_user_login_page">login</a>
-
-
 </body>
 </html>

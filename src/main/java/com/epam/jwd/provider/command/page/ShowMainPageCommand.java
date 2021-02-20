@@ -3,7 +3,7 @@ package com.epam.jwd.provider.command.page;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.domain.UserDto;
+import com.epam.jwd.provider.model.UserDto;
 import com.epam.jwd.provider.service.UserService;
 
 import java.util.Collections;
@@ -24,13 +24,10 @@ public enum ShowMainPageCommand implements Command {
         }
     };
 
-    private final UserService userService = new UserService();
+    private final UserService userService = UserService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        final List<UserDto> users = userService.findAll().orElse(Collections.emptyList());
-        request.setAttribute("users", users);
-        request.setAttribute("test", "MY TEXT");
         return MAIN_PAGE_RESPONSE;
     }
 

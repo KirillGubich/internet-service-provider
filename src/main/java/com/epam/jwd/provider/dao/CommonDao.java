@@ -9,4 +9,5 @@ public interface CommonDao<T> {
 
     Optional<T> save(T entity);
 
+    void add(T entity);
 }

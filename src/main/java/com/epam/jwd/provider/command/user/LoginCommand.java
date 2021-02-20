@@ -3,7 +3,7 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.domain.UserDto;
+import com.epam.jwd.provider.model.UserDto;
 import com.epam.jwd.provider.service.UserService;
 
 import java.util.Optional;
@@ -14,17 +14,18 @@ public enum LoginCommand implements Command {
     private final UserService userService;
 
     LoginCommand() {
-        userService = new UserService();
+        userService = UserService.INSTANCE;
     }
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        final String name = String.valueOf(request.getParameter("userLogin"));
+        final String login = String.valueOf(request.getParameter("userLogin"));
         final String password = String.valueOf(request.getParameter("userPassword"));
-        final Optional<UserDto> user = userService.login(name, password);
+        final Optional<UserDto> user = userService.login(login, password);
         ResponseContext result;
         if (user.isPresent()) {
-            request.setSessionAttribute("userName", name);
+            request.setSessionAttribute("userRole", user.get().getRole()); //todo user Rank
+            request.setSessionAttribute("userLogin", login);
             result = new ResponseContext() {
                 @Override
                 public String getPage() {
@@ -37,12 +38,13 @@ public enum LoginCommand implements Command {
                 }
             }; //TODO: rewrite with redirect
         } else {
-            request.setAttribute("errorMessage", "invalid credentials");
+            request.setAttribute("errorMessage", "invalid credentials"); //todo error message log in
             result = new ResponseContext() {
                 @Override
                 public String getPage() {
-                    return "/controller";
+                    return "/controller?command=show_user_login_page";
                 }
+
                 @Override
                 public boolean isRedirect() {
                     return true;

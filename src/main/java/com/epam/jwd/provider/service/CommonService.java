@@ -7,4 +7,6 @@ public interface CommonService<T> {
     Optional<List<T>> findAll();
 
     Optional<T> save(T dto);
+
+    void add(T dto);
 }

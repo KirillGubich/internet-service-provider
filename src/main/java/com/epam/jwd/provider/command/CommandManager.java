@@ -3,6 +3,7 @@ package com.epam.jwd.provider.command;
 import com.epam.jwd.provider.command.page.ShowMainPageCommand;
 import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.command.page.ShowUserProfilePage;
+import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.command.user.LoginCommand;
 import com.epam.jwd.provider.command.user.LogoutCommand;
 import com.epam.jwd.provider.command.user.SignUpCommand;
@@ -13,6 +14,7 @@ public enum CommandManager {
     SIGN_UP(SignUpCommand.INSTANCE),
     SHOW_PROFILE(ShowUserProfilePage.INSTANCE),
     SHOW_USER_LOGIN_PAGE(ShowUserLoginPage.INSTANCE),
+    SHOW_USER_SIGN_UP_PAGE(ShowUserSignUpPage.INSTANCE),
     DEFAULT(ShowMainPageCommand.INSTANCE);
 
     private final Command command;

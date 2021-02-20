@@ -1,18 +1,21 @@
-package com.epam.jwd.provider.domain;
+package com.epam.jwd.provider.model;
 
 public class UserDto {
 
     private final String login;
     private final String password;
-
-    public UserDto(String login) {
-        this.login = login;
-        this.password = null;
-    }
+    private final UserRole role;
 
     public UserDto(String login, String password) {
         this.login = login;
         this.password = password;
+        this.role = UserRole.GUEST;
+    }
+
+    public UserDto(String login, String password, UserRole role) {
+        this.login = login;
+        this.password = password;
+        this.role = role;
     }
 
     public String getLogin() {
@@ -21,6 +24,10 @@ public class UserDto {
 
     public String getPassword() {
         return password;
+    }
+
+    public UserRole getRole() {
+        return role;
     }
 
     @Override

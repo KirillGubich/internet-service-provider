@@ -11,6 +11,9 @@
     <title>Profile</title>
 </head>
 <body>
-<h2>Hello, ${sessionScope.userName}</h2>
+<h2>Hello, ${sessionScope.userLogin}</h2>
+<h3>You are ${sessionScope.userRole}</h3>
+
+<a href="/controller?command=logout">sign out</a>
 </body>
 </html>
