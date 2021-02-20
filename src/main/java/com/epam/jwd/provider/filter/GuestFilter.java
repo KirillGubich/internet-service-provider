@@ -14,13 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-//@WebFilter(urlPatterns = {"*"})
-public class AuthorizationFilter implements Filter {
+@WebFilter
+public class GuestFilter implements Filter {
+
+    private static final List<String> pagesForAuthorizedUsersOnly = new ArrayList<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        pagesForAuthorizedUsersOnly.add("command=show_profile");
     }
 
     @Override
@@ -28,21 +32,16 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        String queryString = req.getQueryString();
-
-        if (!("command=show_profile").equalsIgnoreCase(queryString)) {
-            chain.doFilter(request, response);
-            return;
+        UserRole userRole = (UserRole) session.getAttribute("userRole");
+        if (UserRole.GUEST.equals(userRole) || userRole == null) {
+            String queryString = req.getQueryString();
+            if (pagesForAuthorizedUsersOnly.contains(queryString)) {
+                RequestDispatcher dispatcher = request.getServletContext()
+                        .getRequestDispatcher("/controller?command=show_user_login_page");
+                dispatcher.forward(req, resp);
+                return;
+            }
         }
-
-        Object userRole = session.getAttribute("userRole");
-        if (userRole == null || userRole == UserRole.GUEST) {
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/controller?command=show_user_login_page");
-            dispatcher.forward(req, resp);
-            return;
-        }
-
         chain.doFilter(request, response);
     }
 

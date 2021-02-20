@@ -3,11 +3,6 @@ package com.epam.jwd.provider.command.page;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.model.UserDto;
-import com.epam.jwd.provider.service.UserService;
-
-import java.util.Collections;
-import java.util.List;
 
 public enum ShowMainPageCommand implements Command {
     INSTANCE;
@@ -23,8 +18,6 @@ public enum ShowMainPageCommand implements Command {
             return false;
         }
     };
-
-    private final UserService userService = UserService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
