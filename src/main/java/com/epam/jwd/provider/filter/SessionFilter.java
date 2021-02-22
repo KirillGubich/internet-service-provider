@@ -1,6 +1,6 @@
 package com.epam.jwd.provider.filter;
 
-import com.epam.jwd.provider.model.UserRole;
+import com.epam.jwd.provider.model.entity.UserRole;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

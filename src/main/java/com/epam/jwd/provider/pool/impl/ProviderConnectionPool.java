@@ -1,6 +1,6 @@
 package com.epam.jwd.provider.pool.impl;
 
-import com.epam.jwd.provider.model.ConnectionPoolProperties;
+import com.epam.jwd.provider.model.entity.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.ConnectionTypeMismatchException;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.util.PropertyReaderUtil;

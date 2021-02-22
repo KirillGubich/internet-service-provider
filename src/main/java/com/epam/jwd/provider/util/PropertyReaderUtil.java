@@ -1,7 +1,7 @@
 package com.epam.jwd.provider.util;
 
 
-import com.epam.jwd.provider.model.ConnectionPoolProperties;
+import com.epam.jwd.provider.model.entity.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.PropertyLoadingException;
 
 import java.io.FileInputStream;

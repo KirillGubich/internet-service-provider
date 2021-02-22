@@ -1,8 +1,8 @@
 package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
-import com.epam.jwd.provider.model.User;
-import com.epam.jwd.provider.model.UserRole;
+import com.epam.jwd.provider.model.entity.User;
+import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
 
@@ -18,9 +18,9 @@ import java.util.Optional;
 public enum UserDao implements CommonDao<User> {
     INSTANCE;
 
-    private static final String FIND_ALL_USERS_SQL = "SELECT id, login FROM user_list";
+    private static final String FIND_ALL_USERS_SQL = "SELECT id, login FROM user_list"; //todo upd
     private static final String FIND_USER_BY_NAME_SQL = "SELECT id, login, password FROM user_list WHERE login=";
-    private static final String INSERT_USER_SQL = "INSERT INTO user_list (login, password) values (?,?)";
+    private static final String INSERT_USER_SQL = "INSERT INTO user_list (login, password) values (?,?)"; //todo add params
     private static final String UPDATE_USER_SQL = "UPDATE user_list SET id=?, login=?, password=? where login=?";
     private static final String GET_USER_ROLE_SQL = "SELECT role_name FROM user_list INNER JOIN user_role " +
             "ON user_list.role_id=user_role.id WHERE login=";
@@ -33,7 +33,8 @@ public enum UserDao implements CommonDao<User> {
              final ResultSet resultSet = statement.executeQuery(FIND_ALL_USERS_SQL)) {
             List<User> users = new ArrayList<>();
             while (resultSet.next()) {
-                users.add(new User(resultSet.getInt("id"), resultSet.getString("login"), null));
+                users.add(User.builder().withId(resultSet.getInt("id"))
+                        .withLogin(resultSet.getString("login")).build()); //todo add all fields
             }
             return Optional.of(users);
         } catch (InterruptedException | SQLException e) {
@@ -85,8 +86,12 @@ public enum UserDao implements CommonDao<User> {
                 if (userRole.isPresent()) {
                     role = userRole.get();
                 }
-                user = Optional.of(new User(resultSet.getInt("id"),
-                        resultSet.getString("login"), resultSet.getString("password"), role));
+                user = Optional.of(User.builder()
+                        .withId(resultSet.getInt("id"))
+                        .withLogin(resultSet.getString("login"))
+                        .withPassword(resultSet.getString("password"))
+                        .withRole(role)
+                        .build());
             }
             return user;
         } catch (InterruptedException | SQLException e) {

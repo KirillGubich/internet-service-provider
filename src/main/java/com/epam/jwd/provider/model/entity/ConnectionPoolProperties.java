@@ -1,4 +1,4 @@
-package com.epam.jwd.provider.model;
+package com.epam.jwd.provider.model.entity;
 
 public class ConnectionPoolProperties {
     private final String databaseUrl;

@@ -1,7 +1,5 @@
 package com.epam.jwd.provider.dao.impl;
 
-import com.epam.jwd.provider.model.User;
-import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
 import org.junit.Test;
 
 import java.sql.SQLException;

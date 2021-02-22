@@ -3,8 +3,8 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.model.UserDto;
-import com.epam.jwd.provider.model.UserRole;
+import com.epam.jwd.provider.model.dto.UserDto;
+import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.service.UserService;
 
 import java.util.Optional;
@@ -25,7 +25,7 @@ public enum SignUpCommand implements Command {
         final String repPassword = String.valueOf(request.getParameter("userRepPassword"));
         Optional<UserDto> user = userService.findByName(login);
         if (!user.isPresent() && password.equals(repPassword)) {
-            userService.add(new UserDto(login, password)); //todo factory
+            userService.add(UserDto.builder().withLogin(login).withPassword(password).build()); //todo factory and all params
             request.setSessionAttribute("userName", login);
             request.setSessionAttribute("userRole", UserRole.USER); //todo User rank
             return new ResponseContext() {

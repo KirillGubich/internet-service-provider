@@ -1,8 +1,8 @@
 package com.epam.jwd.provider.service;
 
 import com.epam.jwd.provider.dao.impl.UserDao;
-import com.epam.jwd.provider.model.User;
-import com.epam.jwd.provider.model.UserDto;
+import com.epam.jwd.provider.model.entity.User;
+import com.epam.jwd.provider.model.dto.UserDto;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
@@ -28,10 +28,9 @@ public enum UserService implements CommonService<UserDto> {
     @Override
     public Optional<List<UserDto>> findAll() {
         return userDao.findAll()
-                .map(
-                        users -> users.stream()
-                                .map(this::convertToDto)
-                                .collect(toList())
+                .map(users -> users.stream()
+                        .map(this::convertToDto)
+                        .collect(toList())
                 );
     }
 
@@ -64,12 +63,16 @@ public enum UserService implements CommonService<UserDto> {
         return user.map(this::convertToDto);
     }
 
+    public void changePassword(String password) {
+        //todo через UserDao.save
+    }
+
     private UserDto convertToDto(User user) {
-        return new UserDto(user.getLogin(), user.getPassword(), user.getRole()); //todo factory
+        return UserDto.builder().withLogin(user.getLogin()).withRole(user.getRole()).build(); //todo factory
     }
 
     private User convertToUser(UserDto user) {
-        return new User(0, user.getLogin(), hash(user.getPassword())); //todo factory
+        return User.builder().withLogin(user.getLogin()).withPassword(user.getPassword()).build(); //todo factory
     }
 
     private String hash(String password) {
