@@ -36,7 +36,8 @@ public class User extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(login, user.login) && Objects.equals(password, user.password) && role == user.role && Objects.equals(balance, user.balance) && Objects.equals(isActive, user.isActive);
+        return Objects.equals(login, user.login) && Objects.equals(password, user.password)
+                && role == user.role && Objects.equals(balance, user.balance) && Objects.equals(isActive, user.isActive);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class User extends BaseEntity {
         }
     }
 
-    public User(Builder builder) { //todo Public?
+    private User(Builder builder) {
         super(builder.id);
         this.login = builder.login;
         this.password = builder.password;

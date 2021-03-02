@@ -109,7 +109,7 @@ public class UserDto {
         }
     }
 
-    public UserDto(Builder builder) { //todo Public?
+    private UserDto(Builder builder) {
         this.id = builder.id;
         this.login = builder.login;
         this.password = builder.password;
