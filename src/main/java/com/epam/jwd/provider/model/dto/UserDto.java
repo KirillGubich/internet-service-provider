@@ -1,18 +1,21 @@
 package com.epam.jwd.provider.model.dto;
 
-import com.epam.jwd.provider.model.entity.Tariff;
 import com.epam.jwd.provider.model.entity.UserRole;
-import com.epam.jwd.provider.model.entity.UserStatus;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class UserDto {
+    private final Integer id;
     private final String login;
     private final String password;
     private final UserRole role;
-    private final AccountDto account;
-    private final UserStatus status;
-    private final Tariff tariff;
+    private final BigDecimal balance;
+    private final Boolean isActive;
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getLogin() {
         return login;
@@ -26,16 +29,12 @@ public class UserDto {
         return role;
     }
 
-    public AccountDto getAccount() {
-        return account;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public Tariff getTariff() {
-        return tariff;
+    public Boolean getActive() {
+        return isActive;
     }
 
     @Override
@@ -43,19 +42,23 @@ public class UserDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(login, userDto.login) && Objects.equals(password, userDto.password) && role == userDto.role && Objects.equals(account, userDto.account) && status == userDto.status && Objects.equals(tariff, userDto.tariff);
+        return Objects.equals(id, userDto.id) && Objects.equals(login, userDto.login) && Objects.equals(password, userDto.password) && role == userDto.role && Objects.equals(balance, userDto.balance) && Objects.equals(isActive, userDto.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, role, account, status, tariff);
+        return Objects.hash(id, login, password, role, balance, isActive);
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
-                "login='" + login + '\'' +
+                "id=" + id +
+                ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", role=" + role +
+                ", balance=" + balance +
+                ", isActive=" + isActive +
                 '}';
     }
 
@@ -64,12 +67,17 @@ public class UserDto {
     }
 
     public static class Builder {
+        private Integer id;
         private String login;
         private String password;
         private UserRole role;
-        private AccountDto account;
-        private UserStatus status;
-        private Tariff tariff;
+        private BigDecimal balance;
+        private Boolean isActive;
+
+        public Builder withId(Integer id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder withLogin(String login) {
             this.login = login;
@@ -86,18 +94,13 @@ public class UserDto {
             return this;
         }
 
-        public Builder withAccount(AccountDto account) {
-            this.account = account;
+        public Builder withBalance(BigDecimal balance) {
+            this.balance = balance;
             return this;
         }
 
-        public Builder withStatus(UserStatus status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder withTariff(Tariff tariff) {
-            this.tariff = tariff;
+        public Builder withActive(Boolean status) {
+            this.isActive = status;
             return this;
         }
 
@@ -107,11 +110,11 @@ public class UserDto {
     }
 
     public UserDto(Builder builder) { //todo Public?
+        this.id = builder.id;
         this.login = builder.login;
         this.password = builder.password;
         this.role = builder.role;
-        this.account = builder.account;
-        this.status = builder.status;
-        this.tariff = builder.tariff;
+        this.balance = builder.balance;
+        this.isActive = builder.isActive;
     }
 }

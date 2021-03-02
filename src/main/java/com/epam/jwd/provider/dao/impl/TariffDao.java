@@ -13,17 +13,26 @@ public enum TariffDao implements CommonDao<Tariff> {
             "upload_speed FROM tariff_list";
 
     @Override
-    public Optional<List<Tariff>> findAll() {
+    public Optional<List<Tariff>> readAll() {
         return Optional.empty();
     }
 
     @Override
-    public Optional<Tariff> save(Tariff entity) {
+    public Optional<Tariff> update(Tariff entity) {
         return Optional.empty();
     }
 
     @Override
-    public void add(Tariff entity) {
+    public void delete(Tariff entity) {
 
+    }
+
+    @Override
+    public void create(Tariff entity) {
+    }
+
+    @Override
+    public Optional<Tariff> read(Tariff entity) {
+        return Optional.empty();
     }
 }

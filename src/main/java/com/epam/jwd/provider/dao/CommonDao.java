@@ -7,9 +7,13 @@ import java.util.Optional;
 
 public interface CommonDao<T extends BaseEntity> {
 
-    Optional<List<T>> findAll();
+    void create(T entity);
 
-    Optional<T> save(T entity);
+    Optional<T> read(T entity);
 
-    void add(T entity);
+    Optional<List<T>> readAll();
+
+    Optional<T> update(T entity);
+
+    void delete(T entity);
 }

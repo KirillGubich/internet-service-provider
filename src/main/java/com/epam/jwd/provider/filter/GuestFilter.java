@@ -36,9 +36,7 @@ public class GuestFilter implements Filter {
         if (UserRole.GUEST.equals(userRole) || userRole == null) {
             String queryString = req.getQueryString();
             if (pagesForAuthorizedUsersOnly.contains(queryString)) {
-                RequestDispatcher dispatcher = request.getServletContext()
-                        .getRequestDispatcher("/controller?command=show_user_login_page");
-                dispatcher.forward(req, resp);
+                resp.sendRedirect("/controller?command=show_user_login_page");
                 return;
             }
         }

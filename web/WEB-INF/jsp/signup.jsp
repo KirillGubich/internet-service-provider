@@ -23,6 +23,7 @@
             <div class="signin">
                 <p>Already have an account? <a href="/controller?command=show_user_login_page">Sign in</a>.</p>
             </div>
+            <h2>${requestScope.errorMessage}</h2>
         </div>
     </form>
 </header>

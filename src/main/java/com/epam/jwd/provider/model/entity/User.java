@@ -2,15 +2,15 @@ package com.epam.jwd.provider.model.entity;
 
 import com.epam.jwd.provider.model.BaseEntity;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class User extends BaseEntity {
     private final String login;
     private final String password;
     private final UserRole role;
-    private final Account account;
-    private final UserStatus status;
-    private final Tariff tariff;
+    private final BigDecimal balance;
+    private final Boolean isActive;
 
     public String getLogin() {
         return login;
@@ -24,20 +24,11 @@ public class User extends BaseEntity {
         return role;
     }
 
-    public Account getAccount() {
-        return account;
+    public BigDecimal getBalance() {
+        return balance;
     }
-
-    public UserStatus getStatus() {
-        return status;
-    }
-
-    public Tariff getTariff() {
-        return tariff;
-    }
-
-    public static Builder builder() {
-        return new Builder();
+    public Boolean getActive() {
+        return isActive;
     }
 
     @Override
@@ -45,24 +36,28 @@ public class User extends BaseEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(login, user.login) && Objects.equals(password, user.password) && role == user.role && Objects.equals(account, user.account) && status == user.status && Objects.equals(tariff, user.tariff);
+        return Objects.equals(login, user.login) && Objects.equals(password, user.password) && role == user.role && Objects.equals(balance, user.balance) && Objects.equals(isActive, user.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login, password, role, account, status, tariff);
+        return Objects.hash(login, password, role, balance, isActive);
     }
 
     @Override
     public String toString() {
         return "User{" +
+                "id='" + getId() + '\'' +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
-                ", account=" + account +
-                ", status=" + status +
-                ", tariff=" + tariff +
-                '}'; //TODO id?
+                ", balance=" + balance +
+                ", isActive=" + isActive +
+                '}';
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
@@ -70,9 +65,8 @@ public class User extends BaseEntity {
         private String login;
         private String password;
         private UserRole role;
-        private Account account;
-        private UserStatus status;
-        private Tariff tariff;
+        private BigDecimal balance;
+        private Boolean isActive;
 
         public Builder withId(Integer id) {
             this.id = id;
@@ -94,20 +88,16 @@ public class User extends BaseEntity {
             return this;
         }
 
-        public Builder withAccount(Account account) {
-            this.account = account;
+        public Builder withBalance(BigDecimal balance) {
+            this.balance = balance;
             return this;
         }
 
-        public Builder withStatus(UserStatus status) {
-            this.status = status;
+        public Builder withStatus(Boolean status) {
+            this.isActive = status;
             return this;
         }
 
-        public Builder withTariff(Tariff tariff) {
-            this.tariff = tariff;
-            return this;
-        }
 
         public User build() {
             return new User(this);
@@ -119,8 +109,7 @@ public class User extends BaseEntity {
         this.login = builder.login;
         this.password = builder.password;
         this.role = builder.role;
-        this.account = builder.account;
-        this.status = builder.status;
-        this.tariff = builder.tariff;
+        this.balance = builder.balance;
+        this.isActive = builder.isActive;
     }
 }

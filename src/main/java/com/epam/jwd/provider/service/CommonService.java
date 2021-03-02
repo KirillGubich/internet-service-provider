@@ -4,9 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommonService<T> {
+
     Optional<List<T>> findAll();
+
+    Optional<T> find(T dto);
+
+    void create(T dto);
 
     Optional<T> save(T dto);
 
-    void add(T dto);
+    void delete(T dto);
 }
