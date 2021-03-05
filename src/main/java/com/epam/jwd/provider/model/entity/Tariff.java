@@ -118,7 +118,7 @@ public class Tariff extends BaseEntity {
         }
     }
 
-    public Tariff(Builder builder) {
+    private Tariff(Builder builder) {
         super(builder.id);
         this.name = builder.name;
         this.description = builder.description;

@@ -5,6 +5,8 @@ import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -20,8 +22,8 @@ public enum UserDao implements CommonDao<User> {
 
     private static final String FIND_ACCOUNT_BY_LOGIN_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where login=?";
-    private static final String CREATE_ACCOUNT_SQL = "INSERT INTO accounts (login, password) values (?,?)";
-    private static final String CREATE_USER_SQL = "INSERT INTO users (account_id, balance, active) values (?,?,?)";
+    private static final String CREATE_ACCOUNT_SQL = "INSERT INTO accounts (login, password) VALUES (?,?)";
+    private static final String CREATE_USER_SQL = "INSERT INTO users (account_id, balance, active) VALUES (?,?,?)";
     private static final String FIND_ALL_ACCOUNTS_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id";
     private static final String FIND_ACCOUNT_ID_SQL = "SELECT id FROM accounts WHERE login=?";
@@ -30,6 +32,7 @@ public enum UserDao implements CommonDao<User> {
     private static final String UPDATE_ACCOUNT_INFO_SQL = "UPDATE accounts SET login=?, password=? WHERE id=?";
     private static final String UPDATE_USER_INFO_SQL = "UPDATE users SET balance=?, active=? WHERE account_id=?";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 
     @Override
     public Optional<List<User>> readAll() {
@@ -44,7 +47,7 @@ public enum UserDao implements CommonDao<User> {
             }
             return Optional.of(users);
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
             return Optional.empty();
         }
     }
@@ -56,12 +59,11 @@ public enum UserDao implements CommonDao<User> {
             Integer accountId = findAccountIdByLogin(entity.getLogin());
             createUser(accountId);
         } catch (SQLException | InterruptedException e) {
-            e.printStackTrace(); //todo log
+            LOGGER.error(e.getMessage());
         }
     }
 
-    @Override
-    public Optional<User> read(User entity) {
+    public Optional<User> findUserByLogin(User entity) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_ACCOUNT_BY_LOGIN_SQL)) {
             statement.setString(1, entity.getLogin());
@@ -71,14 +73,14 @@ public enum UserDao implements CommonDao<User> {
                         extractUser(resultSet, UserRole.USER) : extractUser(resultSet, UserRole.ADMIN);
             }
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<User> update(User entity) {
-        Optional<User> user = read(User.builder().withLogin(entity.getLogin()).build());
+        Optional<User> user = findUserByLogin(User.builder().withLogin(entity.getLogin()).build());
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement accountStatement = conn.prepareStatement(UPDATE_ACCOUNT_INFO_SQL);
              final PreparedStatement userStatement = conn.prepareStatement(UPDATE_USER_INFO_SQL)) {
@@ -89,7 +91,7 @@ public enum UserDao implements CommonDao<User> {
             accountStatement.executeUpdate();
             userStatement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
         return user;
     }
@@ -104,7 +106,7 @@ public enum UserDao implements CommonDao<User> {
             accountStatement.executeUpdate();
             userStatement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
     }
 

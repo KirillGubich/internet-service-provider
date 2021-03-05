@@ -46,12 +46,11 @@ public enum SignUpCommand implements Command {
         final String repPassword = String.valueOf(request.getParameter("userRepPassword"));
         Optional<UserDto> user = userService.find(UserDto.builder().withLogin(login).build());
         if (!user.isPresent() && password.equals(repPassword)) {
-            userService.save(UserDto.builder().withLogin(login).withPassword(password).build());
+            userService.create(UserDto.builder().withLogin(login).withPassword(password).build());
             return LOGIN_PAGE_RESPONSE;
         } else {
             request.setAttribute("errorMessage", "invalid credentials");
             return SIGN_UP_PAGE_RESPONSE;
         }
-
     }
 }

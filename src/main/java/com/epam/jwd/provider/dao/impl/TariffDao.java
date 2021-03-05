@@ -4,6 +4,8 @@ import com.epam.jwd.provider.dao.CommonDao;
 import com.epam.jwd.provider.model.entity.Tariff;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,14 +20,17 @@ public enum TariffDao implements CommonDao<Tariff> {
 
     private static final String FIND_ALL_TARIFFS_SQL = "SELECT id, name, description, special_offer, " +
             "price, download_speed, upload_speed FROM tariffs";
+    private static final String FIND_TARIFF_BY_ID_SQL = "SELECT id, name, description, special_offer, " +
+            "price, download_speed, upload_speed FROM tariffs WHERE id=?";
     private static final String FIND_TARIFF_BY_NAME_SQL = "SELECT id, name, description, special_offer, " +
             "price, download_speed, upload_speed FROM tariffs WHERE name=?";
     private static final String CREATE_TARIFF_SQL = "INSERT INTO tariffs (name, description, special_offer, " +
-            "price, download_speed, upload_speed) values (?,?,?,?,?,?)";
-    private static final String DELETE_TARIFF_BY_ID_SQL = "DELETE FROM tariffs WHERE id=?";
+            "price, download_speed, upload_speed) VALUES (?,?,?,?,?,?)";
+    private static final String DELETE_TARIFF_SQL = "DELETE FROM tariffs WHERE id=? OR name=?";
     private static final String UPDATE_TARIFF_SQL = "UPDATE tariffs SET description=?, special_offer=?, " +
             "price=?, download_speed=?, upload_speed=? WHERE id=?";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
+    private static final Logger LOGGER = LoggerFactory.getLogger(TariffDao.class);
 
     @Override
     public Optional<List<Tariff>> readAll() {
@@ -39,13 +44,30 @@ public enum TariffDao implements CommonDao<Tariff> {
             }
             return Optional.of(tariffs);
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
             return Optional.empty();
         }
     }
 
-    @Override
-    public Optional<Tariff> read(Tariff entity) {
+    public Optional<Tariff> findById(Tariff entity) {
+        try (final Connection conn = connectionPool.takeConnection();
+             final PreparedStatement statement = conn.prepareStatement(FIND_TARIFF_BY_ID_SQL)) {
+            Integer id = entity.getId();
+            if (id == null) {
+                id = 0;
+            }
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractTariff(resultSet);
+            }
+        } catch (InterruptedException | SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Tariff> findByName(Tariff entity) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_TARIFF_BY_NAME_SQL)) {
             statement.setString(1, entity.getName());
@@ -54,14 +76,14 @@ public enum TariffDao implements CommonDao<Tariff> {
                 return extractTariff(resultSet);
             }
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
         return Optional.empty();
     }
 
     @Override
     public Optional<Tariff> update(Tariff entity) {
-        Optional<Tariff> tariff = read(Tariff.builder().withName(entity.getName()).build());
+        Optional<Tariff> tariff = findByName(Tariff.builder().withName(entity.getName()).build());
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(UPDATE_TARIFF_SQL)) {
             statement.setString(1, entity.getDescription());
@@ -72,7 +94,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setInt(6, entity.getId());
             statement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
         return tariff;
     }
@@ -80,11 +102,16 @@ public enum TariffDao implements CommonDao<Tariff> {
     @Override
     public void delete(Tariff entity) {
         try (final Connection conn = connectionPool.takeConnection();
-             final PreparedStatement statement = conn.prepareStatement(DELETE_TARIFF_BY_ID_SQL)) {
-            statement.setInt(1, entity.getId());
+             final PreparedStatement statement = conn.prepareStatement(DELETE_TARIFF_SQL)) {
+            Integer id = entity.getId();
+            if (id == null) {
+                id = 0;
+            }
+            statement.setInt(1, id);
+            statement.setString(2, entity.getName());
             statement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -100,7 +127,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setDouble(6, entity.getUploadSpeed());
             statement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
-            e.printStackTrace();//todo log
+            LOGGER.error(e.getMessage());
         }
     }
 

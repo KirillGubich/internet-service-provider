@@ -9,8 +9,6 @@ public interface CommonDao<T extends BaseEntity> {
 
     void create(T entity);
 
-    Optional<T> read(T entity);
-
     Optional<List<T>> readAll();
 
     Optional<T> update(T entity);

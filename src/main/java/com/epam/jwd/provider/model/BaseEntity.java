@@ -11,5 +11,5 @@ public abstract class BaseEntity {
         return id;
     }
 
-    //todo ovverides
+    //todo overrides
 }

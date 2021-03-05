@@ -48,7 +48,7 @@ public enum RealUserService implements UserService {
 
     @Override
     public Optional<UserDto> login(String login, String password) {
-        final Optional<User> user = userDao.read(User.builder().withLogin(login).build());
+        final Optional<User> user = userDao.findUserByLogin(User.builder().withLogin(login).build());
         if (!user.isPresent()) {
             try {
                 BCrypt.checkpw(password, DUMMY_PASSWORD); //todo to prevent timing attack
@@ -67,12 +67,12 @@ public enum RealUserService implements UserService {
 
     @Override
     public Optional<UserDto> find(UserDto dto) {
-        Optional<User> user = userDao.read(convertToUser(dto));
+        Optional<User> user = userDao.findUserByLogin(convertToUser(dto));
         return user.map(this::convertToDto);
     }
 
     public void changePassword(String password) {
-        //todo через UserDao.save
+        //todo через UserDao.save и добавить в интерфейс
     }
 
     private UserDto convertToDto(User user) {

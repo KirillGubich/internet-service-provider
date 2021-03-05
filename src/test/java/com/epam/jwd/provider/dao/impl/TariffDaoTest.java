@@ -1,7 +1,6 @@
 package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.model.entity.Tariff;
-import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
 import org.junit.Test;
 
@@ -9,8 +8,6 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 public class TariffDaoTest {
 
@@ -20,6 +17,17 @@ public class TariffDaoTest {
         TariffDao tariffDao = TariffDao.INSTANCE;
         Optional<List<Tariff>> tariffs = tariffDao.readAll();
         tariffs.ifPresent(tariffList -> tariffList.forEach(System.out::println));
+        ProviderConnectionPool.getInstance().destroyPool();
+    }
+
+    @Test
+    public void read() throws SQLException {
+        ProviderConnectionPool.getInstance().init();
+        TariffDao tariffDao = TariffDao.INSTANCE;
+        Tariff tariff = Tariff.builder()
+                .withName("Turbo")
+                .build();
+        System.out.println(tariffDao.findByName(tariff));
         ProviderConnectionPool.getInstance().destroyPool();
     }
 
