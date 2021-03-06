@@ -1,0 +1,73 @@
+* {box-sizing: border-box}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    background-size: cover;
+    background: linear-gradient(rgba(38, 76, 114, 1), rgba(63, 127, 191, 1)) no-repeat fixed 50% 50%;
+    box-sizing: border-box;
+}
+
+header {
+    height: 8vh;
+}
+
+.mainpage {
+    display: flex;
+    flex-direction: column;
+}
+
+a.content:visited {
+    color: white;
+}
+
+.description {
+    top: 35%;
+    left: 10%;
+    width: 40%;
+    position: absolute;
+}
+
+.description h1 {
+    margin: 0;
+    font-size: 40px;
+    color: #fff;
+}
+
+.description p {
+    color: #c7c7c7;
+    font-size: 20px;
+}
+
+.join {
+    background: none;
+    border: 2px solid #00D4C6;
+    text-decoration: none;
+    color: #00D4C6;
+    font-size: 16px;
+    text-transform: uppercase;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: .4s;
+}
+
+.join:hover {
+    background: #00D4C6;
+    color: #fff;
+}
+
+@media screen and (max-width: 1000px) {
+    .description {
+        width: 90%;
+        left: 5%;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .description {
+        top: 30%;
+    }
+}
+

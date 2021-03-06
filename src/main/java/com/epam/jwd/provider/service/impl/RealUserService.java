@@ -1,11 +1,12 @@
 package com.epam.jwd.provider.service.impl;
 
 import com.epam.jwd.provider.dao.impl.UserDao;
-import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.model.dto.UserDto;
+import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +16,8 @@ public enum RealUserService implements UserService {
     INSTANCE;
 
     private static final String DUMMY_PASSWORD = "$2y$12$68aa7ZF41prLfrxYx9yCwunnY8OpWxP9uNdH2B1vaEO/EjAcCsqk.";
-    private final UserDao userDao;
-
-    RealUserService() {
-        this.userDao = UserDao.INSTANCE;
-    }
+    private static final int PASSWORD_MINIMAL_LENGTH = 8;
+    private final UserDao userDao = UserDao.INSTANCE;
 
     @Override
     public void create(UserDto dto) {
@@ -27,12 +25,12 @@ public enum RealUserService implements UserService {
     }
 
     @Override
-    public Optional<List<UserDto>> findAll() {
-        return userDao.readAll()
-                .map(users -> users.stream()
-                        .map(this::convertToDto)
-                        .collect(toList())
-                );
+    public List<UserDto> findAll() {
+        Optional<List<User>> users = userDao.readAll();
+        return users.map(userList -> userList.stream()
+                .map(this::convertToDto)
+                .collect(toList()))
+                .orElseGet(ArrayList::new);
     }
 
     @Override
@@ -43,7 +41,7 @@ public enum RealUserService implements UserService {
 
     @Override
     public void delete(UserDto dto) {
-
+        userDao.delete(convertToUser(dto));
     }
 
     @Override
@@ -61,15 +59,26 @@ public enum RealUserService implements UserService {
         if (BCrypt.checkpw(password, realPassword)) {
             return user.map(this::convertToDto);
         } else {
-           return Optional.empty();
+            return Optional.empty();
         }
     }
 
     @Override
-    public Optional<UserDto> find(UserDto dto) {
-        Optional<User> user = userDao.findUserByLogin(convertToUser(dto));
-        return user.map(this::convertToDto);
+    public boolean signUp(String login, String password, String passwordRepeat) {
+        Optional<User> user = userDao.findUserByLogin(User.builder().withLogin(login).build());
+        boolean isPasswordCorrect;
+        isPasswordCorrect = password.equals(passwordRepeat) && password.length() > PASSWORD_MINIMAL_LENGTH;
+        if (!user.isPresent() && isPasswordCorrect) {
+            userDao.create(User.builder().withLogin(login).withPassword(hash(password)).build());
+            return true;
+        }
+        return false;
     }
+
+//    public Optional<UserDto> find(UserDto dto) {
+//        Optional<User> user = userDao.findUserByLogin(convertToUser(dto));
+//        return user.map(this::convertToDto);
+//    }
 
     public void changePassword(String password) {
         //todo через UserDao.save и добавить в интерфейс
@@ -85,8 +94,15 @@ public enum RealUserService implements UserService {
                 .build();
     }
 
-    private User convertToUser(UserDto user) {
-        return User.builder().withLogin(user.getLogin()).withPassword(hash(user.getPassword())).build();
+    private User convertToUser(UserDto dto) {
+        return User.builder()
+                .withId(dto.getId())
+                .withLogin(dto.getLogin())
+                .withPassword(hash(dto.getPassword()))
+                .withRole(dto.getRole())
+                .withBalance(dto.getBalance())
+                .withStatus(dto.getActive())
+                .build();
     }
 
     private String hash(String password) {

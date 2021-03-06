@@ -2,16 +2,105 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="Joinet tariffs">
+    <style>
+        <%@include file="/WEB-INF/styles/navigation.css"%>
+        <%@include file="/WEB-INF/styles/news.css"%>
+        <%@include file="/WEB-INF/styles/profileFooter.css"%>
+        <%@include file="/WEB-INF/styles/tariffs.css"%>
+        <%@include file="/WEB-INF/styles/profile.css"%>
+    </style>
+    <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
     <title>Tariffs</title>
 </head>
 <body>
-<c:if test="${not empty requestScope.tariffs}">
-    <h2>Tariffs</h2>
-    <ul>
-        <c:forEach var="tariff" items="${requestScope.tariffs}">
-            <li>${tariff.name}</li>
-        </c:forEach>
-    </ul>
-</c:if>
+<header>
+    <nav class="navigation">
+        <div class="logo">
+            <a href="${pageContext.request.contextPath}/controller">Joi<span class="logoN">N</span>et</a>
+        </div>
+        <div class="menu">
+            <ul class="nav">
+                <li>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                </li>
+                <li>
+                    <a class="link" href="${pageContext.request.contextPath}/controller">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="user_page">
+    <div class="profile">
+        <div class="table-information">
+            <c:if test="${not empty requestScope.tariffs}">
+                <c:forEach var="tariff" items="${requestScope.tariffs}">
+                    <table class="table_col">
+                        <colgroup>
+                            <col style="background: rgba(38, 76, 114, 1)">
+                        </colgroup>
+                        <tr>
+                            <td>Tariff</td>
+                            <td>${tariff.name}</td>
+                        </tr>
+                        <tr>
+                            <td>Tariff description</td>
+                            <td>${tariff.description}</td>
+                        </tr>
+                        <tr>
+                            <td>Price per day</td>
+                            <td>${tariff.costPerDay}</td>
+                        </tr>
+                        <tr>
+                            <td>Download/Upload speed</td>
+                            <td>${tariff.downloadSpeed}/${tariff.uploadSpeed}</td>
+                        </tr>
+                    </table>
+                    <br>
+                </c:forEach>
+            </c:if>
+        </div>
+        <div class="content">
+            <div class="news-card-inner">
+                <div class="news-card__header" tabindex="0">
+                    <div class="clearfix">
+                        <h3 class="news-card__title">Special offers</h3>
+                    </div>
+                </div>
+                <ul class="news-card-news">
+                    <c:choose>
+                        <c:when test="${not empty requestScope.specialOffers}">
+                            <c:forEach var="specialOffer" items="${requestScope.specialOffers}">
+                                <li class="news-card-news-item ng-star-inserted">
+                                    <div class="specialOffer">
+                                            ${specialOffer.name} only for ${specialOffer.costPerDay} per day!
+                                    </div>
+                                </li>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="specialOffer">
+                                Unfortunately, there are no special offers now.
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br><br><br>
+    <footer class="page_footer">
+        <div class="col item social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
+                class="fab fa-skype"></i></a><a href="#"><i class="fab fa-github"></i></a><a
+                href="#"><i class="fab fa-instagram"></i></a></div>
+        <div class="copyright">
+            &copy 2021 - Kirill Gubich
+        </div>
+    </footer>
+</div>
 </body>
 </html>

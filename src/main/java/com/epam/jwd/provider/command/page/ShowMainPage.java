@@ -4,7 +4,7 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 
-public enum ShowMainPageCommand implements Command {
+public enum ShowMainPage implements Command {
     INSTANCE;
 
     private static final ResponseContext MAIN_PAGE_RESPONSE = new ResponseContext() {

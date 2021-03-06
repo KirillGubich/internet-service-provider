@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowMainPageCommand;
 import com.epam.jwd.provider.model.entity.UserRole;
 
 public enum LogoutCommand implements Command {

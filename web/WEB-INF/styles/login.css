@@ -1,0 +1,113 @@
+* {box-sizing: border-box}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    background: whitesmoke;
+}
+
+a {
+    color: rgba(38, 76, 114, 1);
+}
+
+a.content:visited {
+    color: rgba(38, 76, 114, 1);
+}
+
+.container {
+    padding: 16px;
+    text-align: center;
+    color: rgba(38, 76, 114, 1);
+}
+
+input[type=text], input[type=password] {
+    width: 20%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #DCDCDC;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+.loginbtn {
+    background-color: rgba(38, 76, 114, 1);
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    opacity: 0.9;
+    font-weight: 600;
+    text-align: center;
+}
+
+.loginbtn:hover {
+    opacity:1;
+}
+
+.signup {
+    text-align: center;
+}
+
+.logo a {
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1100px) {
+    input[type=text], input[type=password] {
+        width: 40%;
+    }
+
+    .signin {
+        margin-top: 10%;
+        font-size: 30px;
+    }
+
+    .loginbtn {
+        font-size: 20px;
+        width: 30%;
+    }
+
+    .signup {
+        font-size: 20px;
+    }
+}
+
+
+@media screen and (max-width: 600px) {
+    input[type=text], input[type=password] {
+        width: 70%;
+    }
+
+    .signin {
+        margin-top: 15%;
+        font-size: 30px;
+    }
+
+    .loginbtn {
+        font-size: 20px;
+        padding: 15px 30px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    input[type=text], input[type=password] {
+        width: 80%;
+    }
+
+    .loginbtn {
+        font-size: 15px;
+    }
+}

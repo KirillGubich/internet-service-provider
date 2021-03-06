@@ -1,6 +1,6 @@
 package com.epam.jwd.provider.command;
 
-import com.epam.jwd.provider.command.page.ShowMainPageCommand;
+import com.epam.jwd.provider.command.page.ShowMainPage;
 import com.epam.jwd.provider.command.page.ShowTariffsPage;
 import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.command.page.ShowUserProfilePage;
@@ -17,7 +17,7 @@ public enum CommandManager {
     SHOW_USER_LOGIN_PAGE(ShowUserLoginPage.INSTANCE),
     SHOW_USER_SIGN_UP_PAGE(ShowUserSignUpPage.INSTANCE),
     SHOW_TARIFFS_PAGE(ShowTariffsPage.INSTANCE),
-    DEFAULT(ShowMainPageCommand.INSTANCE);
+    DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;
 

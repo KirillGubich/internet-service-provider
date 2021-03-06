@@ -5,9 +5,7 @@ import java.util.Optional;
 
 public interface CommonService<T> {
 
-    Optional<List<T>> findAll();
-
-    Optional<T> find(T dto);
+    List<T> findAll();
 
     void create(T dto);
 
