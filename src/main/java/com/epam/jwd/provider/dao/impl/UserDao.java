@@ -63,10 +63,10 @@ public enum UserDao implements CommonDao<User> {
         }
     }
 
-    public Optional<User> findUserByLogin(User entity) {
+    public Optional<User> findUserByLogin(String login) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_ACCOUNT_BY_LOGIN_SQL)) {
-            statement.setString(1, entity.getLogin());
+            statement.setString(1, login);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getBigDecimal("balance") != null ?
@@ -80,7 +80,7 @@ public enum UserDao implements CommonDao<User> {
 
     @Override
     public Optional<User> update(User entity) {
-        Optional<User> user = findUserByLogin(User.builder().withLogin(entity.getLogin()).build());
+        Optional<User> user = findUserByLogin(entity.getLogin());
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement accountStatement = conn.prepareStatement(UPDATE_ACCOUNT_INFO_SQL);
              final PreparedStatement userStatement = conn.prepareStatement(UPDATE_USER_INFO_SQL)) {

@@ -9,7 +9,6 @@ import java.util.Objects;
 public class TariffDto implements BaseDto {
     private final String name;
     private final String description;
-    private final Boolean isSpecialOffer;
     private final BigDecimal costPerDay;
     private final Double uploadSpeed;
     private final Double downloadSpeed;
@@ -34,10 +33,6 @@ public class TariffDto implements BaseDto {
         return description;
     }
 
-    public Boolean getSpecialOffer() {
-        return isSpecialOffer;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,7 +40,6 @@ public class TariffDto implements BaseDto {
         TariffDto tariffDto = (TariffDto) o;
         return Objects.equals(name, tariffDto.name)
                 && Objects.equals(description, tariffDto.description)
-                && Objects.equals(isSpecialOffer, tariffDto.isSpecialOffer)
                 && Objects.equals(costPerDay, tariffDto.costPerDay)
                 && Objects.equals(uploadSpeed, tariffDto.uploadSpeed)
                 && Objects.equals(downloadSpeed, tariffDto.downloadSpeed);
@@ -53,7 +47,7 @@ public class TariffDto implements BaseDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, isSpecialOffer, costPerDay, uploadSpeed, downloadSpeed);
+        return Objects.hash(name, description, costPerDay, uploadSpeed, downloadSpeed);
     }
 
     @Override
@@ -61,7 +55,6 @@ public class TariffDto implements BaseDto {
         return "TariffDto{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", isSpecialOffer=" + isSpecialOffer +
                 ", costPerDay=" + costPerDay +
                 ", uploadSpeed=" + uploadSpeed +
                 ", downloadSpeed=" + downloadSpeed +
@@ -75,7 +68,6 @@ public class TariffDto implements BaseDto {
     public static class Builder {
         private String name;
         private String description;
-        private Boolean isSpecialOffer;
         private BigDecimal costPerDay;
         private Double uploadSpeed;
         private Double downloadSpeed;
@@ -87,11 +79,6 @@ public class TariffDto implements BaseDto {
 
         public Builder withDescription(String description) {
             this.description = description;
-            return this;
-        }
-
-        public Builder withSpecialOffer(Boolean isSpecialOffer) {
-            this.isSpecialOffer = isSpecialOffer;
             return this;
         }
 
@@ -115,10 +102,9 @@ public class TariffDto implements BaseDto {
         }
     }
 
-    public TariffDto(Builder builder) {
+    private TariffDto(Builder builder) {
         this.name = builder.name;
         this.description = builder.description;
-        this.isSpecialOffer = builder.isSpecialOffer;
         this.costPerDay = builder.costPerDay;
         this.uploadSpeed = builder.uploadSpeed;
         this.downloadSpeed = builder.downloadSpeed;

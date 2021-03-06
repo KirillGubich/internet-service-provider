@@ -45,10 +45,10 @@ public enum AddressDao implements CommonDao<Address> {
         }
     }
 
-    public Optional<Address> findById(Address entity) {
+    public Optional<Address> findById(Integer id) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_ADDRESS_BY_ID_SQL)) {
-            statement.setInt(1, entity.getId());
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return extractAddress(resultSet);
@@ -78,7 +78,7 @@ public enum AddressDao implements CommonDao<Address> {
 
     @Override
     public Optional<Address> update(Address entity) throws AddressIdException {
-        Optional<Address> address = findById(entity);
+        Optional<Address> address = findById(entity.getId());
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(UPDATE_ADDRESS_SQL)) {
             Integer id = entity.getId();

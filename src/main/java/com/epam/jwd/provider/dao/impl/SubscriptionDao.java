@@ -1,6 +1,8 @@
 package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
+import com.epam.jwd.provider.exception.AddressLookupException;
+import com.epam.jwd.provider.model.entity.Address;
 import com.epam.jwd.provider.model.entity.Subscription;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
 import com.epam.jwd.provider.pool.ConnectionPool;
@@ -111,7 +113,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
         statement.setBigDecimal(5, entity.getPrice());
         statement.setString(6, entity.getTariffName());
         statement.setString(7, entity.getTariffDescription());
-        statement.setInt(8, entity.getAddressId());
+        statement.setInt(8, entity.getAddress().getId());
         statement.setInt(9, entity.getStatus().getId());
     }
 
@@ -146,9 +148,18 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
                 .withPrice(resultSet.getBigDecimal("cost"))
                 .withTariffName(resultSet.getString("tariff_name"))
                 .withTariffDescription(resultSet.getString("tariff_description"))
-                .withAddressId(resultSet.getInt("address_id"))
+                .withAddress(fetchAddressById(resultSet.getInt("address_id")))
                 .withStatus(SubscriptionStatus.of(resultSet.getString("status")))
                 .build());
+    }
+
+    private Address fetchAddressById(Integer id) throws AddressLookupException {
+        Optional<Address> address = AddressDao.INSTANCE.findById(id);
+        if (address.isPresent()) {
+            return address.get();
+        } else {
+            throw new AddressLookupException("Subscription without address. Address id=" + id);
+        }
     }
 
     private LocalDate asLocalDate(Date date) {

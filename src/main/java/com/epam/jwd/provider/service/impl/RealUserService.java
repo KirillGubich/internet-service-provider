@@ -46,7 +46,7 @@ public enum RealUserService implements UserService {
 
     @Override
     public Optional<UserDto> login(String login, String password) {
-        final Optional<User> user = userDao.findUserByLogin(User.builder().withLogin(login).build());
+        final Optional<User> user = userDao.findUserByLogin(login);
         if (!user.isPresent()) {
             try {
                 BCrypt.checkpw(password, DUMMY_PASSWORD); //todo to prevent timing attack
@@ -65,7 +65,7 @@ public enum RealUserService implements UserService {
 
     @Override
     public boolean signUp(String login, String password, String passwordRepeat) {
-        Optional<User> user = userDao.findUserByLogin(User.builder().withLogin(login).build());
+        Optional<User> user = userDao.findUserByLogin(login);
         boolean isPasswordCorrect;
         isPasswordCorrect = password.equals(passwordRepeat) && password.length() > PASSWORD_MINIMAL_LENGTH;
         if (!user.isPresent() && isPasswordCorrect) {

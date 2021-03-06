@@ -37,32 +37,37 @@
 <div class="user_page">
     <div class="profile">
         <div class="table-information">
-            <c:if test="${not empty requestScope.tariffs}">
-                <c:forEach var="tariff" items="${requestScope.tariffs}">
-                    <table class="table_col">
-                        <colgroup>
-                            <col style="background: rgba(38, 76, 114, 1)">
-                        </colgroup>
-                        <tr>
-                            <td>Tariff</td>
-                            <td>${tariff.name}</td>
-                        </tr>
-                        <tr>
-                            <td>Tariff description</td>
-                            <td>${tariff.description}</td>
-                        </tr>
-                        <tr>
-                            <td>Price per day</td>
-                            <td>${tariff.costPerDay}</td>
-                        </tr>
-                        <tr>
-                            <td>Download/Upload speed</td>
-                            <td>${tariff.downloadSpeed}/${tariff.uploadSpeed}</td>
-                        </tr>
-                    </table>
-                    <br>
-                </c:forEach>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty requestScope.tariffs}">
+                    <c:forEach var="tariff" items="${requestScope.tariffs}">
+                        <table class="table_col">
+                            <colgroup>
+                                <col style="background: rgba(38, 76, 114, 1)">
+                            </colgroup>
+                            <tr>
+                                <td>Tariff</td>
+                                <td>${tariff.name}</td>
+                            </tr>
+                            <tr>
+                                <td>Tariff description</td>
+                                <td>${tariff.description}</td>
+                            </tr>
+                            <tr>
+                                <td>Price per day</td>
+                                <td>${tariff.costPerDay}</td>
+                            </tr>
+                            <tr>
+                                <td>Download/Upload speed</td>
+                                <td>${tariff.downloadSpeed}/${tariff.uploadSpeed}</td>
+                            </tr>
+                        </table>
+                        <br>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <h2>There are no available tariffs now</h2>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="content">
             <div class="news-card-inner">

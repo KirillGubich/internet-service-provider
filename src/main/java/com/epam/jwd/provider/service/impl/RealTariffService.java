@@ -1,9 +1,10 @@
 package com.epam.jwd.provider.service.impl;
 
+import com.epam.jwd.provider.dao.CommonDao;
 import com.epam.jwd.provider.dao.impl.TariffDao;
 import com.epam.jwd.provider.model.dto.TariffDto;
 import com.epam.jwd.provider.model.entity.Tariff;
-import com.epam.jwd.provider.service.CommonService;
+import com.epam.jwd.provider.service.TariffService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
-public enum TariffService implements CommonService<TariffDto> {
+public enum RealTariffService implements TariffService {
     INSTANCE;
 
     private final TariffDao tariffDao = TariffDao.INSTANCE;
@@ -25,6 +26,7 @@ public enum TariffService implements CommonService<TariffDto> {
                 .orElseGet(ArrayList::new);
     }
 
+    @Override
     public List<TariffDto> findSpecialOffers() {
         Optional<List<Tariff>> tariffs = tariffDao.readAll();
         return tariffs.map(tariffList -> tariffList.stream()
@@ -59,7 +61,6 @@ public enum TariffService implements CommonService<TariffDto> {
                 .withName(tariff.getName())
                 .withDescription(tariff.getDescription())
                 .withCostPerDay(tariff.getCostPerDay())
-                .withSpecialOffer(tariff.getSpecialOffer())
                 .withDownloadSpeed(tariff.getDownloadSpeed())
                 .withUploadSpeed(tariff.getUploadSpeed())
                 .build();

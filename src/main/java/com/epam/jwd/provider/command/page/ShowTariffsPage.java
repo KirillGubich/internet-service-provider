@@ -4,7 +4,7 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.dto.TariffDto;
-import com.epam.jwd.provider.service.impl.TariffService;
+import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.util.List;
 
@@ -25,9 +25,11 @@ public enum ShowTariffsPage implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        List<TariffDto> tariffs = TariffService.INSTANCE.findAll();
-        List<TariffDto> specialOffers = TariffService.INSTANCE.findSpecialOffers();
-        request.setAttribute("tariffs", tariffs);
+        List<TariffDto> tariffs = RealTariffService.INSTANCE.findAll();
+        List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();
+        if (!tariffs.isEmpty()) {
+            request.setAttribute("tariffs", tariffs);
+        }
         request.setAttribute("specialOffers", specialOffers);
         return TARIFFS_PAGE_RESPONSE;
     }
