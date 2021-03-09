@@ -1,0 +1,93 @@
+* {
+    box-sizing: border-box
+}
+
+.service_addition {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-top: 50px;
+}
+
+.service_header {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: rgba(38, 76, 114, 1);
+    text-align: center;
+}
+
+.service_form form {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.service_form input {
+    align-self: center;
+}
+
+.service_form button {
+    align-self: center;
+}
+
+.tariff_list, .time_list, .city, .address {
+    width: 70%;
+    align-self: center;
+    font-size: 15px;
+}
+
+.servicebtn {
+    background-color: rgba(38, 76, 114, 1);
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    opacity: 0.9;
+    font-weight: 600;
+    text-align: center;
+    align-content: center;
+    font-size: 15px;
+}
+
+input[type=text], select {
+    padding: 12px;
+    margin: 5px 0 10px 0;
+    display: inline-block;
+    border: none;
+}
+
+input[type=text]:focus {
+    outline: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .service_addition {
+        width: 95%;
+    }
+
+    .tariff_list, .time_list, .city, .address {
+        width: 80%;
+    }
+
+    .servicebtn {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .service_addition {
+        width: 100%;
+    }
+
+    .tariff_list, .time_list, .city, .address {
+        width: 90%;
+    }
+
+    .servicebtn {
+        width: 50%;
+    }
+}

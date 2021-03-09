@@ -9,6 +9,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
@@ -75,10 +76,12 @@ public enum RealUserService implements UserService {
         return false;
     }
 
-//    public Optional<UserDto> find(UserDto dto) {
-//        Optional<User> user = userDao.findUserByLogin(convertToUser(dto));
-//        return user.map(this::convertToDto);
-//    }
+    @Override
+    public Optional<UserDto> findById(Integer id) {
+        Optional<User> user = userDao.findUserById(id);
+        return user.map(this::convertToDto);
+    }
+
 
     public void changePassword(String password) {
         //todo через UserDao.save и добавить в интерфейс

@@ -22,6 +22,8 @@ public enum UserDao implements CommonDao<User> {
 
     private static final String FIND_ACCOUNT_BY_LOGIN_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where login=?";
+    private static final String FIND_ACCOUNT_BY_ID_SQL = "SELECT id, login, password, balance, active FROM accounts " +
+            "LEFT JOIN users ON accounts.id=users.account_id where id=?";
     private static final String CREATE_ACCOUNT_SQL = "INSERT INTO accounts (login, password) VALUES (?,?)";
     private static final String CREATE_USER_SQL = "INSERT INTO users (account_id, balance, active) VALUES (?,?,?)";
     private static final String FIND_ALL_ACCOUNTS_SQL = "SELECT id, login, password, balance, active FROM accounts " +
@@ -67,6 +69,21 @@ public enum UserDao implements CommonDao<User> {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_ACCOUNT_BY_LOGIN_SQL)) {
             statement.setString(1, login);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getBigDecimal("balance") != null ?
+                        extractUser(resultSet, UserRole.USER) : extractUser(resultSet, UserRole.ADMIN);
+            }
+        } catch (InterruptedException | SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.empty();
+    }
+
+    public Optional<User> findUserById(Integer id) {
+        try (final Connection conn = connectionPool.takeConnection();
+             final PreparedStatement statement = conn.prepareStatement(FIND_ACCOUNT_BY_ID_SQL)) {
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getBigDecimal("balance") != null ?

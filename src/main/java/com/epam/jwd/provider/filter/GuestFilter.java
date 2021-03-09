@@ -25,6 +25,9 @@ public class GuestFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         pagesForAuthorizedUsersOnly.add("command=show_profile");
+        pagesForAuthorizedUsersOnly.add("command=show_settings_page");
+        pagesForAuthorizedUsersOnly.add("command=show_subscription_page");
+        pagesForAuthorizedUsersOnly.add("command=logout");
     }
 
     @Override

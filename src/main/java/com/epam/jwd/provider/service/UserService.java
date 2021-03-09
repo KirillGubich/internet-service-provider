@@ -9,4 +9,6 @@ public interface UserService extends CommonService<UserDto> {
     Optional<UserDto> login(String login, String password);
 
     boolean signUp(String login, String password, String passwordRepeat);
+
+    Optional<UserDto> findById(Integer id);
 }

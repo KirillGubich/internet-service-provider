@@ -1,4 +1,4 @@
-<%--<%@ page contentType="text/html;charset=UTF-8" language="java" %>--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -32,7 +32,7 @@
                     <a href="${pageContext.request.contextPath}/controller?command=show_user_sign_up_page">Sign up</a>.
                 </p>
             </div>
-            <h2>${requestScope.errorMessage}</h2>
+            <h4 style="color: red">${requestScope.errorMessage}</h4>
         </div>
     </form>
 </div>

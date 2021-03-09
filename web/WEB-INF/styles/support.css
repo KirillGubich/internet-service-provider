@@ -1,0 +1,129 @@
+.contact-us {
+    margin-top: 150px;
+    display: block;
+}
+
+.supportHeader {
+    display: flex;
+    justify-content: center;
+    background: white;
+    color: rgba(38, 76, 114, 1);
+    margin-left: 70px;
+    width: 90%;
+}
+
+.support_form {
+    margin-left: 70px;
+    margin-top: -20px;
+    width: 90%;
+    text-align: center;
+}
+
+input {
+    border: 0;
+    outline: 0;
+    padding: 1em;
+border-radius(8 px);
+    width: 100%;
+    margin-top: 1em;
+    font-family: 'Merriweather', sans-serif;
+box-shadow(0 1 px 1 px rgba(black, 0.1));
+    resize: none;
+}
+
+textarea {
+    border: 0;
+    outline: 0;
+    padding: 1em;
+border-radius(8 px);
+    width: 100%;
+    margin-top: 1em;
+    font-family: 'Merriweather', sans-serif;
+box-shadow(0 1 px 1 px rgba(black, 0.1));
+    resize: none;
+}
+
+#input-submit {
+    color: white;
+    background: rgba(38, 76, 114, 1);
+    cursor: pointer;
+    width: 30%;
+    font-size: 15px;
+    align-self: center;
+}
+
+#input-submit:hover {
+    background: rgba(63, 127, 191, 1);
+}
+
+textarea {
+    height: 153px;
+}
+
+.half {
+    float: left;
+    width: 48%;
+    margin-bottom: 1em;
+}
+
+.right {
+    width: 50%;
+}
+
+.left {
+    margin-right: 2%;
+}
+
+@media screen and (max-width: 1000px) {
+    .contact-us {
+        margin-top: 50px;
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .contact-us {
+        margin-right: 50px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .contact-us {
+        align-self: center;
+        width: 100%;
+        margin-left: -35px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .support_form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .half {
+        width: 100%;
+    }
+
+    .right {
+        width: 100%;
+    }
+
+    #input-submit {
+        width: 40%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .contact-us {
+        width: 100%;
+        margin-left: -40px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .contact-us {
+        width: 100%;
+
+    }
+}

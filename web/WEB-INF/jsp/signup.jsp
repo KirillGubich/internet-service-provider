@@ -34,7 +34,7 @@
                     <a href="${pageContext.request.contextPath}/controller?command=show_user_login_page">Sign in</a>.
                 </p>
             </div>
-            <h2>${requestScope.errorMessage}</h2>
+            <h4 style="color: red">${requestScope.errorMessage}</h4>
         </div>
     </form>
 </div>

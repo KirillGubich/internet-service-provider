@@ -69,6 +69,7 @@ public enum LoginCommand implements Command {
             }
         } else {
             result = LOGIN_PAGE_RESPONSE;
+            request.setAttribute("errorMessage", "Incorrect data. Please, try again.");
         }
         return result;
     }

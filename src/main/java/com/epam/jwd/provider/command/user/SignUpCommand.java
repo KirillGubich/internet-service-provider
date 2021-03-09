@@ -48,7 +48,7 @@ public enum SignUpCommand implements Command {
         if (signedUpSuccessfully) {
             return LOGIN_PAGE_RESPONSE;
         } else {
-            request.setAttribute("errorMessage", "invalid credentials");
+            request.setAttribute("errorMessage", "Incorrect data. Please, try again.");
             return SIGN_UP_PAGE_RESPONSE;
         }
     }

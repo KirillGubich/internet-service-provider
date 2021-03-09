@@ -19,15 +19,15 @@
 <header>
     <div class="navigation">
         <div class="logo">
-            <a href="profile.html">Joi<span class="logoN">N</span>et</a>
+            <a href="${pageContext.request.contextPath}/controller?command=show_profile">Joi<span class="logoN">N</span>et</a>
         </div>
         <nav class="menu">
             <ul class="nav">
-                <li><a class="link" href="settings.html">Settings</a></li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_settings_page">Settings</a></li>
                 <li>
                     <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
                 </li>
-                <li><a class="link" href="/controller?command=logout">Sign out</a></li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a></li>
             </ul>
         </nav>
     </div>
@@ -68,10 +68,6 @@
                                 <td>${subscription.price}</td>
                             </tr>
                             <tr>
-                                <td>Download/Upload speed</td>
-                                <td>${subscription.downloadSpeed}/${subscription.uploadSpeed}</td>
-                            </tr>
-                            <tr>
                                 <td>Address</td>
                                 <td>${subscription.address.city}, ${subscription.address.address}</td>
                             </tr>
@@ -89,6 +85,10 @@
             </c:choose>
         </div>
         <div class="content">
+            <div class="service">
+                <a href="${pageContext.request.contextPath}/controller?command=show_subscription_page"
+                   class="service_btn">Add service</a>
+            </div>
             <div class="news-card-inner">
                 <div class="news-card__header" tabindex="0">
                     <div class="clearfix">

@@ -1,0 +1,167 @@
+* {
+    box-sizing: border-box
+}
+
+html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 10px;
+    min-height: 100%;
+    -ms-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: whitesmoke;
+    font-family: Roboto,Ubuntu,'Droid Sans','Helvetica Neue',Arial,sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.375;
+    align-content: center;
+}
+
+.pageHeader {
+    height: 8vh;
+    -webkit-background-size: cover;
+    background-size: cover;
+    background: linear-gradient(rgba(38, 76, 114, 1), rgba(63, 127, 191, 1)) no-repeat fixed 50% 50%;
+}
+
+a.content:visited {
+    color: white;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.settings-cards {
+    margin-top: 50px;
+}
+
+.settingsHeader {
+     display: flex;
+     justify-content: center;
+     background: white;
+     color: rgba(38, 76, 114, 1);
+ }
+
+.profileSettings {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.small-card-info {
+    background-image: url(resources/info.png);
+    background-position: 15px center;
+}
+
+.small-card-login {
+    background-image: url(resources/login.png);
+    background-position: 15px center;
+}
+
+.small-card-password {
+    background-image: url(resources/password.png);
+    background-position: 15px center;
+}
+
+.small-card-balance {
+    background-image: url(resources/balance.png);
+    background-position: 15px center;
+}
+
+ .small-card {
+     position: relative;
+     margin-bottom: 10px;
+     padding: 10px 10px 10px 75px;
+     width: 23%;
+     height: 110px;
+     -webkit-box-shadow: 0 1px 4px rgb(0 0 0);
+     box-shadow: 0 1px 4px rgb(0 0 0);
+     border: 1px solid rgba(0,0,0,.09);
+     border-radius: 3px;
+     background-size: auto 50%;
+     background-color: #fff;
+     background-repeat: no-repeat;
+     -webkit-transition: border-color .3s,-webkit-box-shadow .3s;
+     transition: box-shadow .3s,border-color .3s,-webkit-box-shadow .3s;
+ }
+
+.small-card-title {
+    position: relative;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 300;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+}
+
+.small-card__body p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 400;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.small-card-footer {
+    position: absolute;
+    bottom: 0;
+    font-size: 17px;
+}
+
+.small-card-footer a {
+    color: rgba(38, 76, 114, 1);
+}
+
+@media screen and (max-width: 1000px) {
+    .settings {
+        width: 98%;
+        align-self: center;
+    }
+
+    .profileSettings {
+        display: flex;
+        flex-flow: row wrap;
+        align-content: space-between;
+    }
+
+    .small-card {
+        width: 48%;
+    }
+
+    .settings-cards {
+        margin-left: 15px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .settings {
+        width: 98%;
+        align-self: center;
+    }
+
+    .small-card {
+        width: 90%;
+    }
+
+    .settings-cards {
+        margin-left: 15px;
+        margin-top: 20px;
+    }
+
+    .profile_settings {
+        margin-left: 20px;
+    }
+}
+
+
+
