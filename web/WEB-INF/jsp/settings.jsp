@@ -171,14 +171,16 @@
             </div>
         </div>
     </div>
+    <h3>${requestScope.errorMessage}</h3>
     <div class="contact-us">
         <h2 class="supportHeader">Contact us</h2>
         <div class="support_form">
-            <form>
+            <form action="${pageContext.request.contextPath}/controller">
+                <input type='hidden' name='command' value='contact_support'/>
                 <div class="half left cf">
-                    <input type="text" id="input-name" placeholder="Name" required>
-                    <input type="email" id="input-email" placeholder="Email address" required>
-                    <input type="text" id="input-subject" placeholder="Subject" required>
+                    <input type="text" id="input-name" name="name" placeholder="Name" required>
+                    <input type="email" id="input-email" name="email" placeholder="Email address" required>
+                    <input type="text" id="input-subject" name="subject" placeholder="Subject" required>
                 </div>
                 <div class="half right cf">
                     <label for="input-message"></label>

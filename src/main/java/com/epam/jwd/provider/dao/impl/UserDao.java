@@ -22,7 +22,6 @@ public enum UserDao implements CommonDao<User> {
 
     private static final String FIND_ACCOUNT_BY_LOGIN_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where login=?";
-    private static final String UPDATE_USER_BALANCE_SQL = "UPDATE users SET balance=? WHERE account_id=?";
     private static final String FIND_ACCOUNT_BY_ID_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where id=?";
     private static final String CREATE_ACCOUNT_SQL = "INSERT INTO accounts (login, password) VALUES (?,?)";

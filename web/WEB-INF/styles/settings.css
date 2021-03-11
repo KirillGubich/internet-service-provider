@@ -122,6 +122,12 @@ a.content:visited {
     color: rgba(38, 76, 114, 1);
 }
 
+h3 {
+    color: rgba(38, 76, 114, 1);
+    text-align: center;
+    color: red;
+}
+
 @media screen and (max-width: 1000px) {
     .settings {
         width: 98%;

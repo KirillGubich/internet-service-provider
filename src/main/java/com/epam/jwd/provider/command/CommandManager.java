@@ -8,6 +8,7 @@ import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.command.page.ShowUserProfilePage;
 import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.command.user.ChangePasswordCommand;
+import com.epam.jwd.provider.command.user.ContactSupportCommand;
 import com.epam.jwd.provider.command.user.LoginCommand;
 import com.epam.jwd.provider.command.user.LogoutCommand;
 import com.epam.jwd.provider.command.user.SignUpCommand;
@@ -27,6 +28,7 @@ public enum CommandManager {
     SHOW_SUBSCRIPTION_PAGE(ShowSubscriptionPage.INSTANCE),
     TOP_UP_BALANCE(TopUpBalanceCommand.INSTANCE),
     CHANGE_PASSWORD(ChangePasswordCommand.INSTANCE),
+    CONTACT_SUPPORT(ContactSupportCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;

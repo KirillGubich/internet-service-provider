@@ -9,7 +9,7 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 public enum ChangePasswordCommand implements Command {
     INSTANCE;
 
-    private static final ResponseContext SETTINGS_PAGE_RESPONSE = new ResponseContext() {
+    private static final ResponseContext SETTINGS_PAGE_RESPONSE_REDIRECT = new ResponseContext() {
         @Override
         public String getPage() {
             return "/controller?command=show_settings_page";
@@ -18,6 +18,18 @@ public enum ChangePasswordCommand implements Command {
         @Override
         public boolean isRedirect() {
             return true;
+        }
+    };
+
+    private static final ResponseContext SETTINGS_PAGE_RESPONSE = new ResponseContext() {
+        @Override
+        public String getPage() {
+            return "/controller?command=show_settings_page";
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
         }
     };
 
@@ -30,10 +42,10 @@ public enum ChangePasswordCommand implements Command {
         UserService userService = RealUserService.INSTANCE;
         boolean passwordSuccessfulUpdated = userService.changePassword(accountId, password, newPassword, repNewPassword);
         if (passwordSuccessfulUpdated) {
-            //todo
+            return SETTINGS_PAGE_RESPONSE_REDIRECT;
         } else {
-            //todo alternative response
+            request.setAttribute("errorMessage", "An incorrect current password was entered");
+            return SETTINGS_PAGE_RESPONSE;
         }
-        return SETTINGS_PAGE_RESPONSE;
     }
 }
