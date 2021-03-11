@@ -13,6 +13,61 @@
         <%@include file="/WEB-INF/styles/support.css"%>
     </style>
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#loginLink").click(function( event ){
+                event.preventDefault();
+                $(".overlay").fadeToggle("fast");
+            });
+
+            $(".overlayLink").click(function(event){
+                event.preventDefault();
+                var action = $(this).attr('data-action');
+
+                $("#loginTarget").load("ajax/" + action);
+
+                $(".overlay").fadeToggle("fast");
+            });
+
+            $(".close").click(function(){
+                $(".overlay").fadeToggle("fast");
+            });
+
+            $(document).keyup(function(e) {
+                if(e.keyCode === 27 && $(".overlay").css("display") !== "none" ) {
+                    event.preventDefault();
+                    $(".overlay").fadeToggle("fast");
+                }
+            });
+        });
+        $(document).ready(function() {
+            $("#loginLink").click(function( event ){
+                event.preventDefault();
+                $(".overlayPay").fadeToggle("fast");
+            });
+
+            $(".overlayPayLink").click(function(event){
+                event.preventDefault();
+                var action = $(this).attr('data-action');
+
+                $("#loginTarget").load("ajax/" + action);
+
+                $(".overlayPay").fadeToggle("fast");
+            });
+
+            $(".closePay").click(function(){
+                $(".overlayPay").fadeToggle("fast");
+            });
+
+            $(document).keyup(function(e) {
+                if(e.keyCode === 27 && $(".overlayPay").css("display") !== "none" ) {
+                    event.preventDefault();
+                    $(".overlayPay").fadeToggle("fast");
+                }
+            });
+        });
+    </script>
     <title>Settings</title>
 </head>
 <body>
@@ -52,10 +107,6 @@
                 <div class="small-card-body">
                     <p>${requestScope.userInfo.login}</p>
                 </div>
-
-                <footer class="small-card-footer">
-                    <a href="#" class="small-card-tooltip">Change login</a>
-                </footer>
             </div>
             <div class="small-card small-card-password">
                 <header class="small-card-header">
@@ -66,7 +117,7 @@
                 </div>
 
                 <footer class="small-card-footer">
-                    <a href="#" class="small-card-tooltip">Change password</a>
+                    <a href="#" class="overlayLink">Change password</a>
                 </footer>
             </div>
             <div class="small-card small-card-balance">
@@ -77,8 +128,46 @@
                     <p>${requestScope.userInfo.balance} BYN</p>
                 </div>
                 <footer class="small-card-footer">
-                    <a href="#" class="small-card-tooltip">Top up</a>
+                    <a href="#" class="overlayPayLink">Top up</a>
                 </footer>
+            </div>
+        </div>
+        <div class="overlay" style="display: none;">
+            <div class="login-wrapper">
+                <div class="login-content" id="loginTarget">
+                    <a class="close">x</a>
+                    <h3>Change password</h3>
+                    <form method="post" action="${pageContext.request.contextPath}/controller">
+                        <input type='hidden' name='command' value='change_password'/>
+                        <label>
+                            <input type="password" name="password" placeholder="current password" required />
+                        </label>
+                        <label>
+                            <input type="password" name="newPassword" placeholder="new password"
+                                    required/>
+                        </label>
+                        <label>
+                            <input type="password" name="repNewPassword" placeholder="repeat new password"
+                                   required/>
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="overlayPay" style="display: none;">
+            <div class="login-wrapper">
+                <div class="login-content">
+                    <a class="closePay">x</a>
+                    <h3>Top up balance</h3>
+                    <form method="post" action="${pageContext.request.contextPath}/controller">
+                        <input type='hidden' name='command' value='top_up_balance'/>
+                        <label>
+                            <input type="number" min="1" step="any" name="topUpValue" placeholder="value" required />
+                        </label>
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -14,4 +14,6 @@ public interface UserService extends CommonService<UserDto> {
     Optional<UserDto> findById(Integer id);
 
     void updateBalance(Integer accountId, BigDecimal balance);
+
+    boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat);
 }

@@ -20,13 +20,16 @@
             </h1>
             <input type='hidden' name='command' value='sign_up'/>
             <label>
-                <input type="text" placeholder="Enter login" name="userLogin" required>
+                <input type="text" placeholder="Enter login" name="userLogin"
+                       pattern="^[a-zA-Z][a-zA-Z0-9-_.]{6,20}$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Enter Password" name="userPassword" required>
+                <input type="password" placeholder="Enter Password" name="userPassword"
+                       pattern="(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Repeat Password" name="userRepPassword" required>
+                <input type="password" placeholder="Repeat Password" name="userRepPassword"
+                       pattern="(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
             </label><br>
             <button type="submit" class="registerbtn">Create</button>
             <div class="signin">

@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static java.util.stream.Collectors.toList;
 
@@ -68,9 +67,9 @@ public enum RealUserService implements UserService {
     @Override
     public boolean signUp(String login, String password, String passwordRepeat) {
         Optional<User> user = userDao.findUserByLogin(login);
-        boolean isPasswordCorrect;
-        isPasswordCorrect = password.equals(passwordRepeat) && password.length() > PASSWORD_MINIMAL_LENGTH;
-        if (!user.isPresent() && isPasswordCorrect) {
+        boolean passwordCorrect;
+        passwordCorrect = password.equals(passwordRepeat) && password.length() > PASSWORD_MINIMAL_LENGTH;
+        if (!user.isPresent() && passwordCorrect) {
             userDao.create(User.builder().withLogin(login).withPassword(hash(password)).build());
             return true;
         }
@@ -85,12 +84,43 @@ public enum RealUserService implements UserService {
 
     @Override
     public void updateBalance(Integer accountId, BigDecimal balance) {
-        userDao.updateUserBalance(accountId, balance);
+        Optional<User> user = userDao.findUserById(accountId);
+        if (!user.isPresent()) {
+            throw new RuntimeException(); //todo custom exception
+        }
+        User updatedUser = User.builder()
+                .withId(accountId)
+                .withLogin(user.get().getLogin())
+                .withPassword(user.get().getPassword())
+                .withStatus(user.get().getActive())
+                .withBalance(balance)
+                .build();
+        userDao.update(updatedUser);
     }
 
-
-    public void changePassword(String password) {
-        //todo через UserDao.save и добавить в интерфейс
+    @Override
+    public boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat) {
+        if (accountId == null || oldPassword == null || updPassword == null || updPasswordRepeat == null) {
+            throw new RuntimeException(); //todo custom Exception
+        }
+        Optional<User> user = userDao.findUserById(accountId);
+        if (!user.isPresent()) {
+            throw new RuntimeException(); //todo custom Exception
+        }
+        boolean passwordCorrect = BCrypt.checkpw(oldPassword, user.get().getPassword())
+                && updPassword.equals(updPasswordRepeat);
+        if (!passwordCorrect) {
+            return false;
+        }
+        User updatedUser = User.builder()
+                .withId(accountId)
+                .withLogin(user.get().getLogin())
+                .withPassword(hash(updPassword))
+                .withBalance(user.get().getBalance())
+                .withStatus(user.get().getActive())
+                .build();
+        userDao.update(updatedUser);
+        return true;
     }
 
     private UserDto convertToDto(User user) {

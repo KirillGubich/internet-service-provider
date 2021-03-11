@@ -104,25 +104,16 @@ public enum UserDao implements CommonDao<User> {
              final PreparedStatement userStatement = conn.prepareStatement(UPDATE_USER_INFO_SQL)) {
             accountStatement.setString(1, entity.getLogin());
             accountStatement.setString(2, entity.getPassword());
+            accountStatement.setInt(3, entity.getId());
             userStatement.setBigDecimal(1, entity.getBalance());
             userStatement.setBoolean(2, entity.getActive());
+            userStatement.setInt(3, entity.getId());
             accountStatement.executeUpdate();
             userStatement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
             LOGGER.error(e.getMessage());
         }
         return user;
-    }
-
-    public void updateUserBalance(Integer userId, BigDecimal balance) {
-        try (final Connection conn = connectionPool.takeConnection();
-             final PreparedStatement statement = conn.prepareStatement(UPDATE_USER_BALANCE_SQL)) {
-            statement.setBigDecimal(1, balance);
-            statement.setInt(2, userId);
-           statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
-            LOGGER.error(e.getMessage());
-        }
     }
 
     @Override

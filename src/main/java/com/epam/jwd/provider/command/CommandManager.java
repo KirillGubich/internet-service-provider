@@ -7,10 +7,12 @@ import com.epam.jwd.provider.command.page.ShowTariffsPage;
 import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.command.page.ShowUserProfilePage;
 import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
+import com.epam.jwd.provider.command.user.ChangePasswordCommand;
 import com.epam.jwd.provider.command.user.LoginCommand;
 import com.epam.jwd.provider.command.user.LogoutCommand;
 import com.epam.jwd.provider.command.user.SignUpCommand;
 import com.epam.jwd.provider.command.user.SubscribeCommand;
+import com.epam.jwd.provider.command.user.TopUpBalanceCommand;
 
 public enum CommandManager {
     LOGIN(LoginCommand.INSTANCE),
@@ -23,6 +25,8 @@ public enum CommandManager {
     SHOW_TARIFFS_PAGE(ShowTariffsPage.INSTANCE),
     SHOW_SETTINGS_PAGE(ShowSettingsPage.INSTANCE),
     SHOW_SUBSCRIPTION_PAGE(ShowSubscriptionPage.INSTANCE),
+    TOP_UP_BALANCE(TopUpBalanceCommand.INSTANCE),
+    CHANGE_PASSWORD(ChangePasswordCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;
