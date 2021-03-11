@@ -1,6 +1,8 @@
 package com.epam.jwd.provider.service.impl;
 
+import com.epam.jwd.provider.dao.impl.AddressDao;
 import com.epam.jwd.provider.dao.impl.SubscriptionDao;
+import com.epam.jwd.provider.exception.AddressExistenceException;
 import com.epam.jwd.provider.factory.impl.AddressDtoFactory;
 import com.epam.jwd.provider.factory.impl.AddressFactory;
 import com.epam.jwd.provider.model.dto.AddressDto;
@@ -18,6 +20,7 @@ public enum RealSubscriptionService implements SubscriptionService {
     INSTANCE;
 
     private final SubscriptionDao subscriptionDao = SubscriptionDao.INSTANCE;
+    private final AddressDao addressDao = AddressDao.INSTANCE;
     private static final Integer DEFAULT_ADDRESS_ID = 0;
 
     @Override
@@ -31,18 +34,35 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public void create(SubscriptionDto dto) {
-        subscriptionDao.create(convertToSubscription(dto));
+        AddressDao.INSTANCE.create(convertToAddress(dto.getAddress(), DEFAULT_ADDRESS_ID));
+        Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
+                dto.getAddress().getAddress());
+        if (!addressId.isPresent()) {
+            throw new AddressExistenceException("The newly created address was not found");
+        }
+        subscriptionDao.create(convertToSubscription(dto, addressId.get()));
     }
 
     @Override
     public Optional<SubscriptionDto> save(SubscriptionDto dto) {
-        Optional<Subscription> oldSubscription = subscriptionDao.update(convertToSubscription(dto));
+        Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
+                dto.getAddress().getAddress());
+        if (!addressId.isPresent()) {
+            throw new AddressExistenceException("The newly created address was not found");
+        }
+        Optional<Subscription> oldSubscription = subscriptionDao.update(convertToSubscription(dto, addressId.get()));
         return oldSubscription.map(this::convertToDto);
     }
 
     @Override
     public void delete(SubscriptionDto dto) {
-        subscriptionDao.delete(convertToSubscription(dto));
+        Optional<Integer> addressId = AddressDao.INSTANCE.findAddressId(dto.getAddress().getCity(),
+                dto.getAddress().getAddress());
+        if (!addressId.isPresent()) {
+            throw new AddressExistenceException("Subscription exist without address");
+        }
+        addressDao.delete(convertToAddress(dto.getAddress(), addressId.get()));
+        subscriptionDao.delete(convertToSubscription(dto, DEFAULT_ADDRESS_ID));
     }
 
     @Override
@@ -54,22 +74,26 @@ public enum RealSubscriptionService implements SubscriptionService {
                 .orElseGet(ArrayList::new);
     }
 
-    private Subscription convertToSubscription(SubscriptionDto dto) {
+    private Subscription convertToSubscription(SubscriptionDto dto, Integer addressId) {
         return Subscription.builder()
                 .withId(dto.getId())
+                .withUserId(dto.getUserId())
+                .withTariffId(dto.getTariffId())
                 .withTariffName(dto.getTariffName())
                 .withTariffDescription(dto.getTariffDescription())
                 .withStartDate(dto.getStartDate())
                 .withEndDate(dto.getEndDate())
                 .withPrice(dto.getPrice())
                 .withStatus(dto.getStatus())
-                .withAddress(convertToAddress(dto.getAddress()))
+                .withAddress(convertToAddress(dto.getAddress(), addressId))
                 .build();
     }
 
     private SubscriptionDto convertToDto(Subscription subscription) {
         return SubscriptionDto.builder()
                 .withId(subscription.getId())
+                .withUserId(subscription.getUserId())
+                .withTariffId(subscription.getTariffId())
                 .withTariffName(subscription.getTariffName())
                 .withTariffDescription(subscription.getTariffDescription())
                 .withStartDate(subscription.getStartDate())
@@ -81,8 +105,8 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     }
 
-    private Address convertToAddress(AddressDto dto) {
-        return AddressFactory.INSTANCE.create(DEFAULT_ADDRESS_ID, dto.getCity(), dto.getAddress());
+    private Address convertToAddress(AddressDto dto, Integer id) {
+        return AddressFactory.INSTANCE.create(id, dto.getCity(), dto.getAddress());
     }
 
     private AddressDto convertToAddressDto(Address address) {

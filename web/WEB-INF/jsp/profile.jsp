@@ -73,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td>Status</td>
-                                <td style="color: green">${subscription.status}</td>
+                                <td>${subscription.status}</td>
                             </tr>
                         </table>
                         <br>

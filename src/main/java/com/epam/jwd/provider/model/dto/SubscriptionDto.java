@@ -8,6 +8,8 @@ import java.util.Objects;
 
 public class SubscriptionDto {
     private final Integer id;
+    private final Integer userId;
+    private final Integer tariffId;
     private final String tariffName;
     private final String tariffDescription;
     private final LocalDate startDate;
@@ -18,6 +20,14 @@ public class SubscriptionDto {
 
     public Integer getId() {
         return id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public Integer getTariffId() {
+        return tariffId;
     }
 
     public String getTariffName() {
@@ -53,18 +63,20 @@ public class SubscriptionDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SubscriptionDto that = (SubscriptionDto) o;
-        return Objects.equals(id, that.id) && Objects.equals(tariffName, that.tariffName) && Objects.equals(tariffDescription, that.tariffDescription) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(price, that.price) && status == that.status && Objects.equals(address, that.address);
+        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(tariffId, that.tariffId) && Objects.equals(tariffName, that.tariffName) && Objects.equals(tariffDescription, that.tariffDescription) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(price, that.price) && status == that.status && Objects.equals(address, that.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tariffName, tariffDescription, startDate, endDate, price, status, address);
+        return Objects.hash(id, userId, tariffId, tariffName, tariffDescription, startDate, endDate, price, status, address);
     }
 
     @Override
     public String toString() {
         return "SubscriptionDto{" +
                 "id=" + id +
+                ", userId=" + userId +
+                ", tariffId=" + tariffId +
                 ", tariffName='" + tariffName + '\'' +
                 ", tariffDescription='" + tariffDescription + '\'' +
                 ", startDate=" + startDate +
@@ -81,6 +93,8 @@ public class SubscriptionDto {
 
     public static class Builder {
         private Integer id;
+        private Integer userId;
+        private Integer tariffId;
         private String tariffName;
         private String tariffDescription;
         private LocalDate startDate;
@@ -91,6 +105,16 @@ public class SubscriptionDto {
 
         public Builder withId(Integer id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder withUserId(Integer userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder withTariffId(Integer tariffId) {
+            this.tariffId = tariffId;
             return this;
         }
 
@@ -136,6 +160,8 @@ public class SubscriptionDto {
 
     private SubscriptionDto(Builder builder) {
         this.id = builder.id;
+        this.userId = builder.userId;
+        this.tariffId = builder.tariffId;
         this.tariffName = builder.tariffName;
         this.tariffDescription = builder.tariffDescription;
         this.startDate = builder.startDate;

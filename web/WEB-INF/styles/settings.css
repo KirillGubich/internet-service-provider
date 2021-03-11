@@ -56,22 +56,22 @@ a.content:visited {
 }
 
 .small-card-info {
-    background-image: url(resources/info.png);
+    background-image: url("images/info.png");
     background-position: 15px center;
 }
 
 .small-card-login {
-    background-image: url(resources/login.png);
+    background-image: url(images/login.png);
     background-position: 15px center;
 }
 
 .small-card-password {
-    background-image: url(resources/password.png);
+    background-image: url(images/password.png);
     background-position: 15px center;
 }
 
 .small-card-balance {
-    background-image: url(resources/balance.png);
+    background-image: url(images/balance.png);
     background-position: 15px center;
 }
 

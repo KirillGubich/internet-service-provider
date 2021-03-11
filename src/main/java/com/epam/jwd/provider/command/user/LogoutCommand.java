@@ -23,6 +23,7 @@ public enum LogoutCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext request) {
         request.setSessionAttribute("userRole", UserRole.GUEST);
+        request.setSessionAttribute("accountId", null);
         request.invalidateSession();
         return LOGOUT_RESPONSE;
     }

@@ -67,10 +67,10 @@ public enum TariffDao implements CommonDao<Tariff> {
         return Optional.empty();
     }
 
-    public Optional<Tariff> findByName(Tariff entity) {
+    public Optional<Tariff> findByName(String name) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_TARIFF_BY_NAME_SQL)) {
-            statement.setString(1, entity.getName());
+            statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return extractTariff(resultSet);
@@ -83,7 +83,7 @@ public enum TariffDao implements CommonDao<Tariff> {
 
     @Override
     public Optional<Tariff> update(Tariff entity) {
-        Optional<Tariff> tariff = findByName(Tariff.builder().withName(entity.getName()).build());
+        Optional<Tariff> tariff = findByName(entity.getName());
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(UPDATE_TARIFF_SQL)) {
             statement.setString(1, entity.getDescription());

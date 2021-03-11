@@ -54,8 +54,9 @@ public enum LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        final String login = String.valueOf(request.getParameter("userLogin"));
+        String login = String.valueOf(request.getParameter("userLogin"));
         final String password = String.valueOf(request.getParameter("userPassword"));
+        login = login.replace("\\s+", "");
         final Optional<UserDto> user = userService.login(login, password);
         ResponseContext result;
         if (user.isPresent()) {

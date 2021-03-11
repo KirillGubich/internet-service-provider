@@ -41,7 +41,7 @@
                 <div class="small-card__body">
                     <p>id: ${requestScope.userInfo.id}</p>
                     <p>
-                        status: <span style="color: ${requestScope.statusColor}">Active</span>
+                        status: <span style="color: ${requestScope.statusColor}">${requestScope.status}</span>
                     </p>
                 </div>
             </div>

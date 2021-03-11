@@ -42,25 +42,26 @@
         <div class="service_addition">
             <h2 class="service_header">Add service</h2>
             <div class="service_form">
-                <form action="profile.html">
+                <form action="${pageContext.request.contextPath}/controller">
+                    <input type='hidden' name='command' value='subscribe'/>
                     <label>
-                        <select class="tariff_list" required>
+                        <select class="tariff_list" name="tariff" required>
                             <option value="">Tariff</option>
                             <c:if test="${not empty requestScope.tariffs}">
                                 <c:forEach var="tariff" items="${requestScope.tariffs}">
-                                    <option value="">${tariff.name}</option>
+                                    <option value="${tariff.name}">${tariff.name}</option>
                                 </c:forEach>
                             </c:if>
                         </select>
                     </label>
                     <label>
-                        <select class="time_list" required>
+                        <select class="time_list" name="validity" required>
                             <option value="">Validity</option>
-                            <option value="">15</option>
-                            <option value="">30</option>
-                            <option value="">60</option>
-                            <option value="">90</option>
-                            <option value="">180</option>
+                            <option value="15">15</option>
+                            <option value="30">30</option>
+                            <option value="60">60</option>
+                            <option value="90">90</option>
+                            <option value="180">180</option>
                         </select>
                     </label>
                     <label>
@@ -70,6 +71,8 @@
                         <input class="address" type="text" placeholder="Address" name="address" required>
                     </label>
                     <button type="submit" class="servicebtn">Submit</button>
+                    <br>
+                    <h4 style="color: red">${requestScope.errorMessage}</h4>
                 </form>
             </div>
         </div>

@@ -27,6 +27,7 @@ public class GuestFilter implements Filter {
         pagesForAuthorizedUsersOnly.add("command=show_profile");
         pagesForAuthorizedUsersOnly.add("command=show_settings_page");
         pagesForAuthorizedUsersOnly.add("command=show_subscription_page");
+        pagesForAuthorizedUsersOnly.add("command=subscribe");
         pagesForAuthorizedUsersOnly.add("command=logout");
     }
 
@@ -38,9 +39,11 @@ public class GuestFilter implements Filter {
         UserRole userRole = (UserRole) session.getAttribute("userRole");
         if (UserRole.GUEST.equals(userRole) || userRole == null) {
             String queryString = req.getQueryString();
-            if (pagesForAuthorizedUsersOnly.contains(queryString)) {
-                resp.sendRedirect("/controller?command=show_user_login_page");
-                return;
+            for (String page : pagesForAuthorizedUsersOnly) {
+                if (queryString != null && queryString.contains(page)) {
+                    resp.sendRedirect("/controller?command=show_user_login_page");
+                    return;
+                }
             }
         }
         chain.doFilter(request, response);

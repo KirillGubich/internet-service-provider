@@ -24,10 +24,7 @@ public class TariffDaoTest {
     public void read() throws SQLException {
         ProviderConnectionPool.getInstance().init();
         TariffDao tariffDao = TariffDao.INSTANCE;
-        Tariff tariff = Tariff.builder()
-                .withName("Turbo")
-                .build();
-        System.out.println(tariffDao.findByName(tariff));
+        System.out.println(tariffDao.findByName("TURBO"));
         ProviderConnectionPool.getInstance().destroyPool();
     }
 

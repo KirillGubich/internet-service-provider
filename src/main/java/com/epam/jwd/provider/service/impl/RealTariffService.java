@@ -1,7 +1,7 @@
 package com.epam.jwd.provider.service.impl;
 
-import com.epam.jwd.provider.dao.CommonDao;
 import com.epam.jwd.provider.dao.impl.TariffDao;
+import com.epam.jwd.provider.model.BaseEntity;
 import com.epam.jwd.provider.model.dto.TariffDto;
 import com.epam.jwd.provider.model.entity.Tariff;
 import com.epam.jwd.provider.service.TariffService;
@@ -34,6 +34,18 @@ public enum RealTariffService implements TariffService {
                 .map(this::convertToDto)
                 .collect(toList()))
                 .orElseGet(ArrayList::new);
+    }
+
+    @Override
+    public Optional<TariffDto> findByName(String name) {
+        Optional<Tariff> tariff = tariffDao.findByName(name);
+        return tariff.map(this::convertToDto);
+    }
+
+    @Override
+    public Optional<Integer> findTariffId(String name) {
+        Optional<Tariff> tariff = tariffDao.findByName(name);
+        return tariff.map(BaseEntity::getId);
     }
 
     @Override

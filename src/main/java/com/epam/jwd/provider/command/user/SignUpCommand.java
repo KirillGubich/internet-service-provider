@@ -41,14 +41,15 @@ public enum SignUpCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        final String login = String.valueOf(request.getParameter("userLogin"));
+        String login = String.valueOf(request.getParameter("userLogin"));
         final String password = String.valueOf(request.getParameter("userPassword"));
         final String repPassword = String.valueOf(request.getParameter("userRepPassword"));
+        login = login.replace("\\s+", "");
         boolean signedUpSuccessfully = userService.signUp(login, password, repPassword);
         if (signedUpSuccessfully) {
             return LOGIN_PAGE_RESPONSE;
         } else {
-            request.setAttribute("errorMessage", "Incorrect data. Please, try again.");
+            request.setAttribute("errorMessage", "Such login already exist or passwords don't match");
             return SIGN_UP_PAGE_RESPONSE;
         }
     }

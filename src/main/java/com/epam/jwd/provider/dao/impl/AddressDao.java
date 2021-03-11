@@ -29,6 +29,7 @@ public enum AddressDao implements CommonDao<Address> {
     private static final String UPDATE_ADDRESS_SQL = "UPDATE addresses SET address=?, city_id=? WHERE address_id=?";
     private static final String FIND_CITY_ID_SQL = "SELECT city_id FROM cities WHERE city=?";
     private static final String CREATE_CITY_SQL = "INSERT INTO cities (city) VALUES (?)";
+    private static final String FIND_ADDRESS_ID = "SELECT address_id FROM addresses WHERE city_id=? AND address=?";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressDao.class);
 
@@ -43,6 +44,22 @@ public enum AddressDao implements CommonDao<Address> {
         } catch (InterruptedException | SQLException e) {
             LOGGER.error(e.getMessage());
         }
+    }
+
+    public Optional<Integer> findAddressId(String city, String address) {
+        try (final Connection conn = connectionPool.takeConnection();
+             final PreparedStatement statement = conn.prepareStatement(FIND_ADDRESS_ID)) {
+            int cityId = findCityId(city);
+            statement.setInt(1, cityId);
+            statement.setString(2, address);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(resultSet.getInt("address_id"));
+            }
+        } catch (InterruptedException | SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
+        return Optional.empty();
     }
 
     public Optional<Address> findById(Integer id) {
@@ -102,6 +119,7 @@ public enum AddressDao implements CommonDao<Address> {
              final PreparedStatement statement = conn.prepareStatement(DELETE_ADDRESS_SQL)) {
             Integer id = entity.getId();
             if (id == null) {
+                LOGGER.error("Attempt to delete address with id = 0");
                 id = 0;
             }
             statement.setInt(1, id);

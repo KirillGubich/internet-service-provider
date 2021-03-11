@@ -22,6 +22,7 @@ public enum UserDao implements CommonDao<User> {
 
     private static final String FIND_ACCOUNT_BY_LOGIN_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where login=?";
+    private static final String UPDATE_USER_BALANCE_SQL = "UPDATE users SET balance=? WHERE account_id=?";
     private static final String FIND_ACCOUNT_BY_ID_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where id=?";
     private static final String CREATE_ACCOUNT_SQL = "INSERT INTO accounts (login, password) VALUES (?,?)";
@@ -111,6 +112,17 @@ public enum UserDao implements CommonDao<User> {
             LOGGER.error(e.getMessage());
         }
         return user;
+    }
+
+    public void updateUserBalance(Integer userId, BigDecimal balance) {
+        try (final Connection conn = connectionPool.takeConnection();
+             final PreparedStatement statement = conn.prepareStatement(UPDATE_USER_BALANCE_SQL)) {
+            statement.setBigDecimal(1, balance);
+            statement.setInt(2, userId);
+           statement.executeUpdate();
+        } catch (InterruptedException | SQLException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     @Override

@@ -10,11 +10,13 @@ import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.command.user.LoginCommand;
 import com.epam.jwd.provider.command.user.LogoutCommand;
 import com.epam.jwd.provider.command.user.SignUpCommand;
+import com.epam.jwd.provider.command.user.SubscribeCommand;
 
 public enum CommandManager {
     LOGIN(LoginCommand.INSTANCE),
     LOGOUT(LogoutCommand.INSTANCE),
     SIGN_UP(SignUpCommand.INSTANCE),
+    SUBSCRIBE(SubscribeCommand.INSTANCE),
     SHOW_PROFILE(ShowUserProfilePage.INSTANCE),
     SHOW_USER_LOGIN_PAGE(ShowUserLoginPage.INSTANCE),
     SHOW_USER_SIGN_UP_PAGE(ShowUserSignUpPage.INSTANCE),

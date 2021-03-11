@@ -6,6 +6,7 @@ import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -80,6 +81,11 @@ public enum RealUserService implements UserService {
     public Optional<UserDto> findById(Integer id) {
         Optional<User> user = userDao.findUserById(id);
         return user.map(this::convertToDto);
+    }
+
+    @Override
+    public void updateBalance(Integer accountId, BigDecimal balance) {
+        userDao.updateUserBalance(accountId, balance);
     }
 
 
