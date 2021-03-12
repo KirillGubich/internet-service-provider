@@ -4,7 +4,8 @@ public enum SubscriptionStatus {
     REQUESTED(1),
     APPROVED(2),
     SUSPENDED(3),
-    DENIED(4);
+    DENIED(4),
+    CANCELED(5);
 
     private final Integer id;
 

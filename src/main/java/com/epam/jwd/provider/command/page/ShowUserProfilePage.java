@@ -26,25 +26,13 @@ public enum ShowUserProfilePage implements Command {
         }
     };
 
-    private static final ResponseContext LOGIN_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_user_login_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-    };
-
     private final SubscriptionService service = RealSubscriptionService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
         Object accountId = request.getSessionAttribute("accountId");
         if (accountId == null) {
-            return LOGIN_PAGE_RESPONSE;
+            return ShowUserLoginPage.INSTANCE.execute(request);
         }
         List<SubscriptionDto> userSubscriptions = service.findUserSubscriptions((Integer) accountId);
         List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();

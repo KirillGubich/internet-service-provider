@@ -3,6 +3,7 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
+import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.service.UserService;
@@ -36,17 +37,6 @@ public enum LoginCommand implements Command {
             return true;
         }
     };
-    private static final ResponseContext LOGIN_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_user_login_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-    };
 
     LoginCommand() {
         userService = RealUserService.INSTANCE;
@@ -69,7 +59,7 @@ public enum LoginCommand implements Command {
                 result = USER_PAGE_RESPONSE;
             }
         } else {
-            result = LOGIN_PAGE_RESPONSE;
+            result = ShowUserLoginPage.INSTANCE.execute(request);
             request.setAttribute("errorMessage", "Incorrect data. Please, try again.");
         }
         return result;

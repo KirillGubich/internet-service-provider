@@ -3,10 +3,8 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.model.dto.UserDto;
+import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.service.impl.RealUserService;
-
-import java.util.Optional;
 
 public enum SignUpCommand implements Command {
     INSTANCE;
@@ -21,17 +19,6 @@ public enum SignUpCommand implements Command {
         @Override
         public boolean isRedirect() {
             return true;
-        }
-    };
-    private static final ResponseContext SIGN_UP_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_user_sign_up_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
         }
     };
 
@@ -50,7 +37,7 @@ public enum SignUpCommand implements Command {
             return LOGIN_PAGE_RESPONSE;
         } else {
             request.setAttribute("errorMessage", "Such login already exist or passwords don't match");
-            return SIGN_UP_PAGE_RESPONSE;
+            return ShowUserSignUpPage.INSTANCE.execute(request);
         }
     }
 }

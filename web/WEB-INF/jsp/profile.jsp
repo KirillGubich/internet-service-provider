@@ -23,11 +23,13 @@
         </div>
         <nav class="menu">
             <ul class="nav">
-                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_settings_page">Settings</a></li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_settings_page">Settings</a>
+                </li>
                 <li>
                     <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
                 </li>
-                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a></li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a>
+                </li>
             </ul>
         </nav>
     </div>
@@ -73,7 +75,14 @@
                             </tr>
                             <tr>
                                 <td>Status</td>
-                                <td>${subscription.status}</td>
+                                <td>
+                                        ${subscription.status}
+                                    <c:if test="${subscription.status=='REQUESTED'}">
+                                        <a href="${pageContext.request.contextPath}
+                                        /controller?command=cancel_subscription&subId=${subscription.id}">
+                                            (сlick here to cancel)</a>
+                                    </c:if>
+                                </td>
                             </tr>
                         </table>
                         <br>

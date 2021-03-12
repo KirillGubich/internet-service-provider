@@ -3,6 +3,7 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
+import com.epam.jwd.provider.command.page.ShowSubscriptionPage;
 import com.epam.jwd.provider.factory.impl.AddressDtoFactory;
 import com.epam.jwd.provider.model.dto.AddressDto;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
@@ -35,17 +36,8 @@ public enum SubscribeCommand implements Command {
         }
     };
 
-    private static final ResponseContext SUBSCRIPTION_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_subscription_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-    };
+    private final SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
+    private final TariffService tariffService = RealTariffService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
@@ -53,32 +45,38 @@ public enum SubscribeCommand implements Command {
         int validity = Integer.parseInt(request.getParameter("validity"));
         String city = String.valueOf(request.getParameter("city"));
         String address = String.valueOf(request.getParameter("address"));
-        SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
-        TariffService tariffService = RealTariffService.INSTANCE;
+
         Optional<TariffDto> tariffInfo = tariffService.findByName(tariff);
         if (!tariffInfo.isPresent()) {
             request.setAttribute("errorMessage", "Selected tariff is not available.");
-            return SUBSCRIPTION_PAGE_RESPONSE;
+            return ShowSubscriptionPage.INSTANCE.execute(request);
         }
+
         Integer accountId = (Integer) request.getSessionAttribute("accountId");
         Optional<Integer> tariffId = tariffService.findTariffId(tariffInfo.get().getName());
         if (!tariffId.isPresent()) {
             request.setAttribute("errorMessage", "Selected tariff is not available.");
-            return SUBSCRIPTION_PAGE_RESPONSE;
+            return ShowSubscriptionPage.INSTANCE.execute(request);
         }
 
         AddressDto addressDto = AddressDtoFactory.INSTANCE.create(city, address);
-        BigDecimal costPerDay = tariffInfo.get().getCostPerDay();
-        BigDecimal price = costPerDay.multiply(new BigDecimal(validity));
+        BigDecimal price = countPrice(validity, tariffInfo.get());
         if (!payForSubscription(accountId, price)) {
             request.setAttribute("errorMessage", "Account is blocked. Contact support.");
-            return SUBSCRIPTION_PAGE_RESPONSE;
+            return ShowSubscriptionPage.INSTANCE.execute(request);
         }
+
         SubscriptionDto subscriptionDto = createDto(tariffInfo.get(), accountId, tariffId.get(), validity,
                 price, addressDto);
         subscriptionService.create(subscriptionDto);
 
         return USER_PAGE_RESPONSE;
+    }
+
+
+    private BigDecimal countPrice(int validity, TariffDto tariffInfo) {
+        BigDecimal costPerDay = tariffInfo.getCostPerDay();
+        return costPerDay.multiply(new BigDecimal(validity));
     }
 
     private SubscriptionDto createDto(TariffDto tariff, Integer userId, Integer tariffId, Integer validity,

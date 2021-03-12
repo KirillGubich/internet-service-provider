@@ -15,13 +15,13 @@
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#loginLink").click(function( event ){
+        $(document).ready(function () {
+            $("#loginLink").click(function (event) {
                 event.preventDefault();
                 $(".overlay").fadeToggle("fast");
             });
 
-            $(".overlayLink").click(function(event){
+            $(".overlayLink").click(function (event) {
                 event.preventDefault();
                 var action = $(this).attr('data-action');
 
@@ -30,24 +30,24 @@
                 $(".overlay").fadeToggle("fast");
             });
 
-            $(".close").click(function(){
+            $(".close").click(function () {
                 $(".overlay").fadeToggle("fast");
             });
 
-            $(document).keyup(function(e) {
-                if(e.keyCode === 27 && $(".overlay").css("display") !== "none" ) {
+            $(document).keyup(function (e) {
+                if (e.keyCode === 27 && $(".overlay").css("display") !== "none") {
                     event.preventDefault();
                     $(".overlay").fadeToggle("fast");
                 }
             });
         });
-        $(document).ready(function() {
-            $("#loginLink").click(function( event ){
+        $(document).ready(function () {
+            $("#loginLink").click(function (event) {
                 event.preventDefault();
                 $(".overlayPay").fadeToggle("fast");
             });
 
-            $(".overlayPayLink").click(function(event){
+            $(".overlayPayLink").click(function (event) {
                 event.preventDefault();
                 var action = $(this).attr('data-action');
 
@@ -56,12 +56,12 @@
                 $(".overlayPay").fadeToggle("fast");
             });
 
-            $(".closePay").click(function(){
+            $(".closePay").click(function () {
                 $(".overlayPay").fadeToggle("fast");
             });
 
-            $(document).keyup(function(e) {
-                if(e.keyCode === 27 && $(".overlayPay").css("display") !== "none" ) {
+            $(document).keyup(function (e) {
+                if (e.keyCode === 27 && $(".overlayPay").css("display") !== "none") {
                     event.preventDefault();
                     $(".overlayPay").fadeToggle("fast");
                 }
@@ -78,9 +78,12 @@
         </div>
         <div class="menu">
             <ul class="nav">
-                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_settings_page">Settings</a></li>
-                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a></li>
-                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a></li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_settings_page">Settings</a>
+                </li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                </li>
+                <li><a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -140,11 +143,11 @@
                     <form method="post" action="${pageContext.request.contextPath}/controller">
                         <input type='hidden' name='command' value='change_password'/>
                         <label>
-                            <input type="password" name="password" placeholder="current password" required />
+                            <input type="password" name="password" placeholder="current password" required/>
                         </label>
                         <label>
                             <input type="password" name="newPassword" placeholder="new password"
-                                    required/>
+                                   required/>
                         </label>
                         <label>
                             <input type="password" name="repNewPassword" placeholder="repeat new password"
@@ -163,15 +166,22 @@
                     <form method="post" action="${pageContext.request.contextPath}/controller">
                         <input type='hidden' name='command' value='top_up_balance'/>
                         <label>
-                            <input type="number" min="1" step="any" name="topUpValue" placeholder="value" required />
+                            <input type="number" min="1" step="any" name="topUpValue" placeholder="value" required/>
                         </label>
                         <button type="submit">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
+        <c:choose>
+            <c:when test="${not empty requestScope.errorMessage}">
+                <h3>${requestScope.errorMessage}</h3>
+            </c:when>
+            <c:otherwise>
+                <br><br><br>
+            </c:otherwise>
+        </c:choose>
     </div>
-    <h3>${requestScope.errorMessage}</h3>
     <div class="contact-us">
         <h2 class="supportHeader">Contact us</h2>
         <div class="support_form">

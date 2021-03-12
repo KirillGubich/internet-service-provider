@@ -3,6 +3,7 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
+import com.epam.jwd.provider.command.page.ShowSettingsPage;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
@@ -21,18 +22,6 @@ public enum ChangePasswordCommand implements Command {
         }
     };
 
-    private static final ResponseContext SETTINGS_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_settings_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-    };
-
     @Override
     public ResponseContext execute(RequestContext request) {
         String password = request.getParameter("password");
@@ -45,7 +34,7 @@ public enum ChangePasswordCommand implements Command {
             return SETTINGS_PAGE_RESPONSE_REDIRECT;
         } else {
             request.setAttribute("errorMessage", "An incorrect current password was entered");
-            return SETTINGS_PAGE_RESPONSE;
+            return ShowSettingsPage.INSTANCE.execute(request);
         }
     }
 }

@@ -24,29 +24,17 @@ public enum ShowSettingsPage implements Command {
         }
     };
 
-    private static final ResponseContext LOGIN_PAGE_RESPONSE = new ResponseContext() {
-        @Override
-        public String getPage() {
-            return "/controller?command=show_user_login_page";
-        }
-
-        @Override
-        public boolean isRedirect() {
-            return false;
-        }
-    };
-
     private final UserService userService = RealUserService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
         Object accountId = request.getSessionAttribute("accountId");
         if (accountId == null) {
-            return LOGIN_PAGE_RESPONSE;
+            return ShowUserLoginPage.INSTANCE.execute(request);
         }
         Optional<UserDto> user = userService.findById((Integer) accountId);
         if (!user.isPresent()) {
-            return LOGIN_PAGE_RESPONSE;
+            return ShowUserLoginPage.INSTANCE.execute(request);
         }
         request.setAttribute("userInfo", user.get());
         if (user.get().getActive()) {
