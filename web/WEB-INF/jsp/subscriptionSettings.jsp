@@ -20,7 +20,7 @@
 <header>
     <div class="navigation">
         <div class="logo">
-            <a href="${pageContext.request.contextPath}/controller?command=show_profile">
+            <a href="${pageContext.request.contextPath}/controller?command=show_admin_page">
                 Joi<span class="logoN">N</span>et
             </a>
         </div>
@@ -39,63 +39,85 @@
 <div class="user_page">
     <div class="profile">
         <div class="table-information">
-            <c:if test="${not empty requestScope.userSubscriptions}">
-                <h2 class="subscriptionsHeader">Users</h2>
-                <c:forEach var="subscription" items="${requestScope.userSubscriptions}">
-                    <table class="table_col">
-                        <colgroup>
-                            <col style="background: rgba(38, 76, 114, 1)">
-                        </colgroup>
-                        <tr>
-                            <td>ID</td>
-                            <td>${subscription.id}</td>
-                        </tr>
-                        <tr>
-                            <td>User ID</td>
-                            <td>${subscription.userId}</td>
-                        </tr>
-                        <tr>
-                            <td>Tariff</td>
-                            <td>${subscription.tariffName}</td>
-                        </tr>
-                        <tr>
-                            <td>Tariff description</td>
-                            <td>${subscription.tariffDescription}</td>
-                        </tr>
-                        <tr>
-                            <td>Start date</td>
-                            <td>${subscription.startDate}</td>
-                        </tr>
-                        <tr>
-                            <td>End date</td>
-                            <td>${subscription.endDate}</td>
-                        </tr>
-                        <tr>
-                            <td>Cost</td>
-                            <td>${subscription.price}</td>
-                        </tr>
-                        <tr>
-                            <td>Address</td>
-                            <td>${subscription.address.city}, ${subscription.address.address}</td>
-                        </tr>
-                        <tr>
-                            <td>Status</td>
-                            <td>
+            <c:choose>
+                <c:when test="${not empty requestScope.userSubscriptions}">
+                    <h2 class="subscriptionsHeader">Subscriptions</h2>
+                    <c:forEach var="subscription" items="${requestScope.userSubscriptions}">
+                        <table class="table_col">
+                            <colgroup>
+                                <col style="background: rgba(38, 76, 114, 1)">
+                            </colgroup>
+                            <tr>
+                                <td>ID</td>
+                                <td>${subscription.id}</td>
+                            </tr>
+                            <tr>
+                                <td>User ID</td>
+                                <td>${subscription.userId}</td>
+                            </tr>
+                            <tr>
+                                <td>Tariff</td>
+                                <td>${subscription.tariffName}</td>
+                            </tr>
+                            <tr>
+                                <td>Tariff description</td>
+                                <td>${subscription.tariffDescription}</td>
+                            </tr>
+                            <tr>
+                                <td>Start date</td>
+                                <td>${subscription.startDate}</td>
+                            </tr>
+                            <tr>
+                                <td>End date</td>
+                                <td>${subscription.endDate}</td>
+                            </tr>
+                            <tr>
+                                <td>Cost</td>
+                                <td>${subscription.price}</td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td>${subscription.address.city}, ${subscription.address.address}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>
                                     ${subscription.status}
-                                <c:if test="${subscription.status=='REQUESTED'}">
-                                    <a href="${pageContext.request.contextPath}
-                                        /controller?command=cancel_subscription&subId=${subscription.id}&userId=${subscription.userId}">
-                                        (сlick here to cancel)</a>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </table>
-                    <br>
-                </c:forEach>
-            </c:if>
+                                    <c:choose>
+                                        <c:when test="${subscription.status eq 'REQUESTED'}">
+                                            <a style="color:green;" href="${pageContext.request.contextPath}
+                                        /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=approved">
+                                                (approve)</a>
+                                            <a style="color: red" href="${pageContext.request.contextPath}
+                                        /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=denied">
+                                                (deny)</a>
+                                        </c:when>
+                                        <c:when test="${subscription.status eq 'SUSPENDED'}">
+                                            <a style="color:green;" href="${pageContext.request.contextPath}
+                                        /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=approved">
+                                                approve </a>
+                                        </c:when>
+                                        <c:when test="${subscription.status eq 'APPROVED'}">
+                                            <a style="color: orange" href="${pageContext.request.contextPath}
+                                        /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=suspended">
+                                                suspend </a>
+                                        </c:when>
+                                    </c:choose>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <h2>${requestScope.infoMessage}</h2>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="content">
-            <form action="#" method="get">
+            <form action="${pageContext.request.contextPath}/controller" method="get">
+                <input type="hidden" name="command" value="find_subscription">
                 <div class="container">
                     <label>
                         <input type="text" placeholder="id" name="id" required>
@@ -104,7 +126,7 @@
                 </div>
             </form>
             <div class="service">
-                <a href="#" class="service_btn">Show requests</a>
+                <a href="${pageContext.request.contextPath}/controller?command=view_subscription_requests" class="service_btn">Show requests</a>
             </div>
         </div>
         <br><br><br>

@@ -108,8 +108,8 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
     private void fillStatement(Subscription entity, PreparedStatement statement) throws SQLException {
         statement.setInt(1, entity.getUserId());
         statement.setInt(2, entity.getTariffId());
-        statement.setDate(3, java.sql.Date.valueOf(entity.getStartDate()));
-        statement.setDate(4, java.sql.Date.valueOf(entity.getEndDate()));
+        statement.setDate(3, java.sql.Date.valueOf(entity.getStartDate().plusDays(1)));
+        statement.setDate(4, java.sql.Date.valueOf(entity.getEndDate().plusDays(1)));
         statement.setBigDecimal(5, entity.getPrice());
         statement.setString(6, entity.getTariffName());
         statement.setString(7, entity.getTariffDescription());

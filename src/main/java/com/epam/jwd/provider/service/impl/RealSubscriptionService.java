@@ -74,6 +74,16 @@ public enum RealSubscriptionService implements SubscriptionService {
                 .orElseGet(ArrayList::new);
     }
 
+    @Override
+    public Optional<SubscriptionDto> findById(Integer id) {
+        Optional<Subscription> subscription = subscriptionDao.findById(
+                Subscription.builder()
+                .withId(id)
+                .build());
+        return subscription.map(this::convertToDto);
+    }
+
+
     private Subscription convertToSubscription(SubscriptionDto dto, Integer addressId) {
         return Subscription.builder()
                 .withId(dto.getId())
