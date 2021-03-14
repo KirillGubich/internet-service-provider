@@ -1,11 +1,18 @@
 package com.epam.jwd.provider.command;
 
+import com.epam.jwd.provider.command.admin.ChangeUserStatusCommand;
+import com.epam.jwd.provider.command.admin.FindUserCommand;
+import com.epam.jwd.provider.command.admin.ViewDebtorsCommand;
+import com.epam.jwd.provider.command.page.ShowAdminPage;
 import com.epam.jwd.provider.command.page.ShowMainPage;
 import com.epam.jwd.provider.command.page.ShowSettingsPage;
 import com.epam.jwd.provider.command.page.ShowSubscriptionPage;
+import com.epam.jwd.provider.command.page.ShowSubscriptionSettingsPage;
+import com.epam.jwd.provider.command.page.ShowTariffSettingsPage;
 import com.epam.jwd.provider.command.page.ShowTariffsPage;
 import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.command.page.ShowUserProfilePage;
+import com.epam.jwd.provider.command.page.ShowUsersForAdminPage;
 import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.command.user.CancelSubscriptionCommand;
 import com.epam.jwd.provider.command.user.ChangePasswordCommand;
@@ -31,6 +38,13 @@ public enum CommandManager {
     CHANGE_PASSWORD(ChangePasswordCommand.INSTANCE),
     CONTACT_SUPPORT(ContactSupportCommand.INSTANCE),
     CANCEL_SUBSCRIPTION(CancelSubscriptionCommand.INSTANCE),
+    SHOW_ADMIN_PAGE(ShowAdminPage.INSTANCE),
+    SHOW_SUBSCRIPTION_SETTINGS_PAGE(ShowSubscriptionSettingsPage.INSTANCE),
+    SHOW_TARIFF_SETTINGS_PAGE(ShowTariffSettingsPage.INSTANCE),
+    SHOW_USERS_FOR_ADMIN_PAGE(ShowUsersForAdminPage.INSTANCE),
+    VIEW_DEBTORS(ViewDebtorsCommand.INSTANCE),
+    FIND_USER(FindUserCommand.INSTANCE),
+    CHANGE_USER_STATUS(ChangeUserStatusCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;

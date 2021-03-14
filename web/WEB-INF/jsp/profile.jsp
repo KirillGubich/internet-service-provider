@@ -79,7 +79,7 @@
                                         ${subscription.status}
                                     <c:if test="${subscription.status=='REQUESTED'}">
                                         <a href="${pageContext.request.contextPath}
-                                        /controller?command=cancel_subscription&subId=${subscription.id}">
+                                        /controller?command=cancel_subscription&subId=${subscription.id}&userId=${subscription.userId}">
                                             (сlick here to cancel)</a>
                                     </c:if>
                                 </td>

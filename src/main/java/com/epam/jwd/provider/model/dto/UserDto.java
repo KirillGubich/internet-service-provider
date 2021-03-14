@@ -11,7 +11,7 @@ public class UserDto {
     private final String password;
     private final UserRole role;
     private final BigDecimal balance;
-    private final Boolean isActive;
+    private final Boolean active;
 
     public Integer getId() {
         return id;
@@ -34,7 +34,7 @@ public class UserDto {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     @Override
@@ -42,12 +42,12 @@ public class UserDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(id, userDto.id) && Objects.equals(login, userDto.login) && Objects.equals(password, userDto.password) && role == userDto.role && Objects.equals(balance, userDto.balance) && Objects.equals(isActive, userDto.isActive);
+        return Objects.equals(id, userDto.id) && Objects.equals(login, userDto.login) && Objects.equals(password, userDto.password) && role == userDto.role && Objects.equals(balance, userDto.balance) && Objects.equals(active, userDto.active);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password, role, balance, isActive);
+        return Objects.hash(id, login, password, role, balance, active);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class UserDto {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", balance=" + balance +
-                ", isActive=" + isActive +
+                ", isActive=" + active +
                 '}';
     }
 
@@ -115,6 +115,6 @@ public class UserDto {
         this.password = builder.password;
         this.role = builder.role;
         this.balance = builder.balance;
-        this.isActive = builder.isActive;
+        this.active = builder.isActive;
     }
 }

@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.user;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowUserLoginPage;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
@@ -36,10 +35,7 @@ public enum CancelSubscriptionCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext request) {
         Integer subscriptionId = Integer.valueOf(request.getParameter("subId"));
-        Integer accountId = (Integer) request.getSessionAttribute("accountId");
-        if (accountId == null) {
-            return ShowUserLoginPage.INSTANCE.execute(request);
-        }
+        Integer accountId = Integer.valueOf(request.getParameter("userId"));
         List<SubscriptionDto> userSubscriptions = subscriptionService.findUserSubscriptions(accountId);
         Optional<SubscriptionDto> subscriptionDto = userSubscriptions
                 .stream()

@@ -83,6 +83,12 @@ public enum RealUserService implements UserService {
     }
 
     @Override
+    public Optional<UserDto> findByLogin(String login) {
+        Optional<User> user = userDao.findUserByLogin(login);
+        return user.map(this::convertToDto);
+    }
+
+    @Override
     public void updateBalance(Integer accountId, BigDecimal balance) {
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {

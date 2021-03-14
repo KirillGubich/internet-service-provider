@@ -85,6 +85,7 @@ a.content:visited {
     font-weight: bold;
 }
 
+.find_btn,
 a.service_btn {
     width: 50%;
     display: inline-block;
@@ -103,15 +104,19 @@ a.service_btn {
     box-shadow: inset rgba(255,255,255,.5) 1px 1px;
     margin-top: 40px;
 }
+.find_btn,
 a.service_btn:first-line{
     font-size: 170%;
     font-weight: 700;
 }
 
+.find_btn,
 a.service_btn:hover {
     color: rgb(255,255,255);
     background: rgba(63, 127, 191, 1);
 }
+
+.find_btn,
 a.service_btn:active {
     color: rgb(255,255,255);
     border-color: #2970a9;

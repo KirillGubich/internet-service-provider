@@ -18,7 +18,7 @@ public enum LoginCommand implements Command {
     private static final ResponseContext ADMIN_PAGE_RESPONSE = new ResponseContext() {
         @Override
         public String getPage() {
-            return "/controller?command=show_profile"; //todo admin page
+            return "/controller?command=show_admin_page";
         }
 
         @Override
