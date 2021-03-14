@@ -68,7 +68,7 @@ public enum RealUserService implements UserService {
     public boolean signUp(String login, String password, String passwordRepeat) {
         Optional<User> user = userDao.findUserByLogin(login);
         boolean passwordCorrect;
-        passwordCorrect = password.equals(passwordRepeat) && password.length() > PASSWORD_MINIMAL_LENGTH;
+        passwordCorrect = password.equals(passwordRepeat) && password.length() >= PASSWORD_MINIMAL_LENGTH;
         if (!user.isPresent() && passwordCorrect) {
             userDao.create(User.builder().withLogin(login).withPassword(hash(password)).build());
             return true;

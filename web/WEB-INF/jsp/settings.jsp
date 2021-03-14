@@ -185,7 +185,7 @@
     <div class="contact-us">
         <h2 class="supportHeader">Contact us</h2>
         <div class="support_form">
-            <form action="${pageContext.request.contextPath}/controller">
+            <form action="${pageContext.request.contextPath}/controller" method="post">
                 <input type='hidden' name='command' value='contact_support'/>
                 <div class="half left cf">
                     <input type="text" id="input-name" name="name" placeholder="Name" required>

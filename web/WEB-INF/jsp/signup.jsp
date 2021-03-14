@@ -13,7 +13,7 @@
     <title>Registration</title></head>
 <body>
 <div class="signup">
-    <form action="${pageContext.request.contextPath}/controller">
+    <form action="${pageContext.request.contextPath}/controller" method="post">
         <div class="container">
             <h1 class="logo">
                 <a href="${pageContext.request.contextPath}/controller">JoiNet</a>
@@ -24,12 +24,10 @@
                        pattern="^[a-zA-Z][a-zA-Z0-9-_.]{6,20}$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Enter Password" name="userPassword"
-                       pattern="(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
+                <input type="password" placeholder="Enter Password" name="userPassword" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Repeat Password" name="userRepPassword"
-                       pattern="(?=^.{8,}$)((?=.*d)|(?=.*W+))(?![.n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
+                <input type="password" placeholder="Repeat Password" name="userRepPassword" required>
             </label><br>
             <button type="submit" class="registerbtn">Create</button>
             <div class="signin">

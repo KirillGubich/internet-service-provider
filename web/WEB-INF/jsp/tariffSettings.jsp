@@ -40,15 +40,17 @@
         <div class="service_addition">
             <h2 class="service_header">Create tariff</h2>
             <div class="service_form">
-                <form action="#">
+                <form method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type='hidden' name='command' value='tariff_service'/>
+                    <input type='hidden' name='action' value='create'/>
                     <input class="city" type="text" placeholder="name" name="tariffName" required>
                     <input class="city" type="text" placeholder="description" name="description" required>
-                    <select class="time_list" required>
+                    <select class="time_list" name="specialOffer" required>
                         <option value="">Special offer</option>
-                        <option value="">yes</option>
-                        <option value="">no</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
                     </select>
-                    <input type="number" class="city" step="any" name="price" placeholder="price" required/>
+                    <input type="number" class="city" step="any" name="price" placeholder="price per day" required/>
                     <input type="number" class="city" step="any" name="downloadSpeed" placeholder="download speed" required/>
                     <input type="number" class="city" step="any" name="uploadSpeed" placeholder="upload speed" required/>
                     <button type="submit" class="servicebtn">Create</button>
@@ -58,8 +60,10 @@
         <div class="service_addition">
             <h2 class="service_header">Update tariff</h2>
             <div class="service_form">
-                <form action="#">
-                    <select class="tariff_list" required>
+                <form method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type='hidden' name='command' value='tariff_service'/>
+                    <input type='hidden' name='action' value='update'/>
+                    <select class="tariff_list" name="tariffName" required>
                         <option value="">name</option>
                         <c:if test="${not empty requestScope.tariffs}">
                             <c:forEach var="tariff" items="${requestScope.tariffs}">
@@ -68,12 +72,12 @@
                         </c:if>
                     </select>
                     <input class="city" type="text" placeholder="description" name="description" required>
-                    <select class="time_list" required>
+                    <select class="time_list" name="specialOffer" required>
                         <option value="">Special offer</option>
-                        <option value="">yes</option>
-                        <option value="">no</option>
+                        <option value="yes">yes</option>
+                        <option value="no">no</option>
                     </select>
-                    <input type="number" class="city" step="any" name="price" placeholder="price" required/>
+                    <input type="number" class="city" step="any" name="price" placeholder="price per day" required/>
                     <input type="number" class="city" step="any" name="downloadSpeed" placeholder="download speed" required/>
                     <input type="number" class="city" step="any" name="uploadSpeed" placeholder="upload speed" required/>
                     <button type="submit" class="servicebtn">Update</button>
@@ -83,8 +87,9 @@
         <div class="service_addition deleteTariff">
             <h2 class="service_header">Delete tariff</h2>
             <div class="service_form">
-                <form action="#">
-                    <select class="tariff_list" required>
+                <form action="${pageContext.request.contextPath}/controller">
+                    <input type='hidden' name='command' value='delete_tariff'/>
+                    <select class="tariff_list" name="tariffName" required>
                         <option value="">name</option>
                         <c:if test="${not empty requestScope.tariffs}">
                             <c:forEach var="tariff" items="${requestScope.tariffs}">

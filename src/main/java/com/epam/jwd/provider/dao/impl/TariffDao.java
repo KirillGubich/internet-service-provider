@@ -28,7 +28,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             "price, download_speed, upload_speed) VALUES (?,?,?,?,?,?)";
     private static final String DELETE_TARIFF_SQL = "DELETE FROM tariffs WHERE id=? OR name=?";
     private static final String UPDATE_TARIFF_SQL = "UPDATE tariffs SET description=?, special_offer=?, " +
-            "price=?, download_speed=?, upload_speed=? WHERE id=?";
+            "price=?, download_speed=?, upload_speed=? WHERE name=?";
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(TariffDao.class);
 
@@ -91,7 +91,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setBigDecimal(3, entity.getCostPerDay());
             statement.setDouble(4, entity.getDownloadSpeed());
             statement.setDouble(5, entity.getUploadSpeed());
-            statement.setInt(6, entity.getId());
+            statement.setString(6, entity.getName());
             statement.executeUpdate();
         } catch (InterruptedException | SQLException e) {
             LOGGER.error(e.getMessage());

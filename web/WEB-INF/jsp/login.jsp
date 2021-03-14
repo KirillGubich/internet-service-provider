@@ -14,7 +14,7 @@
 </head>
 <body>
 <div class="signin">
-    <form action="${pageContext.request.contextPath}/controller">
+    <form action="${pageContext.request.contextPath}/controller" method="post">
         <div class="container">
             <h1 class="logo">
                 <a href="${pageContext.request.contextPath}/controller">JoiNet</a>

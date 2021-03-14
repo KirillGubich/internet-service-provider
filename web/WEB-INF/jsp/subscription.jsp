@@ -42,7 +42,7 @@
         <div class="service_addition">
             <h2 class="service_header">Add service</h2>
             <div class="service_form">
-                <form action="${pageContext.request.contextPath}/controller">
+                <form action="${pageContext.request.contextPath}/controller" method="post">
                     <input type='hidden' name='command' value='subscribe'/>
                     <label>
                         <select class="tariff_list" name="tariff" required>

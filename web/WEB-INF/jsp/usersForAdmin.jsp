@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="Joinet internet provider">
+    <meta name="description" content="Joinet users for admin">
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
     <style>
         <%@include file="/WEB-INF/styles/navigation.css"%>
@@ -87,7 +87,7 @@
             </c:choose>
         </div>
         <div class="content">
-            <form action="${pageContext.request.contextPath}/controller">
+            <form action="${pageContext.request.contextPath}/controller" method="get">
                 <input type='hidden' name='command' value='find_user'/>
                 <div class="container">
                     <label>

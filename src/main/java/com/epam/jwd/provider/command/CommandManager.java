@@ -1,6 +1,8 @@
 package com.epam.jwd.provider.command;
 
 import com.epam.jwd.provider.command.admin.ChangeUserStatusCommand;
+import com.epam.jwd.provider.command.admin.DeleteTariffCommand;
+import com.epam.jwd.provider.command.admin.TariffServiceCommand;
 import com.epam.jwd.provider.command.admin.FindUserCommand;
 import com.epam.jwd.provider.command.admin.ViewDebtorsCommand;
 import com.epam.jwd.provider.command.page.ShowAdminPage;
@@ -45,6 +47,8 @@ public enum CommandManager {
     VIEW_DEBTORS(ViewDebtorsCommand.INSTANCE),
     FIND_USER(FindUserCommand.INSTANCE),
     CHANGE_USER_STATUS(ChangeUserStatusCommand.INSTANCE),
+    TARIFF_SERVICE(TariffServiceCommand.INSTANCE),
+    DELETE_TARIFF(DeleteTariffCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;
