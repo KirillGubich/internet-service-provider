@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="mainPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -22,10 +27,23 @@
         <div class="menu">
             <ul class="nav">
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                    <a class="locale" href="${pageContext.request.contextPath}/controller?command=set_localization&locale=en">EN</a>
                 </li>
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_user_login_page">Sign in</a>
+                    <a class="locale" href="${pageContext.request.contextPath}/controller?command=set_localization&locale=ru">RU</a>
+                </li>
+                <li>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=set_localization&locale=es">ES</a>
+                </li>
+                <li>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">
+                        <fmt:message key="navigation.tariffs"/>
+                    </a>
+                </li>
+                <li>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_user_login_page">
+                        <fmt:message key="navigation.signIn"/>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -33,16 +51,28 @@
 </header>
 <div class="mainpage">
     <div class="description">
-        <h1>Establish a connection</h1>
-        <p> JoiNet is one of the most reliable internet service providers that offers home high speed internet
-            connection. We value our reputation and guarantee our clients the quality of our services. Join us! </p>
+        <h1><fmt:message key="description.header"/></h1>
+        <p><fmt:message key="description.text"/></p>
         <br>
-        <a href="${pageContext.request.contextPath}/controller?command=show_user_sign_up_page" class="join">JOIN</a>
+        <a href="${pageContext.request.contextPath}/controller?command=show_user_sign_up_page" class="join">
+            <fmt:message key="join.button"/>
+        </a>
     </div>
     <footer class="page_footer">
-        <div class="col item social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
-                class="fab fa-skype"></i></a><a href="#"><i class="fab fa-github"></i></a><a
-                href="#"><i class="fab fa-instagram"></i></a></div>
+        <div class="col item social">
+            <a href="//facebook.com" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="//skype.com" target="_blank">
+                <i class="fab fa-skype"></i>
+            </a>
+            <a href="//github.com" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="//instagram.com" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
         <div class="copyright">
             &copy 2021 - Kirill Gubich
         </div>

@@ -1,6 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="tariffsPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -14,7 +18,7 @@
         <%@include file="/WEB-INF/styles/profile.css"%>
     </style>
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
-    <title>Tariffs</title>
+    <title><fmt:message key="page.title"/></title>
 </head>
 <body>
 <header>
@@ -25,10 +29,10 @@
         <div class="menu">
             <ul class="nav">
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page"><fmt:message key="navigation.tariffs"/></a>
                 </li>
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_profile">Subscribe</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_profile"><fmt:message key="navigation.subscribe"/></a>
                 </li>
             </ul>
         </div>
@@ -45,19 +49,19 @@
                                 <col style="background: rgba(38, 76, 114, 1)">
                             </colgroup>
                             <tr>
-                                <td>Tariff</td>
+                                <td><fmt:message key="tariffInfo.name"/></td>
                                 <td>${tariff.name}</td>
                             </tr>
                             <tr>
-                                <td>Tariff description</td>
+                                <td><fmt:message key="tariffInfo.description"/></td>
                                 <td>${tariff.description}</td>
                             </tr>
                             <tr>
-                                <td>Price per day</td>
-                                <td>${tariff.costPerDay} BYN</td>
+                                <td><fmt:message key="tariffInfo.price"/></td>
+                                <td>${tariff.costPerDay}</td>
                             </tr>
                             <tr>
-                                <td>Download/Upload speed</td>
+                                <td><fmt:message key="tariffInfo.speed"/></td>
                                 <td>${tariff.downloadSpeed}/${tariff.uploadSpeed}</td>
                             </tr>
                         </table>
@@ -65,7 +69,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <h2>There are no available tariffs now</h2>
+                    <h2><fmt:message key="tariffs.absence"/></h2>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -73,7 +77,7 @@
             <div class="news-card-inner">
                 <div class="news-card__header" tabindex="0">
                     <div class="clearfix">
-                        <h3 class="news-card__title">Special offers</h3>
+                        <h3 class="news-card__title"><fmt:message key="specialOffers.caption"/></h3>
                     </div>
                 </div>
                 <ul class="news-card-news">
@@ -82,14 +86,14 @@
                             <c:forEach var="specialOffer" items="${requestScope.specialOffers}">
                                 <li class="news-card-news-item ng-star-inserted">
                                     <div class="specialOffer">
-                                            ${specialOffer.name} only for ${specialOffer.costPerDay} per day!
+                                            ${specialOffer.name} <fmt:message key="onlyFor.caption"/> ${specialOffer.costPerDay} <fmt:message key="perDay.caption"/>!
                                     </div>
                                 </li>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
                             <div class="specialOffer">
-                                Unfortunately, there are no special offers now.
+                                <fmt:message key="specialOffers.absence"/>
                             </div>
                         </c:otherwise>
                     </c:choose>
@@ -99,9 +103,20 @@
     </div>
     <br><br><br>
     <footer class="page_footer">
-        <div class="col item social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
-                class="fab fa-skype"></i></a><a href="#"><i class="fab fa-github"></i></a><a
-                href="#"><i class="fab fa-instagram"></i></a></div>
+        <div class="col item social">
+            <a href="//facebook.com" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="//skype.com" target="_blank">
+                <i class="fab fa-skype"></i>
+            </a>
+            <a href="//github.com" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="//instagram.com" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
         <div class="copyright">
             &copy 2021 - Kirill Gubich
         </div>

@@ -4,6 +4,9 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 
+import javax.servlet.jsp.jstl.core.Config;
+import java.util.Locale;
+
 public enum ShowMainPage implements Command {
     INSTANCE;
 

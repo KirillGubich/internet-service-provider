@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="signUpPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -10,7 +15,7 @@
         <%@include file="/WEB-INF/styles/pageFooter.css"%>
     </style>
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
-    <title>Registration</title></head>
+    <title><fmt:message key="page.title"/></title></head>
 <body>
 <div class="signup">
     <form action="${pageContext.request.contextPath}/controller" method="post">
@@ -20,19 +25,19 @@
             </h1>
             <input type='hidden' name='command' value='sign_up'/>
             <label>
-                <input type="text" placeholder="Enter login" name="userLogin"
+                <input type="text" placeholder="<fmt:message key="login.placeholder"/>" name="userLogin"
                        pattern="^[a-zA-Z][a-zA-Z0-9-_.]{6,20}$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Enter Password" name="userPassword" required>
+                <input type="password" placeholder="<fmt:message key="password.placeholder"/>" name="userPassword" required>
             </label><br>
             <label>
-                <input type="password" placeholder="Repeat Password" name="userRepPassword" required>
+                <input type="password" placeholder="<fmt:message key="passwordRepeat.placeholder"/>" name="userRepPassword" required>
             </label><br>
-            <button type="submit" class="registerbtn">Create</button>
+            <button type="submit" class="registerbtn"><fmt:message key="button.submit.caption"/></button>
             <div class="signin">
-                <p>Already have an account?
-                    <a href="${pageContext.request.contextPath}/controller?command=show_user_login_page">Sign in</a>.
+                <p><fmt:message key="login.request"/>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_user_login_page"><fmt:message key="login.button.caption"/></a>.
                 </p>
             </div>
             <h4 style="color: red">${requestScope.errorMessage}</h4>
@@ -40,9 +45,20 @@
     </form>
 </div>
 <footer class="page_footer">
-    <div class="col item social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
-            class="fab fa-skype"></i></a><a href="#"><i class="fab fa-github"></i></a><a
-            href="#"><i class="fab fa-instagram"></i></a></div>
+    <div class="col item social">
+        <a href="//facebook.com" target="_blank">
+            <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="//skype.com" target="_blank">
+            <i class="fab fa-skype"></i>
+        </a>
+        <a href="//github.com" target="_blank">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="//instagram.com" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
     <div class="copyright">
         &copy 2021 - Kirill Gubich
     </div>

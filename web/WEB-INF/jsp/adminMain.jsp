@@ -41,9 +41,20 @@
         <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page" class="service_btn">Subscriptions</a>
     </div>
     <footer class="page_footer">
-        <div class="col item social"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i
-                class="fab fa-skype"></i></a><a href="#"><i class="fab fa-github"></i></a><a
-                href="#"><i class="fab fa-instagram"></i></a></div>
+        <div class="col item social">
+            <a href="//facebook.com" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="//skype.com" target="_blank">
+                <i class="fab fa-skype"></i>
+            </a>
+            <a href="//github.com" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="//instagram.com" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+        </div>
         <div class="copyright">
             &copy 2021 - Kirill Gubich
         </div>

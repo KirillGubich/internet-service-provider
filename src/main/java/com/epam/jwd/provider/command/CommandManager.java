@@ -24,6 +24,7 @@ import com.epam.jwd.provider.command.user.ChangePasswordCommand;
 import com.epam.jwd.provider.command.user.ContactSupportCommand;
 import com.epam.jwd.provider.command.user.LoginCommand;
 import com.epam.jwd.provider.command.user.LogoutCommand;
+import com.epam.jwd.provider.command.user.SetLocalizationCommand;
 import com.epam.jwd.provider.command.user.SignUpCommand;
 import com.epam.jwd.provider.command.user.SubscribeCommand;
 import com.epam.jwd.provider.command.user.TopUpBalanceCommand;
@@ -55,6 +56,7 @@ public enum CommandManager {
     FIND_SUBSCRIPTION(FindSubscriptionCommand.INSTANCE),
     VIEW_SUBSCRIPTION_REQUESTS(ViewSubscriptionRequestsCommand.INSTANCE),
     CHANGE_SUBSCRIPTION_STATUS(ChangeSubscriptionStatusCommand.INSTANCE),
+    SET_LOCALIZATION(SetLocalizationCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;

@@ -24,8 +24,15 @@
 .nav li a {
     color: #fff;
     text-decoration: none;
-    margin: 0 30px 0 0;
     font-size: 18px;
+}
+
+.link {
+    margin: 0 30px 0 0;
+}
+
+.locale {
+    margin: 0 10px 0 0;
 }
 
 .logo {
@@ -43,11 +50,11 @@
     color: #00D4C6;
 }
 
-.link {
+.link, .locale {
     transition: .3s;
 }
 
-.link:hover {
+.link:hover, .locale:hover {
     color: #00D4C6;
 }
 

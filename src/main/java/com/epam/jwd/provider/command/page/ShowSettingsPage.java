@@ -38,10 +38,8 @@ public enum ShowSettingsPage implements Command {
         }
         request.setAttribute("userInfo", user.get());
         if (user.get().getActive()) {
-            request.setAttribute("statusColor", "green");
             request.setAttribute("status", "Active");
         } else {
-            request.setAttribute("statusColor", "red");
             request.setAttribute("status", "Blocked");        }
         return SETTINGS_PAGE_RESPONSE;
     }
