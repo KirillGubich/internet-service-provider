@@ -1,7 +1,7 @@
 out
 *.iml
 .idea
-lib
+web/WEB-INF/lib
 target
 
 # Compiled class file

@@ -35,7 +35,6 @@ public class ApplicationController extends HttpServlet {
         final ResponseContext result = businessCommand.execute(requestContent);
         requestContent.insertAttributes(req);
         if (result.isRedirect()) {
-            //todo
             resp.sendRedirect(result.getPage());
         } else {
             final RequestDispatcher dispatcher = req.getRequestDispatcher(result.getPage());

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
 <c:set var="language" value="${sessionScope.locale}"/>
 <fmt:setLocale value="${language}" />
 <fmt:setBundle basename="profilePage"/>
@@ -71,11 +72,11 @@
                             </tr>
                             <tr>
                                 <td><fmt:message key="subscriptionInfo.startDate"/></td>
-                                <td>${subscription.startDate}</td>
+                                <td><ctg:format-date date="${subscription.startDate}" lang="${language}"/></td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="subscriptionInfo.endDate"/></td>
-                                <td>${subscription.endDate}</td>
+                                <td><ctg:format-date date="${subscription.endDate}" lang="${language}"/></td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="subscriptionInfo.cost"/></td>
@@ -90,22 +91,22 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${subscription.status == 'REQUESTED'}">
-                                            <fmt:message key="subscription.status.requested"/>
+                                            <span style="color: #2e7ebd"><fmt:message key="subscription.status.requested"/></span>
                                             <a href="${pageContext.request.contextPath}
                                         /controller?command=cancel_subscription&subId=${subscription.id}&userId=${subscription.userId}">
-                                                (сlick here to cancel)</a>
+                                                (<fmt:message key="subscription.cancel.caption"/>)</a>
                                         </c:when>
                                         <c:when test="${subscription.status == 'APPROVED'}">
-                                            <fmt:message key="subscription.status.approved"/>
+                                            <span style="color: green"><fmt:message key="subscription.status.approved"/></span>
                                         </c:when>
                                         <c:when test="${subscription.status == 'SUSPENDED'}">
-                                            <fmt:message key="subscription.status.suspended"/>
+                                            <span style="color: orange"><fmt:message key="subscription.status.suspended"/></span>
                                         </c:when>
                                         <c:when test="${subscription.status == 'DENIED'}">
-                                            <fmt:message key="subscription.status.denied"/>
+                                            <span style="color: red"><fmt:message key="subscription.status.denied"/></span>
                                         </c:when>
                                         <c:when test="${subscription.status == 'CANCELED'}">
-                                            <fmt:message key="subscription.status.canceled"/>
+                                            <span style="color: dimgrey"><fmt:message key="subscription.status.canceled"/></span>
                                         </c:when>
                                         <c:otherwise>
                                             ${subscription.status}
