@@ -195,8 +195,8 @@
             </div>
         </div>
         <c:choose>
-            <c:when test="${not empty requestScope.errorMessage}">
-                <h3>${requestScope.errorMessage}</h3>
+            <c:when test="${not empty requestScope.error eq true}">
+                <h3><fmt:message key="error.message"/></h3>
             </c:when>
             <c:otherwise>
                 <br><br><br>

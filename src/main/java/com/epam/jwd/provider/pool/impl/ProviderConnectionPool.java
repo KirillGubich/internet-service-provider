@@ -4,6 +4,8 @@ import com.epam.jwd.provider.model.entity.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.ConnectionTypeMismatchException;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.util.PropertyReaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -24,9 +26,10 @@ public class ProviderConnectionPool implements ConnectionPool {
     private final Condition notEmpty = lock.newCondition();
     private final Deque<ProxyConnection> freeConnections;
     private final List<ProxyConnection> givenAwayConnections;
-    private ConnectionPoolProperties properties; //todo ? remake into constants
+    private ConnectionPoolProperties properties;
 
     private static final String URL_CONFIG = "?useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProviderConnectionPool.class);
 
     private ProviderConnectionPool() {
         freeConnections = new ArrayDeque<>();
@@ -104,7 +107,7 @@ public class ProviderConnectionPool implements ConnectionPool {
             Class.forName("com.mysql.cj.jdbc.Driver");
             DriverManager.registerDriver(DriverManager.getDriver(properties.getDatabaseUrl()));
         } catch (ClassNotFoundException e) {
-            e.printStackTrace(); //todo log
+            LOGGER.error(e.getMessage());
         }
     }
 

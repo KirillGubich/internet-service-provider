@@ -1,5 +1,8 @@
 package com.epam.jwd.provider.support;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -14,6 +17,7 @@ public enum EmailSender {
 
     private static final String MAIL_PROPERTIES_FILE_NAME = "mail.properties";
     private static final String MESSAGE_SUBJECT = "Support request";
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailSender.class);
 
     public void sendMessage(String messageToSend) {
         final Properties properties = new Properties();
@@ -28,10 +32,8 @@ public enum EmailSender {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (IOException | MessagingException e) {
-            e.printStackTrace();
-            //todo log
+            LOGGER.error(e.getMessage());
         }
-
     }
 
     private MimeMessage createMimeMessage(String messageToSend, String supportEmail, Session mailSession)

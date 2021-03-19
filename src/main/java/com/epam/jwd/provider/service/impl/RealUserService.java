@@ -1,10 +1,13 @@
 package com.epam.jwd.provider.service.impl;
 
 import com.epam.jwd.provider.dao.impl.UserDao;
+import com.epam.jwd.provider.exception.AccountAbsenceException;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.service.UserService;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ public enum RealUserService implements UserService {
     private static final String DUMMY_PASSWORD = "$2y$12$68aa7ZF41prLfrxYx9yCwunnY8OpWxP9uNdH2B1vaEO/EjAcCsqk.";
     private static final int PASSWORD_MINIMAL_LENGTH = 8;
     private final UserDao userDao = UserDao.INSTANCE;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RealUserService.class);
 
     @Override
     public void create(UserDto dto) {
@@ -50,9 +54,9 @@ public enum RealUserService implements UserService {
         final Optional<User> user = userDao.findUserByLogin(login);
         if (!user.isPresent()) {
             try {
-                BCrypt.checkpw(password, DUMMY_PASSWORD); //todo to prevent timing attack
+                BCrypt.checkpw(password, DUMMY_PASSWORD);
             } catch (IllegalArgumentException e) {
-                // todo fix
+                LOGGER.error(e.getMessage());
             }
             return Optional.empty();
         }
@@ -92,7 +96,8 @@ public enum RealUserService implements UserService {
     public void updateBalance(Integer accountId, BigDecimal balance) {
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {
-            throw new RuntimeException(); //todo custom exception
+            LOGGER.error("An attempt was made to top up an account balance that does not exist");
+            throw new AccountAbsenceException("Account with such id doesn't exist");
         }
         User updatedUser = User.builder()
                 .withId(accountId)
@@ -107,11 +112,12 @@ public enum RealUserService implements UserService {
     @Override
     public boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat) {
         if (accountId == null || oldPassword == null || updPassword == null || updPasswordRepeat == null) {
-            throw new RuntimeException(); //todo custom Exception
+            return false;
         }
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {
-            throw new RuntimeException(); //todo custom Exception
+            LOGGER.error("An attempt was made to change an account password that does not exist");
+            throw new AccountAbsenceException("Account with such id doesn't exist");
         }
         boolean passwordCorrect = BCrypt.checkpw(oldPassword, user.get().getPassword())
                 && updPassword.equals(updPasswordRepeat);

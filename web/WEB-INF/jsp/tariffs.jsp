@@ -31,9 +31,11 @@
                 <li>
                     <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page"><fmt:message key="navigation.tariffs"/></a>
                 </li>
-                <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_profile"><fmt:message key="navigation.subscribe"/></a>
-                </li>
+                <c:if test="${sessionScope.userRole != 'ADMIN'}">
+                    <li>
+                        <a class="link" href="${pageContext.request.contextPath}/controller?command=show_subscription_page"><fmt:message key="navigation.subscribe"/></a>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </nav>
@@ -50,7 +52,20 @@
                             </colgroup>
                             <tr>
                                 <td><fmt:message key="tariffInfo.name"/></td>
-                                <td>${tariff.name}</td>
+                                <td>${tariff.name}
+                                    <c:choose>
+                                        <c:when test="${sessionScope.userRole eq 'ADMIN'}">
+                                            <a href="/controller?command=show_tariff_settings_page&tariff=${tariff.name}">
+                                                (<fmt:message key="edit.caption"/>)
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="/controller?command=show_subscription_page&tariff=${tariff.name}">
+                                                (<fmt:message key="navigation.subscribe"/>)
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="tariffInfo.description"/></td>

@@ -4,9 +4,13 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.dto.TariffDto;
+import com.epam.jwd.provider.service.TariffService;
 import com.epam.jwd.provider.service.impl.RealTariffService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public enum ShowSubscriptionPage implements Command {
     INSTANCE;
@@ -23,10 +27,20 @@ public enum ShowSubscriptionPage implements Command {
         }
     };
 
+    private static final TariffService tariffService = RealTariffService.INSTANCE;
+
     @Override
     public ResponseContext execute(RequestContext request) {
-        List<TariffDto> tariffs = RealTariffService.INSTANCE.findAll();
-        List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();
+        String tariffName = request.getParameter("tariff");
+        List<TariffDto> tariffs = tariffService.findAll();
+        if (tariffName != null) {
+            Optional<TariffDto> tariffDto = tariffService.findByName(tariffName);
+            if (tariffDto.isPresent()) {
+                tariffs = new ArrayList<>();
+                tariffs.add(tariffDto.get());
+            }
+        }
+        List<TariffDto> specialOffers = tariffService.findSpecialOffers();
         request.setAttribute("tariffs", tariffs);
         request.setAttribute("specialOffers", specialOffers);
         return SUBSCRIPTION_PAGE_RESPONSE;

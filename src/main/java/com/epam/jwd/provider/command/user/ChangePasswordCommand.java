@@ -4,6 +4,8 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.page.ShowSettingsPage;
+import com.epam.jwd.provider.command.page.ShowUserLoginPage;
+import com.epam.jwd.provider.exception.AccountAbsenceException;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
@@ -29,11 +31,17 @@ public enum ChangePasswordCommand implements Command {
         String repNewPassword = request.getParameter("repNewPassword");
         Integer accountId = (Integer) request.getSessionAttribute("accountId");
         UserService userService = RealUserService.INSTANCE;
-        boolean passwordSuccessfulUpdated = userService.changePassword(accountId, password, newPassword, repNewPassword);
+        boolean passwordSuccessfulUpdated;
+        try {
+            passwordSuccessfulUpdated = userService.changePassword(accountId, password,
+                    newPassword, repNewPassword);
+        } catch(AccountAbsenceException e) {
+            return ShowUserLoginPage.INSTANCE.execute(request);
+        }
         if (passwordSuccessfulUpdated) {
             return SETTINGS_PAGE_RESPONSE_REDIRECT;
         } else {
-            request.setAttribute("errorMessage", "An incorrect current password was entered");
+            request.setAttribute("error", Boolean.TRUE);
             return ShowSettingsPage.INSTANCE.execute(request);
         }
     }
