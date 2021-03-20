@@ -23,14 +23,28 @@ public enum ShowTariffsPage implements Command {
         }
     };
 
+    private static final int RECORDS_PER_PAGE = 4;
+
     @Override
     public ResponseContext execute(RequestContext request) {
         List<TariffDto> tariffs = RealTariffService.INSTANCE.findAll();
         List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();
-        if (!tariffs.isEmpty()) {
-            request.setAttribute("tariffs", tariffs);
-        }
+        doPagination(request, tariffs);
         request.setAttribute("specialOffers", specialOffers);
         return TARIFFS_PAGE_RESPONSE;
+    }
+
+    private void doPagination(RequestContext request, List<TariffDto> tariffs) {
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int noOfRecords = tariffs.size();
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+        int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
+        List<TariffDto> tariffsOnPage = tariffs.subList((page - 1) * RECORDS_PER_PAGE, toIndex);
+        request.setAttribute("tariffs", tariffsOnPage);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
     }
 }

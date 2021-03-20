@@ -14,7 +14,7 @@
     <style>
         <%@include file="/WEB-INF/styles/navigation.css"%>
         <%@include file="/WEB-INF/styles/news.css"%>
-        <%@include file="/WEB-INF/styles/profileFooter.css"%>
+        <%@include file="/WEB-INF/styles/paginationFotter.css"%>
         <%@include file="/WEB-INF/styles/profile.css"%>
     </style>
     <script src="https://kit.fontawesome.com/0590a78e7b.js" crossorigin="anonymous"></script>
@@ -157,22 +157,59 @@
     </div>
     <br><br><br>
     <footer class="page_footer">
-        <div class="col item social">
-            <a href="//facebook.com" target="_blank">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="//skype.com" target="_blank">
-                <i class="fab fa-skype"></i>
-            </a>
-            <a href="//github.com" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="//instagram.com" target="_blank">
-                <i class="fab fa-instagram"></i>
-            </a>
+        <div class="pagination">
+            <c:if test="${currentPage != 1}">
+                <td>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_profile&page=${currentPage - 1}">
+                        <fmt:message key="page.previous"/>
+                    </a>
+                </td>
+            </c:if>
+            <table border="1" cellpadding="5" cellspacing="5">
+                <tr>
+                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                        <c:choose>
+                            <c:when test="${currentPage eq i}">
+                                <td>${i}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/controller?command=show_profile&page=${i}">
+                                            ${i}
+                                    </a>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </tr>
+            </table>
+            <c:if test="${currentPage lt noOfPages}">
+                <td>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_profile&page=${currentPage + 1}">
+                        <fmt:message key="page.next"/>
+                    </a>
+                </td>
+            </c:if>
         </div>
-        <div class="copyright">
-            &copy 2021 - Kirill Gubich
+        <br><br><br>
+        <div class="socialButtons">
+            <div class="col item social">
+                <a href="//facebook.com" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="//skype.com" target="_blank">
+                    <i class="fab fa-skype"></i>
+                </a>
+                <a href="//github.com" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="//instagram.com" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy 2021 - Kirill Gubich
+            </div>
         </div>
     </footer>
 </div>

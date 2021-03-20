@@ -15,6 +15,18 @@ import java.util.Optional;
 public enum FindSubscriptionCommand implements Command {
     INSTANCE;
 
+    private static final ResponseContext USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE = new ResponseContext() {
+        @Override
+        public String getPage() {
+            return "/WEB-INF/jsp/subscriptionSettings.jsp";
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
+        }
+    };
+
     @Override
     public ResponseContext execute(RequestContext request) {
         Integer id = Integer.valueOf(request.getParameter("id"));
@@ -27,6 +39,6 @@ public enum FindSubscriptionCommand implements Command {
         } else {
             request.setAttribute("infoMessage", "Subscription with the given id was not found");
         }
-        return ShowSubscriptionSettingsPage.INSTANCE.execute(request);
+        return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
     }
 }

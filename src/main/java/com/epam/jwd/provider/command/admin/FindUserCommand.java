@@ -15,18 +15,36 @@ import java.util.Optional;
 public enum FindUserCommand implements Command {
     INSTANCE;
 
+    private static final ResponseContext USERS_FOR_ADMIN_PAGE_RESPONSE = new ResponseContext() {
+        @Override
+        public String getPage() {
+            return "/WEB-INF/jsp/usersForAdmin.jsp";
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
+        }
+    };
+
     @Override
     public ResponseContext execute(RequestContext request) {
-        String login = request.getParameter("login");
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            request.setAttribute("infoMessage", "Incorrect user id");
+            return USERS_FOR_ADMIN_PAGE_RESPONSE;
+        }
         UserService userService = RealUserService.INSTANCE;
-        Optional<UserDto> user = userService.findByLogin(login);
+        Optional<UserDto> user = userService.findById(id);
         List<UserDto> users = new ArrayList<>();
         if (user.isPresent()) {
             users.add(user.get());
             request.setAttribute("users", users);
         } else {
-            request.setAttribute("infoMessage", "User with the given login was not found");
+            request.setAttribute("infoMessage", "User with the given id was not found");
         }
-        return ShowUsersForAdminPage.INSTANCE.execute(request);
+        return USERS_FOR_ADMIN_PAGE_RESPONSE;
     }
 }

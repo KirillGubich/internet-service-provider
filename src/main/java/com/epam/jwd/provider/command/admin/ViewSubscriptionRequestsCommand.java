@@ -15,6 +15,18 @@ import java.util.stream.Collectors;
 public enum ViewSubscriptionRequestsCommand implements Command {
     INSTANCE;
 
+    private static final ResponseContext USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE = new ResponseContext() {
+        @Override
+        public String getPage() {
+            return "/WEB-INF/jsp/subscriptionSettings.jsp";
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
+        }
+    };
+
     @Override
     public ResponseContext execute(RequestContext request) {
         SubscriptionService service = RealSubscriptionService.INSTANCE;
@@ -28,6 +40,6 @@ public enum ViewSubscriptionRequestsCommand implements Command {
         } else {
             request.setAttribute("userSubscriptions", requestedSubscriptions);
         }
-        return ShowSubscriptionSettingsPage.INSTANCE.execute(request);
+        return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
     }
 }

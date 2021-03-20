@@ -11,7 +11,7 @@
     <style>
         <%@include file="/WEB-INF/styles/navigation.css"%>
         <%@include file="/WEB-INF/styles/profile.css"%>
-        <%@include file="/WEB-INF/styles/profileFooter.css"%>
+        <%@include file="/WEB-INF/styles/paginationFotter.css"%>
         <%@include file="/WEB-INF/styles/usersForAdmin.css"%>
     </style>
     <title>Users</title>
@@ -91,7 +91,7 @@
                 <input type='hidden' name='command' value='find_user'/>
                 <div class="container">
                     <label>
-                        <input type="text" placeholder="login" name="login" required>
+                        <input type="text" placeholder="id" name="id" required>
                     </label><br>
                     <button type="submit" class="service_btn find_btn">Find</button>
                 </div>
@@ -103,22 +103,59 @@
         <br><br><br>
     </div>
     <footer class="page_footer">
-        <div class="col item social">
-            <a href="//facebook.com" target="_blank">
-                <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="//skype.com" target="_blank">
-                <i class="fab fa-skype"></i>
-            </a>
-            <a href="//github.com" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="//instagram.com" target="_blank">
-                <i class="fab fa-instagram"></i>
-            </a>
+        <div class="pagination">
+            <c:if test="${currentPage != 1}">
+                <td>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${currentPage - 1}">
+                        <fmt:message key="page.previous"/>
+                    </a>
+                </td>
+            </c:if>
+            <table border="1" cellpadding="5" cellspacing="5">
+                <tr>
+                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                        <c:choose>
+                            <c:when test="${currentPage eq i}">
+                                <td>${i}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${i}">
+                                            ${i}
+                                    </a>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                </tr>
+            </table>
+            <c:if test="${currentPage lt noOfPages}">
+                <td>
+                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${currentPage + 1}">
+                        <fmt:message key="page.next"/>
+                    </a>
+                </td>
+            </c:if>
         </div>
-        <div class="copyright">
-            &copy 2021 - Kirill Gubich
+        <br><br><br>
+        <div class="socialButtons">
+            <div class="col item social">
+                <a href="//facebook.com" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="//skype.com" target="_blank">
+                    <i class="fab fa-skype"></i>
+                </a>
+                <a href="//github.com" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="//instagram.com" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <div class="copyright">
+                &copy 2021 - Kirill Gubich
+            </div>
         </div>
     </footer>
 </div>
