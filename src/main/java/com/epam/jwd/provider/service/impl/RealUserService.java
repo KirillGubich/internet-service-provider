@@ -139,6 +139,7 @@ public enum RealUserService implements UserService {
         return UserDto.builder()
                 .withId(user.getId())
                 .withLogin(user.getLogin())
+                .withPassword(user.getPassword())
                 .withRole(user.getRole())
                 .withBalance(user.getBalance())
                 .withActive(user.getActive())
@@ -149,14 +150,14 @@ public enum RealUserService implements UserService {
         return User.builder()
                 .withId(dto.getId())
                 .withLogin(dto.getLogin())
-                .withPassword(hash(dto.getPassword()))
+                .withPassword(dto.getPassword())
                 .withRole(dto.getRole())
                 .withBalance(dto.getBalance())
                 .withStatus(dto.getActive())
                 .build();
     }
 
-    private String hash(String password) {
+    public String hash(String password) { //todo private
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
