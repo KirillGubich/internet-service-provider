@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.admin;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowSubscriptionSettingsPage;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
 import com.epam.jwd.provider.service.SubscriptionService;
@@ -35,9 +34,7 @@ public enum ViewSubscriptionRequestsCommand implements Command {
                 .stream()
                 .filter(subscription -> SubscriptionStatus.REQUESTED.equals(subscription.getStatus()))
                 .collect(Collectors.toList());
-        if (requestedSubscriptions.isEmpty()) {
-            request.setAttribute("infoMessage", "No requested subscriptions were found");
-        } else {
+        if (!requestedSubscriptions.isEmpty()) {
             request.setAttribute("userSubscriptions", requestedSubscriptions);
         }
         return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;

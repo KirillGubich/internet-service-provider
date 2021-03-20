@@ -37,7 +37,9 @@
                     <a href="${pageContext.request.contextPath}/controller?command=show_user_sign_up_page"><fmt:message key="registration.button.caption"/></a>.
                 </p>
             </div>
-            <h4 style="color: red">${requestScope.errorMessage}</h4>
+            <c:if test="${requestScope.errorMessage eq true}">
+                <h4 style="color: red"><fmt:message key="error.message"/></h4>
+            </c:if>
         </div>
     </form>
 </div>

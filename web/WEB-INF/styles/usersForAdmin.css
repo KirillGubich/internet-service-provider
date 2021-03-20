@@ -36,3 +36,10 @@ input[type=text]:focus, input[type=password]:focus {
 td a:visited {
     color: rgba(38, 76, 114, 1);
 }
+
+a.service_btn {
+    margin: 10px 10px 10px 10px;
+    padding: 0 17px 17px 17px;
+    font-size: 15px;
+    font-weight: bold;
+}

@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="adminMainPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -12,7 +18,7 @@
         <%@include file="/WEB-INF/styles/adminMain.css"%>
         <%@include file="/WEB-INF/styles/pageFooter.css"%>
     </style>
-    <title>Admin</title>
+    <title><fmt:message key="page.title"/></title>
 </head>
 <body>
 <header>
@@ -25,10 +31,14 @@
         <nav class="menu">
             <ul class="nav">
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">
+                        <fmt:message key="navigation.tariffs"/>
+                    </a>
                 </li>
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">
+                        <fmt:message key="navigation.logout"/>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -36,9 +46,15 @@
 </header>
 <div class="mainpage">
     <div class="serviceButtons">
-        <a href="${pageContext.request.contextPath}/controller?command=show_tariff_settings_page" class="service_btn">Tariffs</a>
-        <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page" class="service_btn">Users</a>
-        <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page" class="service_btn">Subscriptions</a>
+        <a href="${pageContext.request.contextPath}/controller?command=show_tariff_settings_page" class="service_btn">
+            <fmt:message key="button.tariffs"/>
+        </a>
+        <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page" class="service_btn">
+            <fmt:message key="button.users"/>
+        </a>
+        <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page" class="service_btn">
+            <fmt:message key="button.subscriptions"/>
+        </a>
     </div>
     <footer class="page_footer">
         <div class="col item social">

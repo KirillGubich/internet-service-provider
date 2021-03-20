@@ -36,7 +36,7 @@ public enum SignUpCommand implements Command {
         if (signedUpSuccessfully) {
             return LOGIN_PAGE_RESPONSE;
         } else {
-            request.setAttribute("errorMessage", "Such login already exist or password incorrect");
+            request.setAttribute("errorMessage", Boolean.TRUE);
             return ShowUserSignUpPage.INSTANCE.execute(request);
         }
     }

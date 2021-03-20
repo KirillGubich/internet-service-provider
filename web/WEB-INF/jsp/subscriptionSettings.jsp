@@ -1,6 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="subscriptionSettingsPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta charset="UTF-8">
@@ -14,7 +19,7 @@
         <%@include file="/WEB-INF/styles/paginationFotter.css"%>
         <%@include file="/WEB-INF/styles/usersForAdmin.css"%>
     </style>
-    <title>Subscriptions</title>
+    <title><fmt:message key="page.title"/></title>
 </head>
 <body>
 <header>
@@ -27,10 +32,14 @@
         <nav class="menu">
             <ul class="nav">
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">
+                        <fmt:message key="navigation.tariffs"/>
+                    </a>
                 </li>
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">
+                        <fmt:message key="navigation.logout"/>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -41,7 +50,7 @@
         <div class="table-information">
             <c:choose>
                 <c:when test="${not empty requestScope.userSubscriptions}">
-                    <h2 class="subscriptionsHeader">Subscriptions</h2>
+                    <h2 class="subscriptionsHeader"><fmt:message key="page.title"/></h2>
                     <c:forEach var="subscription" items="${requestScope.userSubscriptions}">
                         <table class="table_col">
                             <colgroup>
@@ -52,58 +61,61 @@
                                 <td>${subscription.id}</td>
                             </tr>
                             <tr>
-                                <td>User ID</td>
-                                <td>${subscription.userId}</td>
-                            </tr>
-                            <tr>
-                                <td>Tariff</td>
+                                <td><fmt:message key="subscriptionInfo.tariff"/></td>
                                 <td>${subscription.tariffName}</td>
                             </tr>
                             <tr>
-                                <td>Tariff description</td>
+                                <td><fmt:message key="subscriptionInfo.tariffDescription"/></td>
                                 <td>${subscription.tariffDescription}</td>
                             </tr>
                             <tr>
-                                <td>Start date</td>
-                                <td>${subscription.startDate}</td>
+                                <td><fmt:message key="subscriptionInfo.startDate"/></td>
+                                <td><ctg:format-date date="${subscription.startDate}" lang="${language}"/></td>
                             </tr>
                             <tr>
-                                <td>End date</td>
-                                <td>${subscription.endDate}</td>
+                                <td><fmt:message key="subscriptionInfo.endDate"/></td>
+                                <td><ctg:format-date date="${subscription.endDate}" lang="${language}"/></td>
                             </tr>
                             <tr>
-                                <td>Cost</td>
+                                <td><fmt:message key="subscriptionInfo.cost"/></td>
                                 <td>${subscription.price}</td>
                             </tr>
                             <tr>
-                                <td>Address</td>
+                                <td><fmt:message key="subscriptionInfo.address"/></td>
                                 <td>${subscription.address.city}, ${subscription.address.address}</td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td><fmt:message key="subscriptionInfo.status"/></td>
                                 <td>
-                                    ${subscription.status}
                                     <c:choose>
                                         <c:when test="${subscription.status eq 'REQUESTED'}">
+                                            <fmt:message key="subscription.status.requested"/>
                                             <a style="color:green;" href="${pageContext.request.contextPath}
                                         /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=approved">
-                                                (approve)</a>
+                                                (<fmt:message key="status.action.approve"/>)</a>
                                             <a style="color: red" href="${pageContext.request.contextPath}
                                         /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=denied">
-                                                (deny)</a>
+                                                (<fmt:message key="status.action.deny"/>)</a>
                                         </c:when>
                                         <c:when test="${subscription.status eq 'SUSPENDED'}">
+                                            <fmt:message key="subscription.status.suspended"/>
                                             <a style="color:green;" href="${pageContext.request.contextPath}
                                         /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=approved">
-                                                approve </a>
+                                                (<fmt:message key="status.action.approve"/>) </a>
                                         </c:when>
                                         <c:when test="${subscription.status eq 'APPROVED'}">
+                                            <fmt:message key="subscription.status.approved"/>
                                             <a style="color: orange" href="${pageContext.request.contextPath}
                                         /controller?command=change_subscription_status&subId=${subscription.id}&userId=${subscription.userId}&status=suspended">
-                                                suspend </a>
+                                                <fmt:message key="status.action.suspend"/> </a>
+                                        </c:when>
+                                        <c:when test="${subscription.status eq 'DENIED'}">
+                                            <fmt:message key="subscription.status.denied"/>
+                                        </c:when>
+                                        <c:when test="${subscription.status eq 'CANCELED'}">
+                                            <fmt:message key="subscription.status.canceled"/>
                                         </c:when>
                                     </c:choose>
-
                                 </td>
                             </tr>
                         </table>
@@ -111,7 +123,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <h2>${requestScope.infoMessage}</h2>
+                    <h2><fmt:message key="info.message"/></h2>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -122,18 +134,20 @@
                     <label>
                         <input type="text" placeholder="id" name="id" required>
                     </label><br>
-                    <button type="submit" class="service_btn find_btn">Find</button>
+                    <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
                 </div>
             </form>
             <div class="service">
-                <a href="${pageContext.request.contextPath}/controller?command=view_subscription_requests" class="service_btn">Show requests</a>
+                <a href="${pageContext.request.contextPath}/controller?command=view_subscription_requests" class="service_btn">
+                    <fmt:message key="button.showRequests"/>
+                </a>
             </div>
         </div>
         <br><br><br>
     </div>
     <footer class="page_footer">
         <div class="pagination">
-            <c:if test="${currentPage != 1}">
+            <c:if test="${currentPage > 1}">
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page&page=${currentPage - 1}">
                         <fmt:message key="page.previous"/>

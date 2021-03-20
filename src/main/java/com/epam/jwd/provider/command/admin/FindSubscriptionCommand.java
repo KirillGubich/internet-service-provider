@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.admin;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowSubscriptionSettingsPage;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
 import com.epam.jwd.provider.service.SubscriptionService;
 import com.epam.jwd.provider.service.impl.RealSubscriptionService;
@@ -29,15 +28,18 @@ public enum FindSubscriptionCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer id = Integer.valueOf(request.getParameter("id"));
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
+        }
         SubscriptionService service = RealSubscriptionService.INSTANCE;
         Optional<SubscriptionDto> subscriptionDto = service.findById(id);
         List<SubscriptionDto> subscriptions = new ArrayList<>();
         if (subscriptionDto.isPresent()) {
             subscriptions.add(subscriptionDto.get());
             request.setAttribute("userSubscriptions", subscriptions);
-        } else {
-            request.setAttribute("infoMessage", "Subscription with the given id was not found");
         }
         return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
     }

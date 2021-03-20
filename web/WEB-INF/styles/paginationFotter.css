@@ -75,6 +75,10 @@
     padding-right: 4px;
 }
 
+.pagination a.content:visited {
+    color: rgba(38, 76, 114, 1);
+}
+
 .socialButtons {
     background-color: #03032e;
     color: white;

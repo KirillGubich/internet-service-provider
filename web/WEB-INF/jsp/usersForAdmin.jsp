@@ -1,6 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="customtags" %>
+<c:set var="language" value="${sessionScope.locale}"/>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="usersForAdminPage"/>
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta charset="UTF-8">
@@ -14,7 +19,7 @@
         <%@include file="/WEB-INF/styles/paginationFotter.css"%>
         <%@include file="/WEB-INF/styles/usersForAdmin.css"%>
     </style>
-    <title>Users</title>
+    <title><fmt:message key="page.title"/></title>
 </head>
 <body>
 <header>
@@ -27,10 +32,14 @@
         <nav class="menu">
             <ul class="nav">
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">Tariffs</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=show_tariffs_page">
+                        <fmt:message key="navigation.tariffs"/>
+                    </a>
                 </li>
                 <li>
-                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">Sign out</a>
+                    <a class="link" href="${pageContext.request.contextPath}/controller?command=logout">
+                        <fmt:message key="navigation.logout"/>
+                    </a>
                 </li>
             </ul>
         </nav>
@@ -41,7 +50,7 @@
         <div class="table-information">
             <c:choose>
                 <c:when test="${not empty requestScope.users}">
-                    <h2 class="subscriptionsHeader">Users</h2>
+                    <h2 class="subscriptionsHeader"><fmt:message key="page.title"/></h2>
                     <c:forEach var="user" items="${requestScope.users}">
                         <table class="table_col">
                             <colgroup>
@@ -52,26 +61,30 @@
                                 <td>${user.id}</td>
                             </tr>
                             <tr>
-                                <td>Login</td>
+                                <td><fmt:message key="login.caption"/></td>
                                 <td>${user.login}</td>
                             </tr>
                             <c:if test="${not empty user.balance}">
                                 <tr>
-                                    <td>Balance</td>
+                                    <td><fmt:message key="balance.caption"/></td>
                                     <td>${user.balance}</td>
                                 </tr>
                                 <tr>
-                                    <td>Status</td>
+                                    <td><fmt:message key="status.caption"/></td>
                                     <c:choose>
                                         <c:when test="${user.active eq false}">
-                                            <td><span style="color:red">Blocked</span>
-                                                <a href="${pageContext.request.contextPath}/controller?command=change_user_status&id=${user.id}&active=unblock">(unblock)</a>
+                                            <td><span style="color:red"><fmt:message key="status.blocked"/></span>
+                                                <a href="${pageContext.request.contextPath}/controller?command=change_user_status&id=${user.id}&active=unblock">
+                                                    (<fmt:message key="status.action.unblock"/>)
+                                                </a>
                                             </td>
                                         </c:when>
                                         <c:otherwise>
                                             <td>
-                                                <span style="color:green">Active</span>
-                                                <a href="${pageContext.request.contextPath}/controller?command=change_user_status&id=${user.id}&active=block">(block)</a>
+                                                <span style="color:green"><fmt:message key="status.active"/></span>
+                                                <a href="${pageContext.request.contextPath}/controller?command=change_user_status&id=${user.id}&active=block">
+                                                    (<fmt:message key="status.action.block"/>)
+                                                </a>
                                             </td>
                                         </c:otherwise>
                                     </c:choose>
@@ -82,7 +95,7 @@
                     </c:forEach>
                 </c:when>
                 <c:otherwise>
-                    <h2>${requestScope.infoMessage}</h2>
+                    <h2><fmt:message key="info.message"/></h2>
                 </c:otherwise>
             </c:choose>
         </div>
@@ -93,18 +106,20 @@
                     <label>
                         <input type="text" placeholder="id" name="id" required>
                     </label><br>
-                    <button type="submit" class="service_btn find_btn">Find</button>
+                    <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
                 </div>
             </form>
             <div class="service">
-                <a href="${pageContext.request.contextPath}/controller?command=view_debtors" class="service_btn">Show debtors</a>
+                <a href="${pageContext.request.contextPath}/controller?command=view_debtors" class="service_btn">
+                    <fmt:message key="button.showDebtors"/>
+                </a>
             </div>
         </div>
         <br><br><br>
     </div>
     <footer class="page_footer">
         <div class="pagination">
-            <c:if test="${currentPage != 1}">
+            <c:if test="${currentPage > 1}">
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${currentPage - 1}">
                         <fmt:message key="page.previous"/>

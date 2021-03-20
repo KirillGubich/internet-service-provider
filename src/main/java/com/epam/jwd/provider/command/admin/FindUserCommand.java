@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.admin;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowUsersForAdminPage;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
@@ -42,8 +41,6 @@ public enum FindUserCommand implements Command {
         if (user.isPresent()) {
             users.add(user.get());
             request.setAttribute("users", users);
-        } else {
-            request.setAttribute("infoMessage", "User with the given id was not found");
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;
     }

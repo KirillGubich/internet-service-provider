@@ -104,11 +104,11 @@ a.service_btn {
     box-shadow: inset rgba(255,255,255,.5) 1px 1px;
     margin-top: 40px;
 }
-.find_btn,
-a.service_btn:first-line{
-    font-size: 170%;
-    font-weight: 700;
-}
+/*.find_btn,*/
+/*a.service_btn:first-line{*/
+/*    font-size: 170%;*/
+/*    font-weight: 700;*/
+/*}*/
 
 .find_btn,
 a.service_btn:hover {

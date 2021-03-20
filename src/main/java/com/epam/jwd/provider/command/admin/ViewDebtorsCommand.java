@@ -3,7 +3,6 @@ package com.epam.jwd.provider.command.admin;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.command.page.ShowUsersForAdminPage;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
@@ -35,9 +34,7 @@ public enum ViewDebtorsCommand implements Command {
                 .filter(user -> user.getBalance() != null)
                 .filter(user -> user.getBalance().compareTo(new BigDecimal("0")) < 0)
                 .collect(Collectors.toList());
-        if (debtors.isEmpty()) {
-            request.setAttribute("infoMessage", "No debtors were found");
-        } else {
+        if (!debtors.isEmpty()) {
             request.setAttribute("users", debtors);
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;

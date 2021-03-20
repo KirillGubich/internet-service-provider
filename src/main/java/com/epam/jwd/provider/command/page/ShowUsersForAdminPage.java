@@ -3,14 +3,11 @@ package com.epam.jwd.provider.command.page;
 import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
-import com.epam.jwd.provider.model.dto.SubscriptionDto;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum ShowUsersForAdminPage implements Command {
     INSTANCE;
@@ -33,9 +30,7 @@ public enum ShowUsersForAdminPage implements Command {
     public ResponseContext execute(RequestContext request) {
         UserService service = RealUserService.INSTANCE;
         List<UserDto> allUsers = service.findAll();
-        if (allUsers.isEmpty()) {
-            request.setAttribute("infoMessage", "No users were found");
-        } else {
+        if (!allUsers.isEmpty()) {
             doPagination(request, allUsers);
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;
