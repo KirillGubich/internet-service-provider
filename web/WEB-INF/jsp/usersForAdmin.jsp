@@ -114,6 +114,11 @@
                     <fmt:message key="button.showDebtors"/>
                 </a>
             </div>
+            <div class="service">
+                <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page" class="service_btn">
+                    <fmt:message key="page.title"/>
+                </a>
+            </div>
         </div>
         <br><br><br>
     </div>
@@ -121,7 +126,7 @@
         <div class="pagination">
             <c:if test="${currentPage > 1}">
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${currentPage - 1}">
+                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${currentPage - 1}">
                         <fmt:message key="page.previous"/>
                     </a>
                 </td>
@@ -135,7 +140,7 @@
                             </c:when>
                             <c:otherwise>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${i}">
+                                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${i}">
                                             ${i}
                                     </a>
                                 </td>
@@ -146,7 +151,7 @@
             </table>
             <c:if test="${currentPage lt noOfPages}">
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_users_for_admin_page&page=${currentPage + 1}">
+                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${currentPage + 1}">
                         <fmt:message key="page.next"/>
                     </a>
                 </td>

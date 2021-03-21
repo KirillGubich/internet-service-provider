@@ -26,6 +26,8 @@ public enum ViewSubscriptionRequestsCommand implements Command {
         }
     };
 
+    private static final int RECORDS_PER_PAGE = 2;
+
     @Override
     public ResponseContext execute(RequestContext request) {
         SubscriptionService service = RealSubscriptionService.INSTANCE;
@@ -35,8 +37,24 @@ public enum ViewSubscriptionRequestsCommand implements Command {
                 .filter(subscription -> SubscriptionStatus.REQUESTED.equals(subscription.getStatus()))
                 .collect(Collectors.toList());
         if (!requestedSubscriptions.isEmpty()) {
-            request.setAttribute("userSubscriptions", requestedSubscriptions);
+            doPagination(request, requestedSubscriptions);
         }
         return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
+    }
+
+    private void doPagination(RequestContext request, List<SubscriptionDto> subscriptions) {
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int noOfRecords = subscriptions.size();
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+        int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
+        List<SubscriptionDto> userSubscriptionsOnPage = subscriptions
+                .subList((page - 1) * RECORDS_PER_PAGE, toIndex);
+        request.setAttribute("userSubscriptions", userSubscriptionsOnPage);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("command", "view_subscription_requests");
     }
 }

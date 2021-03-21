@@ -142,6 +142,11 @@
                     <fmt:message key="button.showRequests"/>
                 </a>
             </div>
+            <div class="service">
+                <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page" class="service_btn">
+                    <fmt:message key="subscriptions.header"/>
+                </a>
+            </div>
         </div>
         <br><br><br>
     </div>
@@ -149,7 +154,7 @@
         <div class="pagination">
             <c:if test="${currentPage > 1}">
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page&page=${currentPage - 1}">
+                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${currentPage - 1}">
                         <fmt:message key="page.previous"/>
                     </a>
                 </td>
@@ -163,7 +168,7 @@
                             </c:when>
                             <c:otherwise>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page&page=${i}">
+                                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${i}">
                                             ${i}
                                     </a>
                                 </td>
@@ -174,7 +179,7 @@
             </table>
             <c:if test="${currentPage lt noOfPages}">
                 <td>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_subscription_settings_page&page=${currentPage + 1}">
+                    <a href="${pageContext.request.contextPath}/controller?command=${requestScope.command}&page=${currentPage + 1}">
                         <fmt:message key="page.next"/>
                     </a>
                 </td>

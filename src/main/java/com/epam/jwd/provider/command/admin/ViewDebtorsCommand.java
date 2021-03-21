@@ -26,6 +26,8 @@ public enum ViewDebtorsCommand implements Command {
         }
     };
 
+    private static final int RECORDS_PER_PAGE = 4;
+
     @Override
     public ResponseContext execute(RequestContext request) {
         UserService service = RealUserService.INSTANCE;
@@ -35,8 +37,24 @@ public enum ViewDebtorsCommand implements Command {
                 .filter(user -> user.getBalance().compareTo(new BigDecimal("0")) < 0)
                 .collect(Collectors.toList());
         if (!debtors.isEmpty()) {
-            request.setAttribute("users", debtors);
+            doPagination(request, debtors);
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;
+    }
+
+    private void doPagination(RequestContext request, List<UserDto> users) {
+        int page = 1;
+        if (request.getParameter("page") != null) {
+            page = Integer.parseInt(request.getParameter("page"));
+        }
+        int noOfRecords = users.size();
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
+        int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
+        List<UserDto> usersOnPage = users
+                .subList((page - 1) * RECORDS_PER_PAGE, toIndex);
+        request.setAttribute("users", usersOnPage);
+        request.setAttribute("noOfPages", noOfPages);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("command", "view_debtors");
     }
 }

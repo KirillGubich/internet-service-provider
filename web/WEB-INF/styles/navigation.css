@@ -68,7 +68,7 @@
     }
 
     .nav li a {
-        font-size: 25px;
+        font-size: 21px;
     }
 }
 
@@ -77,8 +77,8 @@
         font-size: 35px;
     }
     .nav li a {
-        font-size: 20px;
-        margin: 0 18px 0 0;
+        font-size: 18px;
+        margin: 0 16px 0 0;
     }
 }
 
@@ -87,7 +87,7 @@
         font-size: 30px;
     }
     .nav li a {
-        font-size: 18px;
+        font-size: 14px;
     }
 }
 
@@ -96,6 +96,6 @@
         font-size: 25px;
     }
     .nav li a {
-        font-size: 18px;
+        font-size: 14px;
     }
 }

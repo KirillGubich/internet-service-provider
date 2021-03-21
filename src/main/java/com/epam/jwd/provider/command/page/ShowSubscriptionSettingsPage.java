@@ -51,5 +51,6 @@ public enum ShowSubscriptionSettingsPage implements Command {
         request.setAttribute("userSubscriptions", userSubscriptionsOnPage);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
+        request.setAttribute("command", "show_subscription_settings_page");
     }
 }

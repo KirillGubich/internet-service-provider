@@ -49,5 +49,6 @@ public enum ShowUsersForAdminPage implements Command {
         request.setAttribute("users", usersOnPage);
         request.setAttribute("noOfPages", noOfPages);
         request.setAttribute("currentPage", page);
+        request.setAttribute("command", "show_users_for_admin_page");
     }
 }
