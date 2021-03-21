@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
@@ -120,7 +121,8 @@ public enum RealUserService implements UserService {
             throw new AccountAbsenceException("Account with such id doesn't exist");
         }
         boolean passwordCorrect = BCrypt.checkpw(oldPassword, user.get().getPassword())
-                && updPassword.equals(updPasswordRepeat);
+                && updPassword.equals(updPasswordRepeat)
+                && updPassword.length() >= PASSWORD_MINIMAL_LENGTH;
         if (!passwordCorrect) {
             return false;
         }
@@ -157,7 +159,7 @@ public enum RealUserService implements UserService {
                 .build();
     }
 
-    public String hash(String password) { //todo private
+    private String hash(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

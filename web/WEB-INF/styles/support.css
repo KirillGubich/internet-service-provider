@@ -52,6 +52,8 @@ box-shadow(0 1 px 1 px rgba(black, 0.1));
     justify-self: center;
     font-size: 15px;
     align-self: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #input-submit:hover {

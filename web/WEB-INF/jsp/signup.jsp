@@ -26,18 +26,26 @@
             <input type='hidden' name='command' value='sign_up'/>
             <label>
                 <input type="text" placeholder="<fmt:message key="login.placeholder"/>" name="userLogin"
-                       pattern="^[a-zA-Z][a-zA-Z0-9-_.]{6,20}$" required>
+                       pattern="[a-zA-Z][\w]{3,100}$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="<fmt:message key="password.placeholder"/>" name="userPassword" required>
+                <input type="password" placeholder="<fmt:message key="password.placeholder"/>" name="userPassword"
+                       pattern="^(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
             </label><br>
             <label>
-                <input type="password" placeholder="<fmt:message key="passwordRepeat.placeholder"/>" name="userRepPassword" required>
+                <input type="password" placeholder="<fmt:message key="passwordRepeat.placeholder"/>" name="userRepPassword"
+                       pattern="^(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
             </label><br>
             <button type="submit" class="registerbtn"><fmt:message key="button.submit.caption"/></button>
             <div class="signin">
                 <p><fmt:message key="login.request"/>
-                    <a href="${pageContext.request.contextPath}/controller?command=show_user_login_page"><fmt:message key="login.button.caption"/></a>.
+                    <a href="${pageContext.request.contextPath}/controller?command=show_user_login_page">
+                        <fmt:message key="login.button.caption"/>
+                    </a>
+                </p>
+                <p>
+                    <fmt:message key="about.password.first"/><br>
+                    <fmt:message key="about.password.second"/>
                 </p>
             </div>
             <c:if test="${requestScope.errorMessage eq true}">

@@ -168,12 +168,16 @@
                         </label>
                         <label>
                             <input type="password" name="newPassword" placeholder="<fmt:message key="newPassword.placeholder"/>"
-                                   required/>
+                                   pattern="(.){8,200}" required/>
                         </label>
                         <label>
                             <input type="password" name="repNewPassword" placeholder="<fmt:message key="newPasswordRep.placeholder"/>"
-                                   required/>
+                                   pattern="(.){8,200}" required/>
                         </label>
+                        <p>
+                            <fmt:message key="about.password.first"/><br>
+                            <fmt:message key="about.password.second"/>
+                        </p>
                         <button type="submit"><fmt:message key="changePassword.submit"/></button>
                     </form>
                 </div>
@@ -217,7 +221,7 @@
                     <label for="input-message"></label>
                     <textarea name="message" id="input-message" placeholder="<fmt:message key="message.caption"/>" required></textarea>
                 </div>
-                <input type="submit" name="<fmt:message key="send.button.caption"/>" id="input-submit">
+                <button type="submit" id="input-submit"> <fmt:message key="send.button.caption"/></button>
             </form>
         </div>
     </div>

@@ -4,15 +4,10 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
-import com.epam.jwd.provider.model.dto.TariffDto;
-import com.epam.jwd.provider.model.entity.SubscriptionStatus;
 import com.epam.jwd.provider.service.SubscriptionService;
 import com.epam.jwd.provider.service.impl.RealSubscriptionService;
-import com.epam.jwd.provider.service.impl.RealTariffService;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum ShowSubscriptionSettingsPage implements Command {
     INSTANCE;

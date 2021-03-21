@@ -158,7 +158,7 @@
     <br><br><br>
     <footer class="page_footer">
         <div class="pagination">
-            <c:if test="${currentPage != 1}">
+            <c:if test="${currentPage > 1}">
                 <td>
                     <a href="${pageContext.request.contextPath}/controller?command=show_profile&page=${currentPage - 1}">
                         <fmt:message key="page.previous"/>

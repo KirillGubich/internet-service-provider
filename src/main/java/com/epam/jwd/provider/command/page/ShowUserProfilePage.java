@@ -11,6 +11,7 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public enum ShowUserProfilePage implements Command {
     INSTANCE;
@@ -36,10 +37,12 @@ public enum ShowUserProfilePage implements Command {
         if (accountId == null) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
-        List<SubscriptionDto> userSubscriptions = service.findUserSubscriptions((Integer) accountId);
         List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();
-        Collections.reverse(userSubscriptions);
-        doPagination(request, userSubscriptions);
+        List<SubscriptionDto> userSubscriptions = service.findUserSubscriptions((Integer) accountId);
+        if (!userSubscriptions.isEmpty()) {
+            Collections.reverse(userSubscriptions);
+            doPagination(request, userSubscriptions);
+        }
         request.setAttribute("specialOffers", specialOffers);
         return PROFILE_PAGE_RESPONSE;
     }
