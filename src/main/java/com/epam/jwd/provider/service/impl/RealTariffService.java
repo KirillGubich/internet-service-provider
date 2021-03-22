@@ -15,7 +15,11 @@ import static java.util.stream.Collectors.toList;
 public enum RealTariffService implements TariffService {
     INSTANCE;
 
-    private final TariffDao tariffDao = TariffDao.INSTANCE;
+    private TariffDao tariffDao = TariffDao.getInstance();
+
+    public void setTariffDao(TariffDao tariffDao) {
+        this.tariffDao = tariffDao;
+    }
 
     @Override
     public List<TariffDto> findAll() {
@@ -56,11 +60,7 @@ public enum RealTariffService implements TariffService {
     @Override
     public Optional<TariffDto> save(TariffDto dto) {
         Optional<Tariff> oldTariff = tariffDao.update(convertToTariff(dto));
-        if (oldTariff.isPresent()) {
-            TariffDto tariffDto = convertToDto(oldTariff.get());
-            return Optional.of(tariffDto);
-        }
-        return Optional.empty();
+        return oldTariff.map(this::convertToDto);
     }
 
     @Override

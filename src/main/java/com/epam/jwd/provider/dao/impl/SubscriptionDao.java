@@ -2,6 +2,7 @@ package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
 import com.epam.jwd.provider.exception.AddressLookupException;
+import com.epam.jwd.provider.exception.PropertiesAbsenceException;
 import com.epam.jwd.provider.model.entity.Address;
 import com.epam.jwd.provider.model.entity.Subscription;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
@@ -22,8 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public enum SubscriptionDao implements CommonDao<Subscription> {
-    INSTANCE;
+public class SubscriptionDao implements CommonDao<Subscription> {
 
     private static final String FIND_ALL_SUBSCRIPTIONS_SQL = "SELECT id, user_id, tariff_id, start_date, end_date, " +
             "cost, tariff_name, tariff_description, address_id, status FROM subscriptions INNER JOIN " +
@@ -44,13 +44,24 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionDao.class);
 
+    private SubscriptionDao() {
+    }
+
+    private static class SingletonHolder {
+        private static final SubscriptionDao instance = new SubscriptionDao();
+    }
+
+    public static SubscriptionDao getInstance() {
+        return SingletonHolder.instance;
+    }
+
     @Override
     public void create(Subscription entity) {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(CREATE_SUBSCRIPTION_SQL)) {
             fillStatement(entity, statement);
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -60,7 +71,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
         try (final Connection conn = connectionPool.takeConnection();
              final PreparedStatement statement = conn.prepareStatement(FIND_ALL_SUBSCRIPTIONS_SQL)) {
             return fetchSubscriptionsList(statement);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
             return Optional.empty();
         }
@@ -74,7 +85,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
             if (resultSet.next()) {
                return extractSubscription(resultSet);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -85,7 +96,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
              final PreparedStatement statement = conn.prepareStatement(FIND_SUBSCRIPTIONS_BY_USER_ID_SQL)) {
             statement.setInt(1, userId);
             return fetchSubscriptionsList(statement);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
             return Optional.empty();
         }
@@ -99,7 +110,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
             fillStatement(entity, statement);
             statement.setInt(10, entity.getId());
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return subscription;
@@ -123,7 +134,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
              final PreparedStatement statement = conn.prepareStatement(DELETE_SUBSCRIPTION_SQL)) {
             statement.setInt(1, entity.getId());
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -154,7 +165,7 @@ public enum SubscriptionDao implements CommonDao<Subscription> {
     }
 
     private Address fetchAddressById(Integer id) throws AddressLookupException {
-        Optional<Address> address = AddressDao.INSTANCE.findById(id);
+        Optional<Address> address = AddressDao.getInstance().findById(id);
         if (address.isPresent()) {
             return address.get();
         } else {

@@ -1,6 +1,7 @@
 package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
+import com.epam.jwd.provider.exception.PropertiesAbsenceException;
 import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.pool.ConnectionPool;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum UserDao implements CommonDao<User> {
-    INSTANCE;
+public class UserDao implements CommonDao<User> {
 
     private static final String FIND_ACCOUNT_BY_LOGIN_SQL = "SELECT id, login, password, balance, active FROM accounts " +
             "LEFT JOIN users ON accounts.id=users.account_id where login=?";
@@ -36,6 +36,17 @@ public enum UserDao implements CommonDao<User> {
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(UserDao.class);
 
+    private UserDao() {
+    }
+
+    private static class SingletonHolder {
+        private static final UserDao instance = new UserDao();
+    }
+
+    public static UserDao getInstance() {
+        return SingletonHolder.instance;
+    }
+
     @Override
     public Optional<List<User>> readAll() {
         try (final Connection conn = connectionPool.takeConnection();
@@ -48,7 +59,7 @@ public enum UserDao implements CommonDao<User> {
                 user.ifPresent(users::add);
             }
             return Optional.of(users);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
             return Optional.empty();
         }
@@ -74,7 +85,7 @@ public enum UserDao implements CommonDao<User> {
                 return resultSet.getBigDecimal("balance") != null ?
                         extractUser(resultSet, UserRole.USER) : extractUser(resultSet, UserRole.ADMIN);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -89,7 +100,7 @@ public enum UserDao implements CommonDao<User> {
                 return resultSet.getBigDecimal("balance") != null ?
                         extractUser(resultSet, UserRole.USER) : extractUser(resultSet, UserRole.ADMIN);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -109,7 +120,7 @@ public enum UserDao implements CommonDao<User> {
             userStatement.setInt(3, entity.getId());
             accountStatement.executeUpdate();
             userStatement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return user;
@@ -124,7 +135,7 @@ public enum UserDao implements CommonDao<User> {
             userStatement.setInt(1, entity.getId());
             accountStatement.executeUpdate();
             userStatement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }

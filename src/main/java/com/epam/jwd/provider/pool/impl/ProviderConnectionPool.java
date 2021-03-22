@@ -1,5 +1,6 @@
 package com.epam.jwd.provider.pool.impl;
 
+import com.epam.jwd.provider.exception.PropertiesAbsenceException;
 import com.epam.jwd.provider.model.entity.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.ConnectionTypeMismatchException;
 import com.epam.jwd.provider.pool.ConnectionPool;
@@ -85,6 +86,9 @@ public class ProviderConnectionPool implements ConnectionPool {
     }
 
     private boolean needsExpansion() {
+        if (properties == null) {
+            throw new PropertiesAbsenceException("Pool properties are not initialized");
+        }
         double totalConnections;
         totalConnections = givenAwayConnections.size() + freeConnections.size();
         boolean expansionPercentageReached = givenAwayConnections.size() / totalConnections * 100

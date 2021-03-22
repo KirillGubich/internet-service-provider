@@ -19,9 +19,17 @@ import java.util.stream.Collectors;
 public enum RealSubscriptionService implements SubscriptionService {
     INSTANCE;
 
-    private final SubscriptionDao subscriptionDao = SubscriptionDao.INSTANCE;
-    private final AddressDao addressDao = AddressDao.INSTANCE;
+    private SubscriptionDao subscriptionDao = SubscriptionDao.getInstance();
+    private AddressDao addressDao = AddressDao.getInstance();
     private static final Integer DEFAULT_ADDRESS_ID = 0;
+
+    public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
+        this.subscriptionDao = subscriptionDao;
+    }
+
+    public void setAddressDao(AddressDao addressDao) {
+        this.addressDao = addressDao;
+    }
 
     @Override
     public List<SubscriptionDto> findAll() {
@@ -34,7 +42,7 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public void create(SubscriptionDto dto) {
-        AddressDao.INSTANCE.create(convertToAddress(dto.getAddress(), DEFAULT_ADDRESS_ID));
+        addressDao.create(convertToAddress(dto.getAddress(), DEFAULT_ADDRESS_ID));
         Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
                 dto.getAddress().getAddress());
         if (!addressId.isPresent()) {
@@ -56,7 +64,7 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public void delete(SubscriptionDto dto) {
-        Optional<Integer> addressId = AddressDao.INSTANCE.findAddressId(dto.getAddress().getCity(),
+        Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
                 dto.getAddress().getAddress());
         if (!addressId.isPresent()) {
             throw new AddressExistenceException("Subscription exist without address");
@@ -112,7 +120,6 @@ public enum RealSubscriptionService implements SubscriptionService {
                 .withStatus(subscription.getStatus())
                 .withAddress(convertToAddressDto(subscription.getAddress()))
                 .build();
-
     }
 
     private Address convertToAddress(AddressDto dto, Integer id) {

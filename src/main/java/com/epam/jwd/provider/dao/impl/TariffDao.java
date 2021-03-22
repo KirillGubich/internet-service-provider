@@ -1,6 +1,7 @@
 package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
+import com.epam.jwd.provider.exception.PropertiesAbsenceException;
 import com.epam.jwd.provider.model.entity.Tariff;
 import com.epam.jwd.provider.pool.ConnectionPool;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
@@ -15,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum TariffDao implements CommonDao<Tariff> {
-    INSTANCE;
+public class TariffDao implements CommonDao<Tariff> {
 
     private static final String FIND_ALL_TARIFFS_SQL = "SELECT id, name, description, special_offer, " +
             "price, download_speed, upload_speed FROM tariffs";
@@ -32,6 +32,17 @@ public enum TariffDao implements CommonDao<Tariff> {
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(TariffDao.class);
 
+    private TariffDao() {
+    }
+
+    private static class SingletonHolder {
+        private static final TariffDao instance = new TariffDao();
+    }
+
+    public static TariffDao getInstance() {
+        return SingletonHolder.instance;
+    }
+
     @Override
     public Optional<List<Tariff>> readAll() {
         try (final Connection conn = connectionPool.takeConnection();
@@ -43,7 +54,7 @@ public enum TariffDao implements CommonDao<Tariff> {
                 tariff.ifPresent(tariffs::add);
             }
             return Optional.of(tariffs);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
             return Optional.empty();
         }
@@ -61,7 +72,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             if (resultSet.next()) {
                 return extractTariff(resultSet);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -75,7 +86,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             if (resultSet.next()) {
                 return extractTariff(resultSet);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -93,7 +104,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setDouble(5, entity.getUploadSpeed());
             statement.setString(6, entity.getName());
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return tariff;
@@ -110,7 +121,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setInt(1, id);
             statement.setString(2, entity.getName());
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -126,7 +137,7 @@ public enum TariffDao implements CommonDao<Tariff> {
             statement.setDouble(5, entity.getDownloadSpeed());
             statement.setDouble(6, entity.getUploadSpeed());
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }

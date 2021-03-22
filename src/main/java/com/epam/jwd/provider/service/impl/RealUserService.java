@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
@@ -22,8 +21,12 @@ public enum RealUserService implements UserService {
 
     private static final String DUMMY_PASSWORD = "$2y$12$68aa7ZF41prLfrxYx9yCwunnY8OpWxP9uNdH2B1vaEO/EjAcCsqk.";
     private static final int PASSWORD_MINIMAL_LENGTH = 8;
-    private final UserDao userDao = UserDao.INSTANCE;
+    private UserDao userDao = UserDao.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(RealUserService.class);
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public void create(UserDto dto) {
@@ -120,21 +123,29 @@ public enum RealUserService implements UserService {
             LOGGER.error("An attempt was made to change an account password that does not exist");
             throw new AccountAbsenceException("Account with such id doesn't exist");
         }
-        boolean passwordCorrect = BCrypt.checkpw(oldPassword, user.get().getPassword())
-                && updPassword.equals(updPasswordRepeat)
-                && updPassword.length() >= PASSWORD_MINIMAL_LENGTH;
+        boolean passwordCorrect = checkPassword(oldPassword, updPassword, updPasswordRepeat, user.get());
         if (!passwordCorrect) {
             return false;
         }
-        User updatedUser = User.builder()
-                .withId(accountId)
-                .withLogin(user.get().getLogin())
-                .withPassword(hash(updPassword))
-                .withBalance(user.get().getBalance())
-                .withStatus(user.get().getActive())
-                .build();
+        User updatedUser = updateUserPassword(accountId, updPassword, user.get());
         userDao.update(updatedUser);
         return true;
+    }
+
+    private User updateUserPassword(Integer accountId, String updPassword, User user) {
+        return User.builder()
+                .withId(accountId)
+                .withLogin(user.getLogin())
+                .withPassword(hash(updPassword))
+                .withBalance(user.getBalance())
+                .withStatus(user.getActive())
+                .build();
+    }
+
+    private boolean checkPassword(String oldPassword, String updPassword, String updPasswordRepeat, User user) {
+        return BCrypt.checkpw(oldPassword, user.getPassword())
+                && updPassword.equals(updPasswordRepeat)
+                && updPassword.length() >= PASSWORD_MINIMAL_LENGTH;
     }
 
     private UserDto convertToDto(User user) {

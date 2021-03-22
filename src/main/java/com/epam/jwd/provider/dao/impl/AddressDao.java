@@ -2,6 +2,7 @@ package com.epam.jwd.provider.dao.impl;
 
 import com.epam.jwd.provider.dao.CommonDao;
 import com.epam.jwd.provider.exception.AddressIdException;
+import com.epam.jwd.provider.exception.PropertiesAbsenceException;
 import com.epam.jwd.provider.factory.impl.AddressFactory;
 import com.epam.jwd.provider.model.entity.Address;
 import com.epam.jwd.provider.pool.ConnectionPool;
@@ -17,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public enum AddressDao implements CommonDao<Address> {
-    INSTANCE;
+public class AddressDao implements CommonDao<Address> {
 
     private static final String FIND_ALL_ADDRESSES_SQL = "SELECT address_id, city, address FROM addresses " +
             "INNER JOIN cities on addresses.city_id = cities.city_id";
@@ -33,6 +33,17 @@ public enum AddressDao implements CommonDao<Address> {
     private static final ConnectionPool connectionPool = ProviderConnectionPool.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(AddressDao.class);
 
+    private AddressDao() {
+    }
+
+    private static class SingletonHolder {
+        private static final AddressDao instance = new AddressDao();
+    }
+
+    public static AddressDao getInstance() {
+        return SingletonHolder.instance;
+    }
+
     @Override
     public void create(Address entity) {
         try (final Connection conn = connectionPool.takeConnection();
@@ -41,7 +52,7 @@ public enum AddressDao implements CommonDao<Address> {
             statement.setString(1, entity.getAddress());
             statement.setInt(2, cityId);
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -56,7 +67,7 @@ public enum AddressDao implements CommonDao<Address> {
             if (resultSet.next()) {
                 return Optional.of(resultSet.getInt("address_id"));
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -70,7 +81,7 @@ public enum AddressDao implements CommonDao<Address> {
             if (resultSet.next()) {
                 return extractAddress(resultSet);
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -87,7 +98,7 @@ public enum AddressDao implements CommonDao<Address> {
                 address.ifPresent(addresses::add);
             }
             return Optional.of(addresses);
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -107,7 +118,7 @@ public enum AddressDao implements CommonDao<Address> {
             statement.setInt(2, cityId);
             statement.setInt(3, id);
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return address;
@@ -124,7 +135,7 @@ public enum AddressDao implements CommonDao<Address> {
             }
             statement.setInt(1, id);
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -146,7 +157,7 @@ public enum AddressDao implements CommonDao<Address> {
             if (resultSet.next()) {
                 return Optional.of(resultSet.getInt("city_id"));
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
         return Optional.empty();
@@ -157,7 +168,7 @@ public enum AddressDao implements CommonDao<Address> {
              final PreparedStatement statement = conn.prepareStatement(CREATE_CITY_SQL)) {
             statement.setString(1, cityName);
             statement.executeUpdate();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());
         }
     }
