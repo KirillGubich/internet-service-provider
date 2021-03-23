@@ -5,6 +5,9 @@ import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.page.ShowMainPage;
 
+/**
+ * Localization setting command.
+ */
 public enum SetLocalizationCommand implements Command {
     INSTANCE;
 

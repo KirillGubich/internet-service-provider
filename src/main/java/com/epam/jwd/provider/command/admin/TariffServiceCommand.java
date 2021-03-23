@@ -9,6 +9,9 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.math.BigDecimal;
 
+/**
+ * Command for creating and updating tariff information.
+ */
 public enum TariffServiceCommand implements Command {
     INSTANCE;
 

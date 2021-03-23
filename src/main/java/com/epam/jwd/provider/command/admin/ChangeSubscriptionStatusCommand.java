@@ -16,6 +16,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Changes subscription status. Returns money to the user's account if necessary.
+ * Upon completion, it redirects the user to his profile, and the administrator to the subscription settings page.
+ */
 public enum ChangeSubscriptionStatusCommand implements Command {
     INSTANCE;
 
@@ -54,7 +58,7 @@ public enum ChangeSubscriptionStatusCommand implements Command {
         Integer subscriptionId = Integer.valueOf(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
         Integer accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
         SubscriptionStatus status = SubscriptionStatus.of(request.getParameter(STATUS_PARAMETER_NAME));
-        UserRole userRole = (UserRole)request.getSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
+        UserRole userRole = (UserRole) request.getSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
         Optional<SubscriptionDto> subscription = fetchSubscriptionInfo(subscriptionId, accountId);
         if (subscription.isPresent()) {
             if (status.equals(SubscriptionStatus.CANCELED) || status.equals(SubscriptionStatus.DENIED)) {

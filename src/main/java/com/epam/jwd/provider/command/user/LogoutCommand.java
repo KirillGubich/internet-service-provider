@@ -5,6 +5,10 @@ import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.entity.UserRole;
 
+/**
+ * Log out command. Session invalidates.
+ * User returns on the main page.
+ */
 public enum LogoutCommand implements Command {
     INSTANCE;
 

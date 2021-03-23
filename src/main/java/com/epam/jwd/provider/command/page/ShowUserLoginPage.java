@@ -4,6 +4,9 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 
+/**
+ * Shows log in page.
+ */
 public enum ShowUserLoginPage implements Command {
     INSTANCE;
 

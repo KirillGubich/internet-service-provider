@@ -11,6 +11,9 @@ import com.epam.jwd.provider.service.impl.RealSubscriptionService;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Displays all subscriptions with status 'REQUESTED'.
+ */
 public enum ViewSubscriptionRequestsCommand implements Command {
     INSTANCE;
 

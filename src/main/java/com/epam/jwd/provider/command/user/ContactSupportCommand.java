@@ -5,6 +5,9 @@ import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.support.EmailSender;
 
+/**
+ * Contact with support command. Sends users message to support email.
+ */
 public enum ContactSupportCommand implements Command {
     INSTANCE;
 

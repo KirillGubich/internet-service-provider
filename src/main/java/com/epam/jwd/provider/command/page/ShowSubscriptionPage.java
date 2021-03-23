@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Displays subscription page.
+ */
 public enum ShowSubscriptionPage implements Command {
     INSTANCE;
 

@@ -9,6 +9,9 @@ import com.epam.jwd.provider.exception.AccountAbsenceException;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
+/**
+ * User password change command.
+ */
 public enum ChangePasswordCommand implements Command {
     INSTANCE;
 

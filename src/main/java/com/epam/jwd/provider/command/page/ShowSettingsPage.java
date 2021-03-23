@@ -9,6 +9,10 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.util.Optional;
 
+/**
+ * Displays the user settings page.
+ * Shows account information, provides options for managing profile.
+ */
 public enum ShowSettingsPage implements Command {
     INSTANCE;
 

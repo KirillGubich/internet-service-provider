@@ -8,6 +8,9 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.util.List;
 
+/**
+ * Shows page with information about tariffs and special offers.
+ */
 public enum ShowTariffsPage implements Command {
     INSTANCE;
 

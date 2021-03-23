@@ -12,6 +12,9 @@ import java.util.Optional;
 public enum ChangeUserStatusCommand implements Command {
     INSTANCE;
 
+    /**
+     * Changes user's status. Upon completion, returns the administrator to user settings page.
+     */
     private static final ResponseContext USERS_FOR_ADMIN_PAGE_RESPONSE = new ResponseContext() {
         @Override
         public String getPage() {

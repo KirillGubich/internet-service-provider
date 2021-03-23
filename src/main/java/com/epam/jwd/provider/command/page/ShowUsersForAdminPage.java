@@ -9,6 +9,9 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.util.List;
 
+/**
+ * Shows user management page for administrator.
+ */
 public enum ShowUsersForAdminPage implements Command {
     INSTANCE;
 

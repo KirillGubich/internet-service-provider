@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Searches for a user by a given ID.
+ *  The search result is displayed on the page or a corresponding no result message.
+ */
 public enum FindUserCommand implements Command {
     INSTANCE;
 

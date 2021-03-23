@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Shows tariffs settings page for administrator.
+ */
 public enum ShowTariffSettingsPage implements Command {
     INSTANCE;
 

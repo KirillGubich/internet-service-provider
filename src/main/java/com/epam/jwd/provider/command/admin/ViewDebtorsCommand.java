@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Displays all users with a negative balance.
+ */
 public enum ViewDebtorsCommand implements Command {
     INSTANCE;
 

@@ -4,6 +4,9 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 
+/**
+ * Displays main page for administrators.
+ */
 public enum ShowAdminPage implements Command {
     INSTANCE;
 

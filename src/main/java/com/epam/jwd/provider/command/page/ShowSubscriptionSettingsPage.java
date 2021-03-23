@@ -9,6 +9,9 @@ import com.epam.jwd.provider.service.impl.RealSubscriptionService;
 
 import java.util.List;
 
+/**
+ * Shows subscriptions settings page for administrator.
+ */
 public enum ShowSubscriptionSettingsPage implements Command {
     INSTANCE;
 

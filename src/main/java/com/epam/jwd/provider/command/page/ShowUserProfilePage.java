@@ -12,6 +12,9 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Displays user profile with all his subscriptions and special offers.
+ */
 public enum ShowUserProfilePage implements Command {
     INSTANCE;
 

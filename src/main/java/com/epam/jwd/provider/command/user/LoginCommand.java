@@ -11,6 +11,11 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.util.Optional;
 
+/**
+ * Command for entering into the personal account.
+ * Checks the username and password and, upon successful authorization,
+ * redirects to the appropriate page, depending on the user's role.
+ */
 public enum LoginCommand implements Command {
     INSTANCE;
 

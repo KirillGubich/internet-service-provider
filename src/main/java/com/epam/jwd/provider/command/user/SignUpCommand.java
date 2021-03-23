@@ -6,6 +6,9 @@ import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
+/**
+ * User sign up command.
+ */
 public enum SignUpCommand implements Command {
     INSTANCE;
 

@@ -12,6 +12,9 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+/**
+ * User balance replenishment command.
+ */
 public enum TopUpBalanceCommand implements Command {
     INSTANCE;
 

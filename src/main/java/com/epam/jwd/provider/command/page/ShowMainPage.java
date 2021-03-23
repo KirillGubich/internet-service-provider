@@ -7,6 +7,9 @@ import com.epam.jwd.provider.command.ResponseContext;
 import javax.servlet.jsp.jstl.core.Config;
 import java.util.Locale;
 
+/**
+ * Displays main page.
+ */
 public enum ShowMainPage implements Command {
     INSTANCE;
 

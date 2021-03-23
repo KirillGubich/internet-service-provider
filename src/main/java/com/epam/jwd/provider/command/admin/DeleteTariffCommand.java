@@ -7,6 +7,9 @@ import com.epam.jwd.provider.model.dto.TariffDto;
 import com.epam.jwd.provider.service.TariffService;
 import com.epam.jwd.provider.service.impl.RealTariffService;
 
+/**
+ * Deletes selected tariff. Upon completion, returns the administrator to tariff settings page.
+ */
 public enum DeleteTariffCommand implements Command {
     INSTANCE;
 

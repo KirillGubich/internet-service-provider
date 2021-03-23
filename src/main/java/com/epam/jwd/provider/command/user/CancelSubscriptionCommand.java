@@ -15,6 +15,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command to cancel a subscription request issued by the user.
+ */
 public enum CancelSubscriptionCommand implements Command {
     INSTANCE;
 

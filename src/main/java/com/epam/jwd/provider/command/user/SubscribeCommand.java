@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Submits user's request for a subscription.
+ */
 public enum SubscribeCommand implements Command {
     INSTANCE;
 

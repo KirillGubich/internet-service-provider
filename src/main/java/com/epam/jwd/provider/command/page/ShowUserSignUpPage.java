@@ -4,6 +4,9 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 
+/**
+ * Shows user sign up page.
+ */
 public enum ShowUserSignUpPage implements Command {
     INSTANCE;
 
