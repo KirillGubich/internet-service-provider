@@ -44,6 +44,10 @@
     font-weight: bold;
 }
 
+.specialOffer a {
+    font-weight: bold;
+}
+
 @media screen and (max-width: 1030px) {
     .news-card-inner {
         width: 95%;

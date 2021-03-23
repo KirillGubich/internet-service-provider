@@ -140,7 +140,9 @@
                             <c:forEach var="specialOffer" items="${requestScope.specialOffers}">
                                 <li class="news-card-news-item ng-star-inserted">
                                     <div class="specialOffer">
-                                            ${specialOffer.name} <fmt:message key="onlyFor.caption"/> ${specialOffer.costPerDay} <fmt:message key="perDay.caption"/>!
+                                        <a href="${pageContext.request.contextPath}/controller?command=show_subscription_page&tariff=${specialOffer.name}">
+                                                ${specialOffer.name} <fmt:message key="onlyFor.caption"/> ${specialOffer.costPerDay} <fmt:message key="perDay.caption"/>!
+                                        </a>
                                     </div>
                                 </li>
                             </c:forEach>

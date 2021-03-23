@@ -118,7 +118,7 @@
                                 <span style="color: green"><fmt:message key="status.active"/></span>
                             </c:when>
                             <c:otherwise>
-                                <span style="color: green"><fmt:message key="status.blocked"/></span>
+                                <span style="color: red"><fmt:message key="status.blocked"/></span>
                             </c:otherwise>
                         </c:choose>
                     </p>
@@ -149,14 +149,7 @@
                     <h4 class="small-card-title"><fmt:message key="balance.caption"/></h4>
                 </header>
                 <div class="small-card-body">
-                    <c:choose>
-                        <c:when test="${requestScope.userInfo.balance < 0}">
-                            <p style="color: red">${requestScope.userInfo.balance}</p>
-                        </c:when>
-                        <c:otherwise>
-                            <p>${requestScope.userInfo.balance}</p>
-                        </c:otherwise>
-                    </c:choose>
+                    <p>${requestScope.userInfo.balance}</p>
                 </div>
                 <footer class="small-card-footer">
                     <a href="#" class="overlayPayLink"><fmt:message key="topUp.caption"/></a>
