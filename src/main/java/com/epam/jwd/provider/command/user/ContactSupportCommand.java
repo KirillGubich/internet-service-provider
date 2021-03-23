@@ -19,13 +19,17 @@ public enum ContactSupportCommand implements Command {
             return true;
         }
     };
+    private static final String NAME_PARAMETER_NAME = "name";
+    private static final String EMAIL_PARAMETER_NAME = "email";
+    private static final String SUBJECT_PARAMETER_NAME = "subject";
+    private static final String MESSAGE_PARAMETER_NAME = "message";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String subject = request.getParameter("subject");
-        String message = request.getParameter("message");
+        String name = request.getParameter(NAME_PARAMETER_NAME);
+        String email = request.getParameter(EMAIL_PARAMETER_NAME);
+        String subject = request.getParameter(SUBJECT_PARAMETER_NAME);
+        String message = request.getParameter(MESSAGE_PARAMETER_NAME);
         String messageForSupport =
                 "Name: " + name + "\n" +
                 "Email: " + email + "\n" +

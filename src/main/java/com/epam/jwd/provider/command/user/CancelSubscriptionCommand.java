@@ -31,11 +31,13 @@ public enum CancelSubscriptionCommand implements Command {
     };
 
     private final SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
+    private static final String SUBSCRIPTION_ID_PARAMETER_NAME = "subId";
+    private static final String USER_ID_PARAMETER_NAME = "userId";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer subscriptionId = Integer.valueOf(request.getParameter("subId"));
-        Integer accountId = Integer.valueOf(request.getParameter("userId"));
+        Integer subscriptionId = Integer.valueOf(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
+        Integer accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
         List<SubscriptionDto> userSubscriptions = subscriptionService.findUserSubscriptions(accountId);
         Optional<SubscriptionDto> subscriptionDto = userSubscriptions
                 .stream()

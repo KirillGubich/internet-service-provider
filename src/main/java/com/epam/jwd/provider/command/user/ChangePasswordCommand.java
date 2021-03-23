@@ -23,25 +23,30 @@ public enum ChangePasswordCommand implements Command {
             return true;
         }
     };
+    private static final String PASSWORD_PARAMETER_NAME = "password";
+    private static final String NEW_PASSWORD_PARAMETER_NAME = "newPassword";
+    private static final String NEW_PASSWORD_REPEAT_PARAMETER_NAME = "repNewPassword";
+    private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
+    private static final String ERROR_ATTRIBUTE_NAME = "error";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String password = request.getParameter("password");
-        String newPassword = request.getParameter("newPassword");
-        String repNewPassword = request.getParameter("repNewPassword");
-        Integer accountId = (Integer) request.getSessionAttribute("accountId");
+        String password = request.getParameter(PASSWORD_PARAMETER_NAME);
+        String newPassword = request.getParameter(NEW_PASSWORD_PARAMETER_NAME);
+        String repNewPassword = request.getParameter(NEW_PASSWORD_REPEAT_PARAMETER_NAME);
+        Integer accountId = (Integer) request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
         UserService userService = RealUserService.INSTANCE;
         boolean passwordSuccessfulUpdated;
         try {
             passwordSuccessfulUpdated = userService.changePassword(accountId, password,
                     newPassword, repNewPassword);
-        } catch(AccountAbsenceException e) {
+        } catch (AccountAbsenceException e) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
         if (passwordSuccessfulUpdated) {
             return SETTINGS_PAGE_RESPONSE_REDIRECT;
         } else {
-            request.setAttribute("error", Boolean.TRUE);
+            request.setAttribute(ERROR_ATTRIBUTE_NAME, Boolean.TRUE);
             return ShowSettingsPage.INSTANCE.execute(request);
         }
     }

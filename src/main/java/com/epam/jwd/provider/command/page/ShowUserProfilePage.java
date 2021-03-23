@@ -11,7 +11,6 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public enum ShowUserProfilePage implements Command {
     INSTANCE;
@@ -30,10 +29,16 @@ public enum ShowUserProfilePage implements Command {
 
     private final SubscriptionService service = RealSubscriptionService.INSTANCE;
     private static final int RECORDS_PER_PAGE = 2;
+    private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
+    private static final String SPECIAL_OFFERS_ATTRIBUTE_NAME = "specialOffers";
+    private static final String PAGE_PARAMETER_NAME = "page";
+    private static final String USER_SUBSCRIPTIONS_ATTRIBUTE_NAME = "userSubscriptions";
+    private static final String PAGES_COUNT_ATTRIBUTE_NAME = "noOfPages";
+    private static final String CURRENT_PAGE_ATTRIBUTE_NAME = "currentPage";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Object accountId = request.getSessionAttribute("accountId");
+        Object accountId = request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
         if (accountId == null) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
@@ -43,22 +48,22 @@ public enum ShowUserProfilePage implements Command {
             Collections.reverse(userSubscriptions);
             doPagination(request, userSubscriptions);
         }
-        request.setAttribute("specialOffers", specialOffers);
+        request.setAttribute(SPECIAL_OFFERS_ATTRIBUTE_NAME, specialOffers);
         return PROFILE_PAGE_RESPONSE;
     }
 
     private void doPagination(RequestContext request, List<SubscriptionDto> userSubscriptions) {
         int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        if (request.getParameter(PAGE_PARAMETER_NAME) != null) {
+            page = Integer.parseInt(request.getParameter(PAGE_PARAMETER_NAME));
         }
         int noOfRecords = userSubscriptions.size();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
         int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
         List<SubscriptionDto> userSubscriptionsOnPage = userSubscriptions
                 .subList((page - 1) * RECORDS_PER_PAGE, toIndex);
-        request.setAttribute("userSubscriptions", userSubscriptionsOnPage);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
+        request.setAttribute(USER_SUBSCRIPTIONS_ATTRIBUTE_NAME, userSubscriptionsOnPage);
+        request.setAttribute(PAGES_COUNT_ATTRIBUTE_NAME, noOfPages);
+        request.setAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, page);
     }
 }

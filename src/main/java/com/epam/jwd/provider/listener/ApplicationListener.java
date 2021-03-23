@@ -27,7 +27,7 @@ public class ApplicationListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         try {
-            ProviderConnectionPool.getInstance().destroyPool();
+            ProviderConnectionPool.getInstance().destroy();
             LOGGER.info("Connection pool destroyed successfully");
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

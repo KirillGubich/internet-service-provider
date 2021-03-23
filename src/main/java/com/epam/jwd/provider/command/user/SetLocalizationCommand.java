@@ -9,14 +9,16 @@ public enum SetLocalizationCommand implements Command {
     INSTANCE;
 
     private static final String DEFAULT_LOCALE = "en";
+    private static final String LOCALE_PARAMETER_NAME = "locale";
+    private static final String LOCALE_SESSION_ATTRIBUTE_NAME = "locale";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String locale = request.getParameter("locale");
+        String locale = request.getParameter(LOCALE_PARAMETER_NAME);
         if (locale == null) {
             locale = DEFAULT_LOCALE;
         }
-        request.setSessionAttribute("locale", locale);
+        request.setSessionAttribute(LOCALE_SESSION_ATTRIBUTE_NAME, locale);
         return ShowMainPage.INSTANCE.execute(request);
     }
 }

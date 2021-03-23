@@ -21,6 +21,8 @@ import java.util.List;
 public class UserFilter implements Filter {
 
     private static final List<String> pagesForAuthorizedUsersOnly = new ArrayList<>();
+    private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "userRole";
+    private static final String LOGIN_PAGE_LINK = "/controller?command=show_user_login_page";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -36,12 +38,12 @@ public class UserFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
-        UserRole userRole = (UserRole) session.getAttribute("userRole");
+        UserRole userRole = (UserRole) session.getAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
         if (UserRole.GUEST.equals(userRole) || userRole == null) {
             String queryString = req.getQueryString();
             for (String page : pagesForAuthorizedUsersOnly) {
                 if (queryString != null && queryString.contains(page)) {
-                    resp.sendRedirect("/controller?command=show_user_login_page");
+                    resp.sendRedirect(LOGIN_PAGE_LINK);
                     return;
                 }
             }

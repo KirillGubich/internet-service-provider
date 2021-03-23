@@ -82,7 +82,9 @@
                     </label>
                     <button type="submit" class="servicebtn"><fmt:message key="button.submit.caption"/></button>
                     <br>
-                    <h4 style="color: red">${requestScope.errorMessage}</h4>
+                    <c:if test="${requestScope.errorMessage eq true}">
+                        <h4 style="color: red"><fmt:message key="error.message"/></h4>
+                    </c:if>
                 </form>
             </div>
         </div>

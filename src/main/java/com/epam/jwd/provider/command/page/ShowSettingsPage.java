@@ -25,10 +25,15 @@ public enum ShowSettingsPage implements Command {
     };
 
     private final UserService userService = RealUserService.INSTANCE;
+    private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "accountId";
+    private static final String USER_INFO_ATTRIBUTE_NAME = "userInfo";
+    private static final String STATUS_ATTRIBUTE_NAME = "status";
+    private static final String ACTIVE_STATUS = "Active";
+    private static final String BLOCKED_STATUS = "Blocked";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Object accountId = request.getSessionAttribute("accountId");
+        Object accountId = request.getSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
         if (accountId == null) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
@@ -36,11 +41,12 @@ public enum ShowSettingsPage implements Command {
         if (!user.isPresent()) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
-        request.setAttribute("userInfo", user.get());
+        request.setAttribute(USER_INFO_ATTRIBUTE_NAME, user.get());
         if (user.get().getActive()) {
-            request.setAttribute("status", "Active");
+            request.setAttribute(STATUS_ATTRIBUTE_NAME, ACTIVE_STATUS);
         } else {
-            request.setAttribute("status", "Blocked");        }
+            request.setAttribute(STATUS_ATTRIBUTE_NAME, BLOCKED_STATUS);
+        }
         return SETTINGS_PAGE_RESPONSE;
     }
 }

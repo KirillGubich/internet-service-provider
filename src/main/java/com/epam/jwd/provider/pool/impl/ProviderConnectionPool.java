@@ -37,6 +37,14 @@ public class ProviderConnectionPool implements ConnectionPool {
         givenAwayConnections = new ArrayList<>();
     }
 
+    public static ConnectionPool getInstance() {
+        return SingletonHolder.instance;
+    }
+
+    private static class SingletonHolder {
+        private static final ConnectionPool instance = new ProviderConnectionPool();
+    }
+
     @Override
     public Connection takeConnection() throws InterruptedException, SQLException {
         lock.lock();
@@ -78,7 +86,7 @@ public class ProviderConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public void destroyPool() throws SQLException {
+    public void destroy() throws SQLException {
         for (ProxyConnection connection : freeConnections) {
             connection.realClose();
         }
@@ -104,6 +112,7 @@ public class ProviderConnectionPool implements ConnectionPool {
             ProxyConnection proxyConnection = new ProxyConnection(realConnection);
             freeConnections.addLast(proxyConnection);
         }
+        LOGGER.info("Connections were successfully created. Quantity: " + connectionsToCreate);
     }
 
     private void registerDriver() throws SQLException {
@@ -120,13 +129,5 @@ public class ProviderConnectionPool implements ConnectionPool {
         while (drivers.hasMoreElements()) {
             DriverManager.deregisterDriver(drivers.nextElement());
         }
-    }
-
-    public static ConnectionPool getInstance() {
-        return SingletonHolder.instance;
-    }
-
-    private static class SingletonHolder {
-        private static final ConnectionPool instance = new ProviderConnectionPool();
     }
 }

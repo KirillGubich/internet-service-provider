@@ -9,7 +9,6 @@ import com.epam.jwd.provider.service.impl.RealTariffService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public enum ShowSubscriptionPage implements Command {
@@ -28,10 +27,13 @@ public enum ShowSubscriptionPage implements Command {
     };
 
     private static final TariffService tariffService = RealTariffService.INSTANCE;
+    private static final String TARIFF_PARAMETER_NAME = "tariff";
+    private static final String TARIFFS_ATTRIBUTE_NAME = "tariffs";
+    private static final String SPECIAL_OFFERS_ATTRIBUTE_NAME = "specialOffers";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String tariffName = request.getParameter("tariff");
+        String tariffName = request.getParameter(TARIFF_PARAMETER_NAME);
         List<TariffDto> tariffs = tariffService.findAll();
         if (tariffName != null) {
             Optional<TariffDto> tariffDto = tariffService.findByName(tariffName);
@@ -41,8 +43,8 @@ public enum ShowSubscriptionPage implements Command {
             }
         }
         List<TariffDto> specialOffers = tariffService.findSpecialOffers();
-        request.setAttribute("tariffs", tariffs);
-        request.setAttribute("specialOffers", specialOffers);
+        request.setAttribute(TARIFFS_ATTRIBUTE_NAME, tariffs);
+        request.setAttribute(SPECIAL_OFFERS_ATTRIBUTE_NAME, specialOffers);
         return SUBSCRIPTION_PAGE_RESPONSE;
     }
 }

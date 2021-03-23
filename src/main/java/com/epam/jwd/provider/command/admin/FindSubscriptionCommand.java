@@ -26,11 +26,14 @@ public enum FindSubscriptionCommand implements Command {
         }
     };
 
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String USER_SUBSCRIPTIONS_ATTRIBUTE_NAME = "userSubscriptions";
+
     @Override
     public ResponseContext execute(RequestContext request) {
         int id;
         try {
-            id = Integer.parseInt(request.getParameter("id"));
+            id = Integer.parseInt(request.getParameter(ID_PARAMETER_NAME));
         } catch (NumberFormatException e) {
             return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
         }
@@ -39,7 +42,7 @@ public enum FindSubscriptionCommand implements Command {
         List<SubscriptionDto> subscriptions = new ArrayList<>();
         if (subscriptionDto.isPresent()) {
             subscriptions.add(subscriptionDto.get());
-            request.setAttribute("userSubscriptions", subscriptions);
+            request.setAttribute(USER_SUBSCRIPTIONS_ATTRIBUTE_NAME, subscriptions);
         }
         return USERS_SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
     }

@@ -24,15 +24,19 @@ public enum ChangeUserStatusCommand implements Command {
         }
     };
 
+    private static final String ID_PARAMETER_NAME = "id";
+    private static final String ACTIVE_PARAMETER_NAME = "active";
+    private static final String UNBLOCK_PARAMETER = "unblock";
+
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer id = Integer.valueOf(request.getParameter("id"));
-        String active = request.getParameter("active");
+        Integer id = Integer.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        String active = request.getParameter(ACTIVE_PARAMETER_NAME);
         UserService userService = RealUserService.INSTANCE;
         Optional<UserDto> user = userService.findById(id);
         if (user.isPresent()) {
             UserDto userDto;
-            if (active.equals("unblock")) {
+            if (active.equals(UNBLOCK_PARAMETER)) {
                 userDto = updateUser(user.get(), true);
             } else {
                 userDto = updateUser(user.get(), false);

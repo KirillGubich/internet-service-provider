@@ -18,13 +18,15 @@ public enum EmailSender {
     private static final String MAIL_PROPERTIES_FILE_NAME = "mail.properties";
     private static final String MESSAGE_SUBJECT = "Support request";
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailSender.class);
+    private static final String USER_PROPERTY_NAME = "mail.smtps.user";
+    private static final String PASSWORD_PROPERTY_NAME = "mail.smtps.password";
 
     public void sendMessage(String messageToSend) {
         final Properties properties = new Properties();
         try {
             properties.load(EmailSender.class.getClassLoader().getResourceAsStream(MAIL_PROPERTIES_FILE_NAME));
-            final String supportEmail = properties.getProperty("mail.smtps.user");
-            final String supportPassword = properties.getProperty("mail.smtps.password");
+            final String supportEmail = properties.getProperty(USER_PROPERTY_NAME);
+            final String supportPassword = properties.getProperty(PASSWORD_PROPERTY_NAME);
             Session mailSession = Session.getDefaultInstance(properties);
             MimeMessage message = createMimeMessage(messageToSend, supportEmail, mailSession);
             Transport transport = mailSession.getTransport();

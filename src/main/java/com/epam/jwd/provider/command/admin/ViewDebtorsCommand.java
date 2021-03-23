@@ -27,6 +27,12 @@ public enum ViewDebtorsCommand implements Command {
     };
 
     private static final int RECORDS_PER_PAGE = 4;
+    private static final String PAGE_PARAMETER_NAME = "page";
+    private static final String USERS_ATTRIBUTE_NAME = "users";
+    private static final String PAGES_COUNT_ATTRIBUTE_NAME = "noOfPages";
+    private static final String CURRENT_PAGE_ATTRIBUTE_NAME = "currentPage";
+    private static final String COMMAND_ATTRIBUTE_NAME = "command";
+    private static final String PAGE_COMMAND = "view_debtors";
 
     @Override
     public ResponseContext execute(RequestContext request) {
@@ -44,17 +50,17 @@ public enum ViewDebtorsCommand implements Command {
 
     private void doPagination(RequestContext request, List<UserDto> users) {
         int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        if (request.getParameter(PAGE_PARAMETER_NAME) != null) {
+            page = Integer.parseInt(request.getParameter(PAGE_PARAMETER_NAME));
         }
         int noOfRecords = users.size();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
         int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
         List<UserDto> usersOnPage = users
                 .subList((page - 1) * RECORDS_PER_PAGE, toIndex);
-        request.setAttribute("users", usersOnPage);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
-        request.setAttribute("command", "view_debtors");
+        request.setAttribute(USERS_ATTRIBUTE_NAME, usersOnPage);
+        request.setAttribute(PAGES_COUNT_ATTRIBUTE_NAME, noOfPages);
+        request.setAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, page);
+        request.setAttribute(COMMAND_ATTRIBUTE_NAME, PAGE_COMMAND);
     }
 }

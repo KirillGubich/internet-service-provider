@@ -24,27 +24,34 @@ public enum ShowTariffsPage implements Command {
     };
 
     private static final int RECORDS_PER_PAGE = 4;
+    private static final String SPECIAL_OFFERS_ATTRIBUTE_NAME = "specialOffers";
+    private static final String PAGE_PARAMETER_NAME = "page";
+    private static final String TARIFFS_PAGE_ATTRIBUTE_NAME = "tariffs";
+    private static final String PAGES_COUNT_ATTRIBUTE_NAME = "noOfPages";
+    private static final String CURRENT_PAGE_ATTRIBUTE_NAME = "currentPage";
 
     @Override
     public ResponseContext execute(RequestContext request) {
         List<TariffDto> tariffs = RealTariffService.INSTANCE.findAll();
         List<TariffDto> specialOffers = RealTariffService.INSTANCE.findSpecialOffers();
-        doPagination(request, tariffs);
-        request.setAttribute("specialOffers", specialOffers);
+        if (!tariffs.isEmpty()) {
+            doPagination(request, tariffs);
+        }
+        request.setAttribute(SPECIAL_OFFERS_ATTRIBUTE_NAME, specialOffers);
         return TARIFFS_PAGE_RESPONSE;
     }
 
     private void doPagination(RequestContext request, List<TariffDto> tariffs) {
         int page = 1;
-        if (request.getParameter("page") != null) {
-            page = Integer.parseInt(request.getParameter("page"));
+        if (request.getParameter(PAGE_PARAMETER_NAME) != null) {
+            page = Integer.parseInt(request.getParameter(PAGE_PARAMETER_NAME));
         }
         int noOfRecords = tariffs.size();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / RECORDS_PER_PAGE);
         int toIndex = page != noOfPages ? page * RECORDS_PER_PAGE : noOfRecords;
         List<TariffDto> tariffsOnPage = tariffs.subList((page - 1) * RECORDS_PER_PAGE, toIndex);
-        request.setAttribute("tariffs", tariffsOnPage);
-        request.setAttribute("noOfPages", noOfPages);
-        request.setAttribute("currentPage", page);
+        request.setAttribute(TARIFFS_PAGE_ATTRIBUTE_NAME, tariffsOnPage);
+        request.setAttribute(PAGES_COUNT_ATTRIBUTE_NAME, noOfPages);
+        request.setAttribute(CURRENT_PAGE_ATTRIBUTE_NAME, page);
     }
 }

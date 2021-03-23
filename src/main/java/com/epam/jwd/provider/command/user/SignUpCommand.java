@@ -22,21 +22,26 @@ public enum SignUpCommand implements Command {
         }
     };
 
+    private static final String USER_LOGIN_PARAMETER_NAME = "userLogin";
+    private static final String USER_PASSWORD_PARAMETER_NAME = "userPassword";
+    private static final String USER_PASSWORD_REPEAT_PARAMETER_NAME = "userRepPassword";
+    private static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
+
     SignUpCommand() {
         this.userService = RealUserService.INSTANCE;
     }
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String login = String.valueOf(request.getParameter("userLogin"));
-        final String password = String.valueOf(request.getParameter("userPassword"));
-        final String repPassword = String.valueOf(request.getParameter("userRepPassword"));
+        String login = String.valueOf(request.getParameter(USER_LOGIN_PARAMETER_NAME));
+        final String password = String.valueOf(request.getParameter(USER_PASSWORD_PARAMETER_NAME));
+        final String repPassword = String.valueOf(request.getParameter(USER_PASSWORD_REPEAT_PARAMETER_NAME));
         login = login.replace("\\s+", "");
         boolean signedUpSuccessfully = userService.signUp(login, password, repPassword);
         if (signedUpSuccessfully) {
             return LOGIN_PAGE_RESPONSE;
         } else {
-            request.setAttribute("errorMessage", Boolean.TRUE);
+            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
             return ShowUserSignUpPage.INSTANCE.execute(request);
         }
     }

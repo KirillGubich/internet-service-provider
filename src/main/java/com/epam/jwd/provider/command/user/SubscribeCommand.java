@@ -38,31 +38,39 @@ public enum SubscribeCommand implements Command {
 
     private final SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
     private final TariffService tariffService = RealTariffService.INSTANCE;
+    private static final String TARIFF_PARAMETER_NAME = "tariff";
+    private static final String VALIDITY_PARAMETER_NAME = "validity";
+    private static final String CITY_PARAMETER_NAME = "city";
+    private static final String ADDRESS_PARAMETER_NAME = "address";
+    private static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
+    private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
+    private static final String SPEED_TITLE = ". Speed: ";
+    private static final String SPEED_UNIT = " MBit/s";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String tariff = String.valueOf(request.getParameter("tariff"));
-        int validity = Integer.parseInt(request.getParameter("validity"));
-        String city = String.valueOf(request.getParameter("city"));
-        String address = String.valueOf(request.getParameter("address"));
+        String tariff = String.valueOf(request.getParameter(TARIFF_PARAMETER_NAME));
+        int validity = Integer.parseInt(request.getParameter(VALIDITY_PARAMETER_NAME));
+        String city = String.valueOf(request.getParameter(CITY_PARAMETER_NAME));
+        String address = String.valueOf(request.getParameter(ADDRESS_PARAMETER_NAME));
 
         Optional<TariffDto> tariffInfo = tariffService.findByName(tariff);
         if (!tariffInfo.isPresent()) {
-            request.setAttribute("errorMessage", "Selected tariff is not available.");
+            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
             return ShowSubscriptionPage.INSTANCE.execute(request);
         }
 
-        Integer accountId = (Integer) request.getSessionAttribute("accountId");
+        Integer accountId = (Integer) request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
         Optional<Integer> tariffId = tariffService.findTariffId(tariffInfo.get().getName());
         if (!tariffId.isPresent()) {
-            request.setAttribute("errorMessage", "Selected tariff is not available.");
+            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
             return ShowSubscriptionPage.INSTANCE.execute(request);
         }
 
         AddressDto addressDto = AddressDtoFactory.INSTANCE.create(city, address);
         BigDecimal price = countPrice(validity, tariffInfo.get());
         if (!payForSubscription(accountId, price)) {
-            request.setAttribute("errorMessage", "Account is blocked. Contact support.");
+            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
             return ShowSubscriptionPage.INSTANCE.execute(request);
         }
 
@@ -90,8 +98,8 @@ public enum SubscribeCommand implements Command {
                 .withStartDate(startDate)
                 .withEndDate(endDate)
                 .withTariffName(tariff.getName())
-                .withTariffDescription(tariff.getDescription() + ". Speed: " + tariff.getDownloadSpeed()
-                        + "/" + tariff.getUploadSpeed() + " MBit/s")
+                .withTariffDescription(tariff.getDescription() + SPEED_TITLE + tariff.getDownloadSpeed()
+                        + "/" + tariff.getUploadSpeed() + SPEED_UNIT)
                 .withStatus(SubscriptionStatus.REQUESTED)
                 .withAddress(addressDto)
                 .build();

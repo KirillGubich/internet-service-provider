@@ -22,9 +22,11 @@ public enum DeleteTariffCommand implements Command {
         }
     };
 
+    private static final String TARIFF_NAME_PARAMETER_NAME = "tariffName";
+
     @Override
     public ResponseContext execute(RequestContext request) {
-        String tariffName = request.getParameter("tariffName");
+        String tariffName = request.getParameter(TARIFF_NAME_PARAMETER_NAME);
         TariffDto tariffDto = TariffDto.builder().withName(tariffName).build();
         TariffService tariffService = RealTariffService.INSTANCE;
         tariffService.delete(tariffDto);

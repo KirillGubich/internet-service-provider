@@ -38,21 +38,28 @@ public enum LoginCommand implements Command {
         }
     };
 
+    private static final String USER_LOGIN_PARAMETER_NAME = "userLogin";
+    private static final String USER_PASSWORD_PARAMETER_NAME = "userPassword";
+    private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "userRole";
+    private static final String USER_LOGIN_SESSION_ATTRIBUTE_NAME = "userLogin";
+    private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
+    private static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
+
     LoginCommand() {
         userService = RealUserService.INSTANCE;
     }
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String login = String.valueOf(request.getParameter("userLogin"));
-        final String password = String.valueOf(request.getParameter("userPassword"));
+        String login = String.valueOf(request.getParameter(USER_LOGIN_PARAMETER_NAME));
+        final String password = String.valueOf(request.getParameter(USER_PASSWORD_PARAMETER_NAME));
         login = login.replace("\\s+", "");
         final Optional<UserDto> user = userService.login(login, password);
         ResponseContext result;
         if (user.isPresent()) {
-            request.setSessionAttribute("userRole", user.get().getRole());
-            request.setSessionAttribute("userLogin", login);
-            request.setSessionAttribute("accountId", user.get().getId());
+            request.setSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME, user.get().getRole());
+            request.setSessionAttribute(USER_LOGIN_SESSION_ATTRIBUTE_NAME, login);
+            request.setSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME, user.get().getId());
             if (user.get().getRole().equals(UserRole.ADMIN)) {
                 result = ADMIN_PAGE_RESPONSE;
             } else {
@@ -60,7 +67,7 @@ public enum LoginCommand implements Command {
             }
         } else {
             result = ShowUserLoginPage.INSTANCE.execute(request);
-            request.setAttribute("errorMessage", Boolean.TRUE);
+            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
         }
         return result;
     }

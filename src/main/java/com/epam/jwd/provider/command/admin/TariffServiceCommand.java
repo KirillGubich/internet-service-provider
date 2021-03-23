@@ -23,19 +23,27 @@ public enum TariffServiceCommand implements Command {
             return true;
         }
     };
+
     private static final String CREATE_ACTION = "create";
     private static final String UPDATE_ACTION = "update";
     private static final String TARIFF_IS_SPECIAL_OFFER = "yes";
+    private static final String TARIFF_NAME_PARAMETER_NAME = "tariffName";
+    private static final String DESCRIPTION_PARAMETER_NAME = "description";
+    private static final String SPECIAL_OFFER_PARAMETER_NAME = "specialOffer";
+    private static final String PRICE_PARAMETER_NAME = "price";
+    private static final String DOWNLOAD_SPEED_PARAMETER_NAME = "downloadSpeed";
+    private static final String UPLOAD_SPEED_PARAMETER_NAME = "uploadSpeed";
+    private static final String ACTION_PARAMETER_NAME = "action";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String name = request.getParameter("tariffName");
-        String description = request.getParameter("description");
-        String specialOffer = request.getParameter("specialOffer");
-        BigDecimal price = new BigDecimal(request.getParameter("price"));
-        Double downloadSpeed = Double.valueOf(request.getParameter("downloadSpeed"));
-        Double uploadSpeed = Double.valueOf(request.getParameter("uploadSpeed"));
-        String action = request.getParameter("action");
+        String name = request.getParameter(TARIFF_NAME_PARAMETER_NAME);
+        String description = request.getParameter(DESCRIPTION_PARAMETER_NAME);
+        String specialOffer = request.getParameter(SPECIAL_OFFER_PARAMETER_NAME);
+        BigDecimal price = new BigDecimal(request.getParameter(PRICE_PARAMETER_NAME));
+        Double downloadSpeed = Double.valueOf(request.getParameter(DOWNLOAD_SPEED_PARAMETER_NAME));
+        Double uploadSpeed = Double.valueOf(request.getParameter(UPLOAD_SPEED_PARAMETER_NAME));
+        String action = request.getParameter(ACTION_PARAMETER_NAME);
         TariffDto tariff = getTariffDto(name, description, specialOffer, price, downloadSpeed, uploadSpeed);
         TariffService tariffService = RealTariffService.INSTANCE;
         if (action.equals(CREATE_ACTION)) {

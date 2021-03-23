@@ -44,13 +44,17 @@ public enum ChangeSubscriptionStatusCommand implements Command {
     };
 
     private final SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
+    private static final String SUBSCRIPTION_ID_PARAMETER_NAME = "subId";
+    private static final String USER_ID_PARAMETER_NAME = "userId";
+    private static final String STATUS_PARAMETER_NAME = "status";
+    private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "userRole";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer subscriptionId = Integer.valueOf(request.getParameter("subId"));
-        Integer accountId = Integer.valueOf(request.getParameter("userId"));
-        SubscriptionStatus status = SubscriptionStatus.of(request.getParameter("status"));
-        UserRole userRole = (UserRole)request.getSessionAttribute("userRole");
+        Integer subscriptionId = Integer.valueOf(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
+        Integer accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
+        SubscriptionStatus status = SubscriptionStatus.of(request.getParameter(STATUS_PARAMETER_NAME));
+        UserRole userRole = (UserRole)request.getSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
         Optional<SubscriptionDto> subscription = fetchSubscriptionInfo(subscriptionId, accountId);
         if (subscription.isPresent()) {
             if (status.equals(SubscriptionStatus.CANCELED) || status.equals(SubscriptionStatus.DENIED)) {

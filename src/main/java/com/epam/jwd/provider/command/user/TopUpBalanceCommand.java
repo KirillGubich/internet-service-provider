@@ -26,11 +26,13 @@ public enum TopUpBalanceCommand implements Command {
             return true;
         }
     };
+    private static final String TOP_UP_VALUE_PARAMETER_NAME = "topUpValue";
+    private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        BigDecimal topUpValue = new BigDecimal(request.getParameter("topUpValue"));
-        Integer accountId = (Integer) request.getSessionAttribute("accountId");
+        BigDecimal topUpValue = new BigDecimal(request.getParameter(TOP_UP_VALUE_PARAMETER_NAME));
+        Integer accountId = (Integer) request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
         if (accountId == null) {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
