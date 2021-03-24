@@ -1,7 +1,6 @@
 package com.epam.jwd.provider.model.dto;
 
 import com.epam.jwd.provider.model.BaseDto;
-import com.epam.jwd.provider.model.entity.Tariff;
 
 import java.math.BigDecimal;
 import java.util.Objects;

@@ -144,13 +144,13 @@ public class TariffDao implements CommonDao<Tariff> {
 
     private Optional<Tariff> extractTariff(ResultSet resultSet) throws SQLException {
         return Optional.of(Tariff.builder()
-        .withId(resultSet.getInt("id"))
-        .withName(resultSet.getString("name"))
-        .withDescription(resultSet.getString("description"))
-        .withSpecialOffer(resultSet.getBoolean("special_offer"))
-        .withCostPerDay(resultSet.getBigDecimal("price"))
-        .withDownloadSpeed(resultSet.getDouble("download_speed"))
-        .withUploadSpeed(resultSet.getDouble("upload_speed"))
-        .build());
+                .withId(resultSet.getInt("id"))
+                .withName(resultSet.getString("name"))
+                .withDescription(resultSet.getString("description"))
+                .withSpecialOffer(resultSet.getBoolean("special_offer"))
+                .withCostPerDay(resultSet.getBigDecimal("price"))
+                .withDownloadSpeed(resultSet.getDouble("download_speed"))
+                .withUploadSpeed(resultSet.getDouble("upload_speed"))
+                .build());
     }
 }

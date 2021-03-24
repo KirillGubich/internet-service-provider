@@ -83,7 +83,7 @@ public class SubscriptionDao implements CommonDao<Subscription> {
             statement.setInt(1, entity.getId());
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-               return extractSubscription(resultSet);
+                return extractSubscription(resultSet);
             }
         } catch (InterruptedException | SQLException | PropertiesAbsenceException e) {
             LOGGER.error(e.getMessage());

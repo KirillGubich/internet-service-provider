@@ -48,6 +48,7 @@ public class Subscription extends BaseEntity {
     public SubscriptionStatus getStatus() {
         return status;
     }
+
     public Address getAddress() {
         return address;
     }

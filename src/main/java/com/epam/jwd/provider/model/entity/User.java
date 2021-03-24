@@ -27,6 +27,7 @@ public class User extends BaseEntity {
     public BigDecimal getBalance() {
         return balance;
     }
+
     public Boolean getActive() {
         return isActive;
     }
