@@ -19,7 +19,6 @@ import java.util.List;
 
 @WebFilter
 public class UserFilter implements Filter {
-
     private static final List<String> pagesForAuthorizedUsersOnly = new ArrayList<>();
     private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "userRole";
     private static final String LOGIN_PAGE_LINK = "/controller?command=show_user_login_page";
@@ -31,6 +30,10 @@ public class UserFilter implements Filter {
         pagesForAuthorizedUsersOnly.add("show_subscription_page");
         pagesForAuthorizedUsersOnly.add("subscribe");
         pagesForAuthorizedUsersOnly.add("logout");
+        pagesForAuthorizedUsersOnly.add("cancel_subscription");
+        pagesForAuthorizedUsersOnly.add("change_password");
+        pagesForAuthorizedUsersOnly.add("contact_support");
+        pagesForAuthorizedUsersOnly.add("top_up_balance");
     }
 
     @Override
@@ -39,7 +42,7 @@ public class UserFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();
         UserRole userRole = (UserRole) session.getAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME);
-        if (UserRole.GUEST.equals(userRole) || userRole == null) {
+        if (!UserRole.USER.equals(userRole)) {
             String queryString = req.getQueryString();
             for (String page : pagesForAuthorizedUsersOnly) {
                 if (queryString != null && queryString.contains(page)) {

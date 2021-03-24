@@ -19,7 +19,6 @@ import java.util.Optional;
 
 @WebFilter
 public class SessionFilter implements Filter {
-
     private static final String LOCALE_KEY = "locale";
     private static final String USER_ROLE_KEY = "userRole";
     private static final String DEFAULT_LOCALE = "en";

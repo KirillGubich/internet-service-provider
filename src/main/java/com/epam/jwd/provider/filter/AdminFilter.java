@@ -8,6 +8,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,8 +16,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebFilter
 public class AdminFilter implements Filter {
-
     private static final List<String> pagesForAdminOnly = new ArrayList<>();
     private static final String USER_ROLE_SESSION_ATTRIBUTE_NAME = "userRole";
     private static final String LOGIN_PAGE_LINK = "/controller?command=show_user_login_page";
