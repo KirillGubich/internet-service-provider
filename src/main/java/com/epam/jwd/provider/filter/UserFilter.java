@@ -5,7 +5,6 @@ import com.epam.jwd.provider.model.entity.UserRole;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -29,7 +28,6 @@ public class UserFilter implements Filter {
         pagesForAuthorizedUsersOnly.add("show_settings_page");
         pagesForAuthorizedUsersOnly.add("show_subscription_page");
         pagesForAuthorizedUsersOnly.add("subscribe");
-        pagesForAuthorizedUsersOnly.add("logout");
         pagesForAuthorizedUsersOnly.add("cancel_subscription");
         pagesForAuthorizedUsersOnly.add("change_password");
         pagesForAuthorizedUsersOnly.add("contact_support");

@@ -51,8 +51,10 @@
                 <form method="post" action="${pageContext.request.contextPath}/controller">
                     <input type='hidden' name='command' value='tariff_service'/>
                     <input type='hidden' name='action' value='create'/>
-                    <input class="city" type="text" placeholder="<fmt:message key="field.name"/>" name="tariffName" required>
-                    <input class="city" type="text" placeholder="<fmt:message key="field.description"/>" name="description" required>
+                    <input class="city" type="text" placeholder="<fmt:message key="field.create.name"/>" name="tariffName"
+                           pattern="[a-zA-Z][\w]{2,100}$" required>
+                    <input class="city" type="text" placeholder="<fmt:message key="field.description"/>" name="description"
+                           pattern="[a-zA-Z][\w]{2,100}$" required>
                     <select class="time_list" name="specialOffer" required>
                         <option value=""><fmt:message key="field.specialOffer"/></option>
                         <option value="yes"><fmt:message key="field.yes"/></option>
@@ -79,7 +81,8 @@
                             </c:forEach>
                         </c:if>
                     </select>
-                    <input class="city" type="text" placeholder="<fmt:message key="field.description"/>" name="description" required>
+                    <input class="city" type="text" placeholder="<fmt:message key="field.description"/>" name="description"
+                           pattern="[a-zA-Z][\w]{2,100}$" required>
                     <select class="time_list" name="specialOffer" required>
                         <option value=""><fmt:message key="field.specialOffer"/></option>
                         <option value="yes"><fmt:message key="field.yes"/></option>

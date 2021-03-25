@@ -9,7 +9,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Null;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -122,9 +121,19 @@ public class RealUserServiceTest {
     }
 
     @Test
-    public void signUp_receiveFalse_whenPasswordToShort() {
+    public void signUp_receiveFalse_whenPasswordIncorrect() {
         String login = "Name";
-        String password = "toShort";
+        String password = "incorrect";
+        Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.empty());
+        service.setUserDao(userDao);
+        boolean actual = service.signUp(login, password, password);
+        assertFalse(actual);
+    }
+
+    @Test
+    public void signUp_receiveFalse_whenLoginIncorrect() {
+        String login = "a";
+        String password = "CorrectPassword123";
         Mockito.when(userDao.findUserByLogin(login)).thenReturn(Optional.empty());
         service.setUserDao(userDao);
         boolean actual = service.signUp(login, password, password);
@@ -205,26 +214,10 @@ public class RealUserServiceTest {
     }
 
     @Test
-    public void changePassword_receiveFalse_WhenNewPasswordToShort() {
+    public void changePassword_receiveFalse_WhenNewPasswordIncorrect() {
         Integer accountId = 1;
         String password = "SecretPassword";
-        String newPassword = "NewPassword";
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        User user = User.builder()
-                .withLogin("Name")
-                .withPassword(hashedPassword)
-                .build();
-        Mockito.when(userDao.findUserById(accountId)).thenReturn(Optional.of(user));
-        service.setUserDao(userDao);
-        boolean actual = service.changePassword(accountId, password, newPassword, newPassword);
-        assertTrue(actual);
-    }
-
-    @Test
-    public void changePassword_receiveTrue_WhenEverythingCorrect() {
-        Integer accountId = 1;
-        String password = "SecretPassword";
-        String newPassword = "toShort";
+        String newPassword = "incorrect";
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         User user = User.builder()
                 .withLogin("Name")
@@ -234,6 +227,22 @@ public class RealUserServiceTest {
         service.setUserDao(userDao);
         boolean actual = service.changePassword(accountId, password, newPassword, newPassword);
         assertFalse(actual);
+    }
+
+    @Test
+    public void changePassword_receiveTrue_WhenEverythingCorrect() {
+        Integer accountId = 1;
+        String password = "SecretPassword";
+        String newPassword = "CorrectPassword1";
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        User user = User.builder()
+                .withLogin("Name")
+                .withPassword(hashedPassword)
+                .build();
+        Mockito.when(userDao.findUserById(accountId)).thenReturn(Optional.of(user));
+        service.setUserDao(userDao);
+        boolean actual = service.changePassword(accountId, password, newPassword, newPassword);
+        assertTrue(actual);
     }
 
     private User createUser() {

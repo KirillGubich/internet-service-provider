@@ -49,6 +49,7 @@ public enum LoginCommand implements Command {
     private static final String USER_LOGIN_SESSION_ATTRIBUTE_NAME = "userLogin";
     private static final String ACCOUNT_ID_SESSION_ATTRIBUTE_NAME = "accountId";
     private static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
+    private static final String TARGET_REGEXP = "\\s+";
 
     LoginCommand() {
         userService = RealUserService.INSTANCE;
@@ -58,7 +59,7 @@ public enum LoginCommand implements Command {
     public ResponseContext execute(RequestContext request) {
         String login = String.valueOf(request.getParameter(USER_LOGIN_PARAMETER_NAME));
         final String password = String.valueOf(request.getParameter(USER_PASSWORD_PARAMETER_NAME));
-        login = login.replace("\\s+", "");
+        login = login.replace(TARGET_REGEXP, "");
         final Optional<UserDto> user = userService.login(login, password);
         ResponseContext result;
         if (user.isPresent()) {

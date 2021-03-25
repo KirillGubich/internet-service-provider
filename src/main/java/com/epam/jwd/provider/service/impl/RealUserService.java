@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toList;
 
@@ -20,7 +21,8 @@ public enum RealUserService implements UserService {
     INSTANCE;
 
     private static final String DUMMY_PASSWORD = "$2y$12$68aa7ZF41prLfrxYx9yCwunnY8OpWxP9uNdH2B1vaEO/EjAcCsqk.";
-    private static final int PASSWORD_MINIMAL_LENGTH = 8;
+    private static final String LOGIN_REGEXP = "[a-zA-Z][\\w]{3,100}$";
+    private static final String PASSWORD_REGEXP = "^(?=^.{8,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$";
     private UserDao userDao = UserDao.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(RealUserService.class);
 
@@ -76,8 +78,10 @@ public enum RealUserService implements UserService {
     public boolean signUp(String login, String password, String passwordRepeat) {
         Optional<User> user = userDao.findUserByLogin(login);
         boolean passwordCorrect;
-        passwordCorrect = password.equals(passwordRepeat) && password.length() >= PASSWORD_MINIMAL_LENGTH;
-        if (!user.isPresent() && passwordCorrect) {
+        boolean loginCorrect;
+        loginCorrect = Pattern.matches(LOGIN_REGEXP, login);
+        passwordCorrect = password.equals(passwordRepeat) && Pattern.matches(PASSWORD_REGEXP, password);
+        if (!user.isPresent() && loginCorrect && passwordCorrect) {
             userDao.create(User.builder().withLogin(login).withPassword(hash(password)).build());
             return true;
         }
@@ -145,7 +149,7 @@ public enum RealUserService implements UserService {
     private boolean checkPassword(String oldPassword, String updPassword, String updPasswordRepeat, User user) {
         return BCrypt.checkpw(oldPassword, user.getPassword())
                 && updPassword.equals(updPasswordRepeat)
-                && updPassword.length() >= PASSWORD_MINIMAL_LENGTH;
+                && Pattern.matches(PASSWORD_REGEXP, updPassword);
     }
 
     private UserDto convertToDto(User user) {
