@@ -1,6 +1,6 @@
 ## Internet service provider
 Internet provider web application. Has a set of functionality for user, with which he can manage his account and send requests for subscription. 
-In turn, the administrator's functionality allows to manage subscriptions, tariffs and users.
+In turn, the administrator's functionality allows managing subscriptions, tariffs and users.
 ## Functional
 ### Guest:
 * Sign up or login.
@@ -20,12 +20,14 @@ In turn, the administrator's functionality allows to manage subscriptions, tarif
 * ##### User management:
 - View all users.
 - Blocking users.
-- View debtors
+- View debtors.
+- Delete accounts.
 * ##### Subscription management:
-- View all sibscriptions.
+- View all subscriptions.
 - View requests.
 - Subscription status management.
-## Techologies
+- Delete subscriptions.
+## Technologies
 * Servlet and JSP
 * MySQL
 ## Supported languages
