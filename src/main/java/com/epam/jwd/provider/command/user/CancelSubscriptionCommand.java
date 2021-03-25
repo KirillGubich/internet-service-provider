@@ -39,8 +39,14 @@ public enum CancelSubscriptionCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer subscriptionId = Integer.valueOf(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
-        Integer accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
+        int subscriptionId;
+        Integer accountId;
+        try {
+            subscriptionId = Integer.parseInt(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
+            accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
+        } catch (NumberFormatException e) {
+            return USER_PAGE_RESPONSE;
+        }
         List<SubscriptionDto> userSubscriptions = subscriptionService.findUserSubscriptions(accountId);
         Optional<SubscriptionDto> subscriptionDto = userSubscriptions
                 .stream()

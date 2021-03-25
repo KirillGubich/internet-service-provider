@@ -4,10 +4,13 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.dto.UserDto;
+import com.epam.jwd.provider.model.entity.UserRole;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Shows user management page for administrator.
@@ -40,8 +43,13 @@ public enum ShowUsersForAdminPage implements Command {
     public ResponseContext execute(RequestContext request) {
         UserService service = RealUserService.INSTANCE;
         List<UserDto> allUsers = service.findAll();
-        if (!allUsers.isEmpty()) {
-            doPagination(request, allUsers);
+        List<UserDto> users = allUsers
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(userDto -> UserRole.USER.equals(userDto.getRole()))
+                .collect(Collectors.toList());
+        if (!users.isEmpty()) {
+            doPagination(request, users);
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;
     }

@@ -22,7 +22,7 @@ import java.util.Optional;
 public enum ChangeSubscriptionStatusCommand implements Command {
     INSTANCE;
 
-    private static final ResponseContext ADMIN_PAGE_RESPONSE = new ResponseContext() {
+    private static final ResponseContext SUBSCRIPTION_SETTINGS_PAGE_RESPONSE = new ResponseContext() {
         @Override
         public String getPage() {
             return "/controller?command=show_subscription_settings_page";
@@ -41,8 +41,14 @@ public enum ChangeSubscriptionStatusCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer subscriptionId = Integer.valueOf(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
-        Integer accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
+        int subscriptionId;
+        Integer accountId;
+        try {
+            subscriptionId = Integer.parseInt(request.getParameter(SUBSCRIPTION_ID_PARAMETER_NAME));
+            accountId = Integer.valueOf(request.getParameter(USER_ID_PARAMETER_NAME));
+        } catch (NumberFormatException e) {
+            return SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
+        }
         SubscriptionStatus status = SubscriptionStatus.of(request.getParameter(STATUS_PARAMETER_NAME));
         Optional<SubscriptionDto> subscription = fetchSubscriptionInfo(subscriptionId, accountId);
         if (subscription.isPresent()) {
@@ -51,7 +57,7 @@ public enum ChangeSubscriptionStatusCommand implements Command {
             }
             updateSubscriptionStatus(subscription.get(), status);
         }
-        return ADMIN_PAGE_RESPONSE;
+        return SUBSCRIPTION_SETTINGS_PAGE_RESPONSE;
     }
 
     private Optional<SubscriptionDto> fetchSubscriptionInfo(Integer subscriptionId, Integer accountId) {

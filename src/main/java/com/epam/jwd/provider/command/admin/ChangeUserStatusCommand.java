@@ -9,12 +9,12 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.util.Optional;
 
+/**
+ * Changes user's status. Upon completion, returns the administrator to user settings page.
+ */
 public enum ChangeUserStatusCommand implements Command {
     INSTANCE;
 
-    /**
-     * Changes user's status. Upon completion, returns the administrator to user settings page.
-     */
     private static final ResponseContext USERS_FOR_ADMIN_PAGE_RESPONSE = new ResponseContext() {
         @Override
         public String getPage() {
@@ -33,7 +33,12 @@ public enum ChangeUserStatusCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        Integer id = Integer.valueOf(request.getParameter(ID_PARAMETER_NAME));
+        int id;
+        try {
+            id = Integer.parseInt(request.getParameter(ID_PARAMETER_NAME));
+        } catch (NumberFormatException e) {
+            return USERS_FOR_ADMIN_PAGE_RESPONSE;
+        }
         String active = request.getParameter(ACTIVE_PARAMETER_NAME);
         UserService userService = RealUserService.INSTANCE;
         Optional<UserDto> user = userService.findById(id);

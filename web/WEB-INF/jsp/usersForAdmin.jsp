@@ -58,7 +58,13 @@
                             </colgroup>
                             <tr>
                                 <td>ID</td>
-                                <td>${user.id}</td>
+                                <td>
+                                        ${user.id}
+                                            <a href="${pageContext.request.contextPath}
+                                    /controller?command=delete_account&userId=${user.id}">
+                                                (<fmt:message key="delete.caption"/>)
+                                            </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="login.caption"/></td>

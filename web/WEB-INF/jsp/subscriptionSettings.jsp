@@ -58,7 +58,13 @@
                             </colgroup>
                             <tr>
                                 <td>ID</td>
-                                <td>${subscription.id}</td>
+                                <td>
+                                        ${subscription.id}
+                                    <a href="${pageContext.request.contextPath}
+                                    /controller?command=delete_subscription&subId=${subscription.id}">
+                                        (<fmt:message key="delete.caption"/>)
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><fmt:message key="subscriptionInfo.tariff"/></td>

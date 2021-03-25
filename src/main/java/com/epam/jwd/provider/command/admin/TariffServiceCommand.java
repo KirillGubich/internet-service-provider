@@ -43,9 +43,17 @@ public enum TariffServiceCommand implements Command {
         String name = request.getParameter(TARIFF_NAME_PARAMETER_NAME);
         String description = request.getParameter(DESCRIPTION_PARAMETER_NAME);
         String specialOffer = request.getParameter(SPECIAL_OFFER_PARAMETER_NAME);
-        BigDecimal price = new BigDecimal(request.getParameter(PRICE_PARAMETER_NAME));
-        Double downloadSpeed = Double.valueOf(request.getParameter(DOWNLOAD_SPEED_PARAMETER_NAME));
-        Double uploadSpeed = Double.valueOf(request.getParameter(UPLOAD_SPEED_PARAMETER_NAME));
+        BigDecimal price;
+        double downloadSpeed;
+        double uploadSpeed;
+        try {
+            price = new BigDecimal(request.getParameter(PRICE_PARAMETER_NAME));
+            downloadSpeed = Double.parseDouble(request.getParameter(DOWNLOAD_SPEED_PARAMETER_NAME));
+            uploadSpeed = Double.parseDouble(request.getParameter(UPLOAD_SPEED_PARAMETER_NAME));
+        } catch (NumberFormatException | NullPointerException e) {
+            return TARIFF_SETTINGS_PAGE_RESPONSE;
+        }
+
         String action = request.getParameter(ACTION_PARAMETER_NAME);
         TariffDto tariff = getTariffDto(name, description, specialOffer, price, downloadSpeed, uploadSpeed);
         TariffService tariffService = RealTariffService.INSTANCE;

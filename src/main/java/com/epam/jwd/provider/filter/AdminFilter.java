@@ -36,10 +36,13 @@ public class AdminFilter implements Filter {
         pagesForAdminOnly.add("show_subscription_settings_page");
         pagesForAdminOnly.add("show_tariff_settings_page");
         pagesForAdminOnly.add("show_users_for_admin_page");
+        pagesForAdminOnly.add("delete_account");
+        pagesForAdminOnly.add("delete_subscription");
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession();

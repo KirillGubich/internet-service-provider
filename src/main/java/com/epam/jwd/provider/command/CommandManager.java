@@ -2,6 +2,8 @@ package com.epam.jwd.provider.command;
 
 import com.epam.jwd.provider.command.admin.ChangeSubscriptionStatusCommand;
 import com.epam.jwd.provider.command.admin.ChangeUserStatusCommand;
+import com.epam.jwd.provider.command.admin.DeleteAccountCommand;
+import com.epam.jwd.provider.command.admin.DeleteSubscriptionCommand;
 import com.epam.jwd.provider.command.admin.DeleteTariffCommand;
 import com.epam.jwd.provider.command.admin.FindSubscriptionCommand;
 import com.epam.jwd.provider.command.admin.TariffServiceCommand;
@@ -57,6 +59,8 @@ public enum CommandManager {
     VIEW_SUBSCRIPTION_REQUESTS(ViewSubscriptionRequestsCommand.INSTANCE),
     CHANGE_SUBSCRIPTION_STATUS(ChangeSubscriptionStatusCommand.INSTANCE),
     SET_LOCALIZATION(SetLocalizationCommand.INSTANCE),
+    DELETE_SUBSCRIPTION(DeleteSubscriptionCommand.INSTANCE),
+    DELETE_ACCOUNT(DeleteAccountCommand.INSTANCE),
     DEFAULT(ShowMainPage.INSTANCE);
 
     private final Command command;

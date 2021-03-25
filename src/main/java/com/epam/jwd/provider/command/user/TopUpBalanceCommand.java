@@ -34,7 +34,12 @@ public enum TopUpBalanceCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        BigDecimal topUpValue = new BigDecimal(request.getParameter(TOP_UP_VALUE_PARAMETER_NAME));
+        BigDecimal topUpValue;
+        try {
+            topUpValue = new BigDecimal(request.getParameter(TOP_UP_VALUE_PARAMETER_NAME));
+        } catch (NullPointerException e) {
+            return SETTINGS_PAGE_RESPONSE_REDIRECT;
+        }
         Integer accountId = (Integer) request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
         if (accountId == null) {
             return ShowUserLoginPage.INSTANCE.execute(request);

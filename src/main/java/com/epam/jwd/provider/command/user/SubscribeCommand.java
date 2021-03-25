@@ -52,36 +52,48 @@ public enum SubscribeCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        String tariff = String.valueOf(request.getParameter(TARIFF_PARAMETER_NAME));
-        int validity = Integer.parseInt(request.getParameter(VALIDITY_PARAMETER_NAME));
-        String city = String.valueOf(request.getParameter(CITY_PARAMETER_NAME));
-        String address = String.valueOf(request.getParameter(ADDRESS_PARAMETER_NAME));
+        int validity;
+        try {
+            validity = Integer.parseInt(request.getParameter(VALIDITY_PARAMETER_NAME));
+        } catch (NumberFormatException e) {
+            return ShowSubscriptionPage.INSTANCE.execute(request);
+        }
 
+        String tariff = String.valueOf(request.getParameter(TARIFF_PARAMETER_NAME));
         Optional<TariffDto> tariffInfo = tariffService.findByName(tariff);
         if (!tariffInfo.isPresent()) {
-            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
-            return ShowSubscriptionPage.INSTANCE.execute(request);
+            return setErrorMessage(request);
+        }
+
+        Optional<Integer> tariffId = tariffService.findTariffId(tariffInfo.get().getName());
+        if (!tariffId.isPresent()) {
+            return setErrorMessage(request);
         }
 
         Integer accountId = (Integer) request.getSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME);
-        Optional<Integer> tariffId = tariffService.findTariffId(tariffInfo.get().getName());
-        if (!tariffId.isPresent()) {
-            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
-            return ShowSubscriptionPage.INSTANCE.execute(request);
-        }
-
-        AddressDto addressDto = AddressDtoFactory.INSTANCE.create(city, address);
         BigDecimal price = countPrice(validity, tariffInfo.get());
-        if (!payForSubscription(accountId, price)) {
-            request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
-            return ShowSubscriptionPage.INSTANCE.execute(request);
+        boolean payedSuccessfully = payForSubscription(accountId, price);
+        if (!payedSuccessfully) {
+            return setErrorMessage(request);
         }
 
-        SubscriptionDto subscriptionDto = createDto(tariffInfo.get(), accountId, tariffId.get(), validity,
+        String city = String.valueOf(request.getParameter(CITY_PARAMETER_NAME));
+        String address = String.valueOf(request.getParameter(ADDRESS_PARAMETER_NAME));
+        createSubscription(validity, city, address, tariffInfo.get(), tariffId.get(), price, accountId);
+        return USER_PAGE_RESPONSE;
+    }
+
+    private ResponseContext setErrorMessage(RequestContext request) {
+        request.setAttribute(ERROR_MESSAGE_ATTRIBUTE_NAME, Boolean.TRUE);
+        return ShowSubscriptionPage.INSTANCE.execute(request);
+    }
+
+    private void createSubscription(int validity, String city, String address, TariffDto tariffInfo, Integer tariffId,
+                                    BigDecimal price, Integer accountId) {
+        AddressDto addressDto = AddressDtoFactory.INSTANCE.create(city, address);
+        SubscriptionDto subscriptionDto = createDto(tariffInfo, accountId, tariffId, validity,
                 price, addressDto);
         subscriptionService.create(subscriptionDto);
-
-        return USER_PAGE_RESPONSE;
     }
 
 
