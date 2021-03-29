@@ -9,6 +9,7 @@ public class SessionRequestContent implements RequestContext {
     private final HashMap<String, Object> requestAttributes;
     private final HashMap<String, String> requestParameters;
     private final HashMap<String, Object> sessionAttributes;
+    private HttpSession session;
 
     private SessionRequestContent() {
         requestAttributes = new HashMap<>();
@@ -24,6 +25,7 @@ public class SessionRequestContent implements RequestContext {
     public void extractValues(HttpServletRequest request) {
         extractRequestParameters(request);
         extractSessionAttributes(request);
+        session = request.getSession();
     }
 
     @Override
@@ -49,7 +51,9 @@ public class SessionRequestContent implements RequestContext {
 
     @Override
     public void invalidateSession() {
-
+        if (session != null) {
+            session.invalidate();
+        }
     }
 
     @Override

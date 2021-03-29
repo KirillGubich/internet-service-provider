@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Searches for subscriptions by a given ID or user ID.
+ * Searches for subscriptions by a given subscription ID or user ID.
  * The search result is displayed on the page or a corresponding no result message.
  */
 public enum FindSubscriptionCommand implements Command {

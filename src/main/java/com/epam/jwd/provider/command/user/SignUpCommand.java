@@ -4,6 +4,7 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.page.ShowUserSignUpPage;
+import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
 /**
@@ -12,7 +13,6 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 public enum SignUpCommand implements Command {
     INSTANCE;
 
-    private final RealUserService userService;
     private static final ResponseContext LOGIN_PAGE_RESPONSE = new ResponseContext() {
         @Override
         public String getPage() {
@@ -29,10 +29,7 @@ public enum SignUpCommand implements Command {
     private static final String USER_PASSWORD_PARAMETER_NAME = "userPassword";
     private static final String USER_PASSWORD_REPEAT_PARAMETER_NAME = "userRepPassword";
     private static final String ERROR_MESSAGE_ATTRIBUTE_NAME = "errorMessage";
-
-    SignUpCommand() {
-        this.userService = RealUserService.INSTANCE;
-    }
+    private final UserService userService = RealUserService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {

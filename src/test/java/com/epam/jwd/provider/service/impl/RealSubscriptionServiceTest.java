@@ -27,7 +27,7 @@ public class RealSubscriptionServiceTest {
     private static AddressDao addressDao;
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         service = RealSubscriptionService.INSTANCE;
         subscriptionDao = Mockito.mock(SubscriptionDao.class);
         addressDao = Mockito.mock(AddressDao.class);
@@ -53,6 +53,16 @@ public class RealSubscriptionServiceTest {
                 .thenReturn(Optional.empty());
         service.setAddressDao(addressDao);
         service.create(dto);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_receiveException_whenParamIsNull() {
+        service.create(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_receiveException_whenParamIsNull() {
+        service.delete(null);
     }
 
     @Test(expected = AddressExistenceException.class)

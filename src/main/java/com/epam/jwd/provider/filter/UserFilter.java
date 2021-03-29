@@ -23,7 +23,7 @@ public class UserFilter implements Filter {
     private static final String LOGIN_PAGE_LINK = "/controller?command=show_user_login_page";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         pagesForAuthorizedUsersOnly.add("show_profile");
         pagesForAuthorizedUsersOnly.add("show_settings_page");
         pagesForAuthorizedUsersOnly.add("show_subscription_page");

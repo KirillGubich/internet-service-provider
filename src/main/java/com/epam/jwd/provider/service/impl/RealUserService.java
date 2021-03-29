@@ -1,7 +1,6 @@
 package com.epam.jwd.provider.service.impl;
 
 import com.epam.jwd.provider.dao.impl.UserDao;
-import com.epam.jwd.provider.exception.AccountAbsenceException;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.service.UserService;
@@ -122,26 +121,6 @@ public enum RealUserService implements UserService {
     }
 
     @Override
-    public void updateBalance(Integer accountId, BigDecimal balance) {
-        if (accountId == null || balance == null) {
-            throw new IllegalArgumentException("Update balance parameters - null");
-        }
-        Optional<User> user = userDao.findUserById(accountId);
-        if (!user.isPresent()) {
-            LOGGER.error("An attempt was made to top up an account balance that does not exist");
-            throw new AccountAbsenceException("Account with such id doesn't exist");
-        }
-        User updatedUser = User.builder()
-                .withId(accountId)
-                .withLogin(user.get().getLogin())
-                .withPassword(user.get().getPassword())
-                .withStatus(user.get().getActive())
-                .withBalance(balance)
-                .build();
-        userDao.update(updatedUser);
-    }
-
-    @Override
     public boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat) {
         if (accountId == null || oldPassword == null || updPassword == null || updPasswordRepeat == null) {
             throw new IllegalArgumentException("Change password parameters - null");
@@ -149,7 +128,7 @@ public enum RealUserService implements UserService {
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {
             LOGGER.error("An attempt was made to change an account password that does not exist");
-            throw new AccountAbsenceException("Account with such id doesn't exist");
+            return false;
         }
         boolean passwordCorrect = checkPassword(oldPassword, updPassword, updPasswordRepeat, user.get());
         if (!passwordCorrect) {
@@ -158,6 +137,32 @@ public enum RealUserService implements UserService {
         User updatedUser = updateUserPassword(accountId, updPassword, user.get());
         userDao.update(updatedUser);
         return true;
+    }
+
+    @Override
+    public void addValueToBalance(Integer accountId, BigDecimal valueToAdd) {
+        if (accountId == null || valueToAdd == null) {
+            throw new IllegalArgumentException("Update balance parameters - null");
+        }
+        Optional<User> user = userDao.findUserById(accountId);
+        if (user.isPresent()) {
+            BigDecimal currentBalance = user.get().getBalance();
+            BigDecimal updatedBalance = currentBalance.add(valueToAdd);
+            updateBalance(user.get(), updatedBalance);
+        } else {
+            LOGGER.error("An attempt was made to top up an account balance that does not exist");
+        }
+    }
+
+    private void updateBalance(User user, BigDecimal balance) {
+        User updatedUser = User.builder()
+                .withId(user.getId())
+                .withLogin(user.getLogin())
+                .withPassword(user.getPassword())
+                .withStatus(user.getActive())
+                .withBalance(balance)
+                .build();
+        userDao.update(updatedUser);
     }
 
     private User updateUserPassword(Integer accountId, String updPassword, User user) {

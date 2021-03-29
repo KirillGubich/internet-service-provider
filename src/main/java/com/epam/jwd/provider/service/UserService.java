@@ -50,14 +50,6 @@ public interface UserService extends CommonService<UserDto> {
     Optional<UserDto> findByLogin(String login);
 
     /**
-     * Updates user balance
-     *
-     * @param accountId account id
-     * @param balance   new balance value
-     */
-    void updateBalance(Integer accountId, BigDecimal balance);
-
-    /**
      * Changes user password
      *
      * @param accountId         account id
@@ -67,4 +59,12 @@ public interface UserService extends CommonService<UserDto> {
      * @return true if password changed successfully, else - false
      */
     boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat);
+
+    /**
+     * Adds value (or subscribes, if value is negative) on user's balance
+     *
+     * @param accountId  - account id to which need to add the money
+     * @param valueToAdd - value of add
+     */
+    void addValueToBalance(Integer accountId, BigDecimal valueToAdd);
 }

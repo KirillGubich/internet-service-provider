@@ -19,7 +19,7 @@ public class ErrorFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorFilter.class);
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 

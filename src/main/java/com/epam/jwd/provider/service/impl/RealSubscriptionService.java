@@ -3,6 +3,8 @@ package com.epam.jwd.provider.service.impl;
 import com.epam.jwd.provider.dao.impl.AddressDao;
 import com.epam.jwd.provider.dao.impl.SubscriptionDao;
 import com.epam.jwd.provider.exception.AddressExistenceException;
+import com.epam.jwd.provider.factory.DtoFactory;
+import com.epam.jwd.provider.factory.EntityFactory;
 import com.epam.jwd.provider.factory.impl.AddressDtoFactory;
 import com.epam.jwd.provider.factory.impl.AddressFactory;
 import com.epam.jwd.provider.model.dto.AddressDto;
@@ -21,6 +23,8 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     private SubscriptionDao subscriptionDao = SubscriptionDao.getInstance();
     private AddressDao addressDao = AddressDao.getInstance();
+    private final EntityFactory<Address> addressFactory = AddressFactory.INSTANCE;
+    private final DtoFactory<AddressDto> addressDtoFactory = AddressDtoFactory.INSTANCE;
     private static final Integer DEFAULT_ADDRESS_ID = 0;
 
     public void setSubscriptionDao(SubscriptionDao subscriptionDao) {
@@ -138,10 +142,10 @@ public enum RealSubscriptionService implements SubscriptionService {
     }
 
     private Address convertToAddress(AddressDto dto, Integer id) {
-        return AddressFactory.INSTANCE.create(id, dto.getCity(), dto.getAddress());
+        return addressFactory.create(id, dto.getCity(), dto.getAddress());
     }
 
     private AddressDto convertToAddressDto(Address address) {
-        return AddressDtoFactory.INSTANCE.create(address.getCity(), address.getAddress());
+        return addressDtoFactory.create(address.getCity(), address.getAddress());
     }
 }

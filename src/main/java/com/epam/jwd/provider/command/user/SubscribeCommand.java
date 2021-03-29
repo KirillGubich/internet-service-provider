@@ -8,7 +8,6 @@ import com.epam.jwd.provider.factory.impl.AddressDtoFactory;
 import com.epam.jwd.provider.model.dto.AddressDto;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
 import com.epam.jwd.provider.model.dto.TariffDto;
-import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
 import com.epam.jwd.provider.service.SubscriptionService;
 import com.epam.jwd.provider.service.TariffService;
@@ -125,13 +124,8 @@ public enum SubscribeCommand implements Command {
             return false;
         }
         UserService userService = RealUserService.INSTANCE;
-        Optional<UserDto> user = userService.findById(userId);
-        if (!user.isPresent() || !user.get().getActive()) {
-            return false;
-        }
-        BigDecimal currentBalance = user.get().getBalance();
-        BigDecimal updatedBalance = currentBalance.subtract(cost);
-        userService.updateBalance(userId, updatedBalance);
+        cost = cost.negate();
+        userService.addValueToBalance(userId, cost);
         return true;
     }
 }

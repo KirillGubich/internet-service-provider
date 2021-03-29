@@ -140,6 +140,7 @@ public class AddressDao implements CommonDao<Address> {
         }
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private int findCityId(String cityName) {
         Optional<Integer> cityId = fetchCityIdFromDataBase(cityName);
         if (!cityId.isPresent()) {

@@ -1,6 +1,7 @@
 package com.epam.jwd.provider.controller;
 
 import com.epam.jwd.provider.command.Command;
+import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.SessionRequestContent;
 
@@ -30,7 +31,7 @@ public class ApplicationController extends HttpServlet {
     private void process(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final String commandName = req.getParameter(COMMAND_PARAMETER_NAME);
         final Command businessCommand = Command.of(commandName);
-        SessionRequestContent requestContent = SessionRequestContent.createSessionRequestContent();
+        RequestContext requestContent = SessionRequestContent.createSessionRequestContent();
         requestContent.extractValues(req);
         final ResponseContext result = businessCommand.execute(requestContent);
         requestContent.insertAttributes(req);

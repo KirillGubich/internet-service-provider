@@ -1,7 +1,6 @@
 package com.epam.jwd.provider.service.impl;
 
 import com.epam.jwd.provider.dao.impl.UserDao;
-import com.epam.jwd.provider.exception.AccountAbsenceException;
 import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.User;
 import com.epam.jwd.provider.model.entity.UserRole;
@@ -25,7 +24,7 @@ public class RealUserServiceTest {
     private static UserDao userDao;
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         service = RealUserService.INSTANCE;
         userDao = Mockito.mock(UserDao.class);
     }
@@ -41,6 +40,31 @@ public class RealUserServiceTest {
         }
         List<UserDto> actual = service.findAll();
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_receiveException_whenParamIsNull() {
+        service.create(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_receiveException_whenParamIsNull() {
+        service.delete(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addValueToBalance_receiveException_whenParamIsNull() {
+        service.addValueToBalance(null, null);
+    }
+
+    @Test
+    public void addValueToBalance_receiveNothing_whenEverythingCorrect() {
+        Integer accountId = 1;
+        User user = createUser();
+        Mockito.when(userDao.findUserById(accountId)).thenReturn(Optional.of(user));
+        Mockito.when(userDao.update(user)).thenReturn(Optional.of(user));
+        service.setUserDao(userDao);
+        service.addValueToBalance(accountId, new BigDecimal("0"));
     }
 
     @Test
@@ -180,20 +204,13 @@ public class RealUserServiceTest {
         assertEquals(expected, actual);
     }
 
-    @Test(expected = AccountAbsenceException.class)
-    public void updateBalance_catchException_whenAccountNotExist() {
+    @Test
+    public void changePassword_receiveFalse_WhenAccountNotExist() {
         Integer accountId = 1;
         Mockito.when(userDao.findUserById(accountId)).thenReturn(Optional.empty());
         service.setUserDao(userDao);
-        service.updateBalance(accountId, new BigDecimal("0"));
-    }
-
-    @Test(expected = AccountAbsenceException.class)
-    public void changePassword_receiveException_WhenAccountNotExist() {
-        Integer accountId = 1;
-        Mockito.when(userDao.findUserById(accountId)).thenReturn(Optional.empty());
-        service.setUserDao(userDao);
-        service.changePassword(accountId, "", "", "");
+        boolean actual = service.changePassword(accountId, "", "", "");
+        assertFalse(actual);
     }
 
     @Test

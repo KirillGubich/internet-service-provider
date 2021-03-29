@@ -4,13 +4,10 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.command.page.ShowUserLoginPage;
-import com.epam.jwd.provider.exception.AccountAbsenceException;
-import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 /**
  * User balance replenishment command.
@@ -45,17 +42,7 @@ public enum TopUpBalanceCommand implements Command {
             return ShowUserLoginPage.INSTANCE.execute(request);
         }
         UserService userService = RealUserService.INSTANCE;
-        Optional<UserDto> user = userService.findById(accountId);
-        if (!user.isPresent()) {
-            return ShowUserLoginPage.INSTANCE.execute(request);
-        }
-        BigDecimal currentBalance = user.get().getBalance();
-        BigDecimal updatedBalance = currentBalance.add(topUpValue);
-        try {
-            userService.updateBalance(accountId, updatedBalance);
-        } catch (AccountAbsenceException e) {
-            return ShowUserLoginPage.INSTANCE.execute(request);
-        }
+        userService.addValueToBalance(accountId, topUpValue);
         return SETTINGS_PAGE_RESPONSE_REDIRECT;
     }
 }

@@ -24,7 +24,7 @@ public class SessionFilter implements Filter {
     private static final String DEFAULT_LOCALE = "en";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 

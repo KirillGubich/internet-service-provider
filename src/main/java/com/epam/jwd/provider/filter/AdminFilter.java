@@ -23,7 +23,7 @@ public class AdminFilter implements Filter {
     private static final String LOGIN_PAGE_LINK = "/controller?command=show_user_login_page";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         pagesForAdminOnly.add("change_subscription_status");
         pagesForAdminOnly.add("change_user_status");
         pagesForAdminOnly.add("delete_tariff");

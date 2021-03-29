@@ -4,14 +4,12 @@ import com.epam.jwd.provider.command.Command;
 import com.epam.jwd.provider.command.RequestContext;
 import com.epam.jwd.provider.command.ResponseContext;
 import com.epam.jwd.provider.model.dto.SubscriptionDto;
-import com.epam.jwd.provider.model.dto.UserDto;
 import com.epam.jwd.provider.model.entity.SubscriptionStatus;
 import com.epam.jwd.provider.service.SubscriptionService;
 import com.epam.jwd.provider.service.UserService;
 import com.epam.jwd.provider.service.impl.RealSubscriptionService;
 import com.epam.jwd.provider.service.impl.RealUserService;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +33,7 @@ public enum CancelSubscriptionCommand implements Command {
     };
 
     private final SubscriptionService subscriptionService = RealSubscriptionService.INSTANCE;
+    private final UserService userService = RealUserService.INSTANCE;
     private static final String SUBSCRIPTION_ID_PARAMETER_NAME = "subId";
     private static final String USER_ID_PARAMETER_NAME = "userId";
 
@@ -55,20 +54,10 @@ public enum CancelSubscriptionCommand implements Command {
                 .filter(subscription -> subscription.getId().equals(subscriptionId))
                 .findFirst();
         if (subscriptionDto.isPresent()) {
-            refundMoney(accountId, subscriptionDto.get().getPrice());
+            userService.addValueToBalance(accountId, subscriptionDto.get().getPrice());
             cancelSubscription(subscriptionDto.get());
         }
         return USER_PAGE_RESPONSE;
-    }
-
-    private void refundMoney(Integer accountId, BigDecimal valueToRefund) {
-        UserService userService = RealUserService.INSTANCE;
-        Optional<UserDto> user = userService.findById(accountId);
-        if (user.isPresent()) {
-            BigDecimal currentBalance = user.get().getBalance();
-            BigDecimal updatedBalance = currentBalance.add(valueToRefund);
-            userService.updateBalance(accountId, updatedBalance);
-        }
     }
 
     private void cancelSubscription(SubscriptionDto subscription) {

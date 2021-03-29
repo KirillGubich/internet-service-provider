@@ -1,4 +1,4 @@
-.contract-info__news, .filters__news, .news-card-news {
+.news-card-news {
     margin: 0;
     list-style: none;
     padding: 15px 5px 5px;
@@ -15,7 +15,7 @@
     align-self: center;
 }
 
-.contract-info__news-item, .filters__news-item, .news-card-news-item {
+.news-card-news-item {
     max-height: 100px;
     overflow-y: hidden;
     margin-bottom: 15px;

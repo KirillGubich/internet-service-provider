@@ -8,12 +8,4 @@ public class ConnectionTypeMismatchException extends RuntimeException {
     public ConnectionTypeMismatchException(String message) {
         super(message);
     }
-
-    public ConnectionTypeMismatchException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ConnectionTypeMismatchException(Throwable cause) {
-        super(cause);
-    }
 }

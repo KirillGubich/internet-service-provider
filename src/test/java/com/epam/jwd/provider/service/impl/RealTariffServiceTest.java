@@ -20,7 +20,7 @@ public class RealTariffServiceTest {
     private static TariffDao tariffDao;
 
     @BeforeClass
-    public static void beforeClass() throws Exception {
+    public static void beforeClass() {
         service = RealTariffService.INSTANCE;
         tariffDao = Mockito.mock(TariffDao.class);
     }
@@ -54,6 +54,16 @@ public class RealTariffServiceTest {
                 .withUploadSpeed(150.0)
                 .build());
         assertEquals(expected, actual);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void create_receiveException_whenParamIsNull() {
+        service.create(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_receiveException_whenParamIsNull() {
+        service.delete(null);
     }
 
     @Test
