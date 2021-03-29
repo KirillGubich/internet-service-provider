@@ -31,23 +31,34 @@ public enum FindUserCommand implements Command {
     };
 
     private static final String ID_PARAMETER_NAME = "id";
+    private static final String LOGIN_PARAMETER_NAME = "login";
     private static final String USERS_ATTRIBUTE_NAME = "users";
+    private final UserService userService = RealUserService.INSTANCE;
 
     @Override
     public ResponseContext execute(RequestContext request) {
-        int id;
-        try {
-            id = Integer.parseInt(request.getParameter(ID_PARAMETER_NAME));
-        } catch (NumberFormatException e) {
-            return USERS_FOR_ADMIN_PAGE_RESPONSE;
-        }
+        String idParameter = request.getParameter(ID_PARAMETER_NAME);
         UserService userService = RealUserService.INSTANCE;
-        Optional<UserDto> user = userService.findById(id);
         List<UserDto> users = new ArrayList<>();
+        Optional<UserDto> user = findUserByIdParameter(idParameter);
+        if (!user.isPresent()) {
+            String login = request.getParameter(LOGIN_PARAMETER_NAME);
+            user = userService.findByLogin(login);
+        }
         if (user.isPresent()) {
             users.add(user.get());
             request.setAttribute(USERS_ATTRIBUTE_NAME, users);
         }
         return USERS_FOR_ADMIN_PAGE_RESPONSE;
+    }
+
+    private Optional<UserDto> findUserByIdParameter(String idParameter) {
+        int id;
+        try {
+            id = Integer.parseInt(idParameter);
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+        return userService.findById(id);
     }
 }

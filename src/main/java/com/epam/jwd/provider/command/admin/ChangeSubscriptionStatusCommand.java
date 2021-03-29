@@ -13,6 +13,7 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -52,7 +53,8 @@ public enum ChangeSubscriptionStatusCommand implements Command {
         SubscriptionStatus status = SubscriptionStatus.of(request.getParameter(STATUS_PARAMETER_NAME));
         Optional<SubscriptionDto> subscription = fetchSubscriptionInfo(subscriptionId, accountId);
         if (subscription.isPresent()) {
-            if (status.equals(SubscriptionStatus.CANCELED) || status.equals(SubscriptionStatus.DENIED)) {
+
+            if (SubscriptionStatus.CANCELED.equals(status) ||  SubscriptionStatus.DENIED.equals(status)) {
                 refundMoney(accountId, subscription.get().getPrice());
             }
             updateSubscriptionStatus(subscription.get(), status);
@@ -64,8 +66,10 @@ public enum ChangeSubscriptionStatusCommand implements Command {
         List<SubscriptionDto> userSubscriptions = subscriptionService.findUserSubscriptions(accountId);
         return userSubscriptions
                 .stream()
+                .filter(Objects::nonNull)
                 .filter(subscription -> subscription.getId().equals(subscriptionId))
                 .findFirst();
+
     }
 
     private void refundMoney(Integer accountId, BigDecimal valueToRefund) {

@@ -13,6 +13,7 @@ import com.epam.jwd.provider.service.impl.RealUserService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -50,6 +51,7 @@ public enum CancelSubscriptionCommand implements Command {
         List<SubscriptionDto> userSubscriptions = subscriptionService.findUserSubscriptions(accountId);
         Optional<SubscriptionDto> subscriptionDto = userSubscriptions
                 .stream()
+                .filter(Objects::nonNull)
                 .filter(subscription -> subscription.getId().equals(subscriptionId))
                 .findFirst();
         if (subscriptionDto.isPresent()) {

@@ -42,29 +42,44 @@ public enum RealTariffService implements TariffService {
 
     @Override
     public Optional<TariffDto> findByName(String name) {
+        if (name == null) {
+            return Optional.empty();
+        }
         Optional<Tariff> tariff = tariffDao.findByName(name);
         return tariff.map(this::convertToDto);
     }
 
     @Override
     public Optional<Integer> findTariffId(String name) {
+        if (name == null) {
+            return Optional.empty();
+        }
         Optional<Tariff> tariff = tariffDao.findByName(name);
         return tariff.map(BaseEntity::getId);
     }
 
     @Override
     public void create(TariffDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("TariffDto parameter - null");
+        }
         tariffDao.create(convertToTariff(dto));
     }
 
     @Override
     public Optional<TariffDto> save(TariffDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("TariffDto parameter - null");
+        }
         Optional<Tariff> oldTariff = tariffDao.update(convertToTariff(dto));
         return oldTariff.map(this::convertToDto);
     }
 
     @Override
     public void delete(TariffDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("TariffDto parameter - null");
+        }
         tariffDao.delete(convertToTariff(dto));
     }
 

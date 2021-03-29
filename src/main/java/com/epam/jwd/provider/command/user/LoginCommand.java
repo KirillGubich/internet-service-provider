@@ -66,7 +66,8 @@ public enum LoginCommand implements Command {
             request.setSessionAttribute(USER_ROLE_SESSION_ATTRIBUTE_NAME, user.get().getRole());
             request.setSessionAttribute(USER_LOGIN_SESSION_ATTRIBUTE_NAME, login);
             request.setSessionAttribute(ACCOUNT_ID_SESSION_ATTRIBUTE_NAME, user.get().getId());
-            if (user.get().getRole().equals(UserRole.ADMIN)) {
+
+            if (UserRole.ADMIN.equals(user.get().getRole())) {
                 result = ADMIN_PAGE_RESPONSE;
             } else {
                 result = USER_PAGE_RESPONSE;

@@ -32,6 +32,9 @@ public enum RealUserService implements UserService {
 
     @Override
     public void create(UserDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("UserDto parameter - null");
+        }
         userDao.create(convertToUser(dto));
     }
 
@@ -46,17 +49,26 @@ public enum RealUserService implements UserService {
 
     @Override
     public Optional<UserDto> save(UserDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("UserDto parameter - null");
+        }
         Optional<User> user = userDao.update(convertToUser(dto));
         return user.map(this::convertToDto);
     }
 
     @Override
     public void delete(UserDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("UserDto parameter - null");
+        }
         userDao.delete(convertToUser(dto));
     }
 
     @Override
     public Optional<UserDto> login(String login, String password) {
+        if (login == null || password == null) {
+            throw new IllegalArgumentException("Login parameters - null");
+        }
         final Optional<User> user = userDao.findUserByLogin(login);
         if (!user.isPresent()) {
             try {
@@ -76,6 +88,9 @@ public enum RealUserService implements UserService {
 
     @Override
     public boolean signUp(String login, String password, String passwordRepeat) {
+        if (login == null || password == null || passwordRepeat == null) {
+            throw new IllegalArgumentException("Sign up parameters - null");
+        }
         Optional<User> user = userDao.findUserByLogin(login);
         boolean passwordCorrect;
         boolean loginCorrect;
@@ -90,18 +105,27 @@ public enum RealUserService implements UserService {
 
     @Override
     public Optional<UserDto> findById(Integer id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         Optional<User> user = userDao.findUserById(id);
         return user.map(this::convertToDto);
     }
 
     @Override
     public Optional<UserDto> findByLogin(String login) {
+        if (login == null) {
+            return Optional.empty();
+        }
         Optional<User> user = userDao.findUserByLogin(login);
         return user.map(this::convertToDto);
     }
 
     @Override
     public void updateBalance(Integer accountId, BigDecimal balance) {
+        if (accountId == null || balance == null) {
+            throw new IllegalArgumentException("Update balance parameters - null");
+        }
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {
             LOGGER.error("An attempt was made to top up an account balance that does not exist");
@@ -120,7 +144,7 @@ public enum RealUserService implements UserService {
     @Override
     public boolean changePassword(Integer accountId, String oldPassword, String updPassword, String updPasswordRepeat) {
         if (accountId == null || oldPassword == null || updPassword == null || updPasswordRepeat == null) {
-            return false;
+            throw new IllegalArgumentException("Change password parameters - null");
         }
         Optional<User> user = userDao.findUserById(accountId);
         if (!user.isPresent()) {

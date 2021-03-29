@@ -9,6 +9,7 @@ import com.epam.jwd.provider.service.SubscriptionService;
 import com.epam.jwd.provider.service.impl.RealSubscriptionService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +44,7 @@ public enum ViewSubscriptionRequestsCommand implements Command {
         final List<SubscriptionDto> allSubscriptions = service.findAll();
         List<SubscriptionDto> requestedSubscriptions = allSubscriptions
                 .stream()
+                .filter(Objects::nonNull)
                 .filter(subscription -> SubscriptionStatus.REQUESTED.equals(subscription.getStatus()))
                 .collect(Collectors.toList());
         if (!requestedSubscriptions.isEmpty()) {

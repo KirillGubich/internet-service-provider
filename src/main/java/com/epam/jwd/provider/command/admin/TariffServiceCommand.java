@@ -57,9 +57,9 @@ public enum TariffServiceCommand implements Command {
         String action = request.getParameter(ACTION_PARAMETER_NAME);
         TariffDto tariff = getTariffDto(name, description, specialOffer, price, downloadSpeed, uploadSpeed);
         TariffService tariffService = RealTariffService.INSTANCE;
-        if (action.equals(CREATE_ACTION)) {
+        if (CREATE_ACTION.equals(action)) {
             tariffService.create(tariff);
-        } else if (action.equals(UPDATE_ACTION)) {
+        } else if (UPDATE_ACTION.equals(action)) {
             tariffService.save(tariff);
         }
         return TARIFF_SETTINGS_PAGE_RESPONSE;

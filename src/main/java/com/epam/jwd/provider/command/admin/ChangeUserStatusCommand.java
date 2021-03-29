@@ -44,7 +44,7 @@ public enum ChangeUserStatusCommand implements Command {
         Optional<UserDto> user = userService.findById(id);
         if (user.isPresent()) {
             UserDto userDto;
-            if (active.equals(UNBLOCK_PARAMETER)) {
+            if (UNBLOCK_PARAMETER.equals(active)) {
                 userDto = updateUser(user.get(), true);
             } else {
                 userDto = updateUser(user.get(), false);

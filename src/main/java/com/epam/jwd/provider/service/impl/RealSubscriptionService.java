@@ -42,6 +42,9 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public void create(SubscriptionDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("SubscriptionDto parameter - null");
+        }
         addressDao.create(convertToAddress(dto.getAddress(), DEFAULT_ADDRESS_ID));
         Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
                 dto.getAddress().getAddress());
@@ -53,6 +56,9 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public Optional<SubscriptionDto> save(SubscriptionDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("SubscriptionDto parameter - null");
+        }
         Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
                 dto.getAddress().getAddress());
         if (!addressId.isPresent()) {
@@ -64,6 +70,9 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public void delete(SubscriptionDto dto) {
+        if (dto == null) {
+            throw new IllegalArgumentException("SubscriptionDto parameter - null");
+        }
         Optional<Integer> addressId = addressDao.findAddressId(dto.getAddress().getCity(),
                 dto.getAddress().getAddress());
         if (!addressId.isPresent()) {
@@ -75,6 +84,9 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public List<SubscriptionDto> findUserSubscriptions(Integer userId) {
+        if (userId == null) {
+            return new ArrayList<>();
+        }
         Optional<List<Subscription>> userSubscriptions = subscriptionDao.findUserSubscriptions(userId);
         return userSubscriptions.map(subscriptionList -> subscriptionList.stream()
                 .map(this::convertToDto)
@@ -84,6 +96,9 @@ public enum RealSubscriptionService implements SubscriptionService {
 
     @Override
     public Optional<SubscriptionDto> findById(Integer id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         Optional<Subscription> subscription = subscriptionDao.findById(
                 Subscription.builder()
                         .withId(id)
