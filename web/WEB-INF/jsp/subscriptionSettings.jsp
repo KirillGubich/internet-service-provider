@@ -67,6 +67,10 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td><fmt:message key="user.id.placeholder"/></td>
+                                <td>${subscription.userId}</td>
+                            </tr>
+                            <tr>
                                 <td><fmt:message key="subscriptionInfo.tariff"/></td>
                                 <td>${subscription.tariffName}</td>
                             </tr>
@@ -134,11 +138,20 @@
             </c:choose>
         </div>
         <div class="content">
-            <form action="${pageContext.request.contextPath}/controller" method="get">
+            <form action="${pageContext.request.contextPath}/controller" method="get" class="findSubscription">
                 <input type="hidden" name="command" value="find_subscription">
                 <div class="container">
                     <label>
                         <input type="text" placeholder="id" name="id" required>
+                    </label><br>
+                    <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
+                </div>
+            </form>
+            <form action="${pageContext.request.contextPath}/controller" method="get">
+                <input type="hidden" name="command" value="find_subscription">
+                <div class="container">
+                    <label>
+                        <input type="text" placeholder="<fmt:message key="user.id.placeholder"/>" name="userId" required>
                     </label><br>
                     <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
                 </div>

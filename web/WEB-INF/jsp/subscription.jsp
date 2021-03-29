@@ -76,11 +76,11 @@
                     </label>
                     <label>
                         <input class="city" type="text" placeholder="<fmt:message key="form.city"/>" name="city"
-                               pattern="[a-zA-Z]{1,100}$" required>
+                               pattern="[\w\s]{1,100}$" required>
                     </label>
                     <label>
                         <input class="address" type="text" placeholder="<fmt:message key="form.address"/>" name="address"
-                               pattern="[a-zA-Z][\w]{1,100}$" required>
+                               pattern="[\w\s]{1,100}$" required>
                     </label>
                     <button type="submit" class="servicebtn"><fmt:message key="button.submit.caption"/></button>
                     <br>
