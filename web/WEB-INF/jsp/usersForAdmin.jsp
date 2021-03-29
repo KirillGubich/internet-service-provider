@@ -106,11 +106,20 @@
             </c:choose>
         </div>
         <div class="content">
-            <form action="${pageContext.request.contextPath}/controller" method="get">
+            <form action="${pageContext.request.contextPath}/controller" method="get" class="findForm">
                 <input type='hidden' name='command' value='find_user'/>
                 <div class="container">
                     <label>
                         <input type="text" placeholder="id" name="id" required>
+                    </label><br>
+                    <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
+                </div>
+            </form>
+            <form action="${pageContext.request.contextPath}/controller" method="get">
+                <input type='hidden' name='command' value='find_user'/>
+                <div class="container">
+                    <label>
+                        <input type="text" placeholder="<fmt:message key="login.caption"/>" name="login" required>
                     </label><br>
                     <button type="submit" class="service_btn find_btn"><fmt:message key="button.find"/></button>
                 </div>

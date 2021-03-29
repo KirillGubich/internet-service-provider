@@ -13,7 +13,7 @@ import java.util.Optional;
 
 /**
  * Searches for a user by a given ID.
- *  The search result is displayed on the page or a corresponding no result message.
+ * The search result is displayed on the page or a corresponding no result message.
  */
 public enum FindUserCommand implements Command {
     INSTANCE;
@@ -38,7 +38,6 @@ public enum FindUserCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext request) {
         String idParameter = request.getParameter(ID_PARAMETER_NAME);
-        UserService userService = RealUserService.INSTANCE;
         List<UserDto> users = new ArrayList<>();
         Optional<UserDto> user = findUserByIdParameter(idParameter);
         if (!user.isPresent()) {
