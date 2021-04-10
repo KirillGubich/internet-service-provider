@@ -1,5 +1,6 @@
 package com.epam.jwd.provider.listener;
 
+import com.epam.jwd.provider.exception.PropertyLoadingException;
 import com.epam.jwd.provider.pool.impl.ProviderConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class ApplicationListener implements ServletContextListener {
         try {
             ProviderConnectionPool.getInstance().init();
             LOGGER.info("Connection pool initialized successfully");
-        } catch (SQLException e) {
+        } catch (SQLException | PropertyLoadingException e) {
             LOGGER.error(e.getMessage());
         }
     }

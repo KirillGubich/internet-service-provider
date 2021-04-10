@@ -1,6 +1,7 @@
 package com.epam.jwd.provider.pool.impl;
 
 import com.epam.jwd.provider.exception.PropertiesAbsenceException;
+import com.epam.jwd.provider.exception.PropertyLoadingException;
 import com.epam.jwd.provider.model.entity.ConnectionPoolProperties;
 import com.epam.jwd.provider.exception.ConnectionTypeMismatchException;
 import com.epam.jwd.provider.pool.ConnectionPool;
@@ -27,6 +28,7 @@ public class ProviderConnectionPool implements ConnectionPool {
     private final Condition notEmpty = lock.newCondition();
     private final Deque<ProxyConnection> freeConnections;
     private final List<ProxyConnection> givenAwayConnections;
+    private static final String DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
     private ConnectionPoolProperties properties;
 
     private static final String URL_CONFIG = "?useJDBCCompliantTimezoneShift=true&serverTimezone=UTC";
@@ -79,7 +81,7 @@ public class ProviderConnectionPool implements ConnectionPool {
     }
 
     @Override
-    public void init() throws SQLException {
+    public void init() throws SQLException, PropertyLoadingException {
         properties = PropertyReaderUtil.retrieveProperties();
         registerDriver();
         createConnections(properties.getDefaultPoolSize());
@@ -117,7 +119,7 @@ public class ProviderConnectionPool implements ConnectionPool {
 
     private void registerDriver() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER_CLASS_NAME);
             DriverManager.registerDriver(DriverManager.getDriver(properties.getDatabaseUrl()));
         } catch (ClassNotFoundException e) {
             LOGGER.error(e.getMessage());
