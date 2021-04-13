@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebFilter
 public class ErrorFilter implements Filter {
-    private static final String ERROR_JSP_PATH = "/WEB-INF/jsp/error.jsp";
+    private static final String ERROR_JSP_PATH = "/WEB-INF/jsp/serverError.jsp";
     private static final Logger LOGGER = LoggerFactory.getLogger(ErrorFilter.class);
 
     @Override
