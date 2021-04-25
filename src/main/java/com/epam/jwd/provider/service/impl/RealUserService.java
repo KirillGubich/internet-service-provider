@@ -72,8 +72,7 @@ public enum RealUserService implements UserService {
         if (!user.isPresent()) {
             try {
                 BCrypt.checkpw(password, DUMMY_PASSWORD);
-            } catch (IllegalArgumentException e) {
-                LOGGER.error(e.getMessage());
+            } catch (IllegalArgumentException ignored) {
             }
             return Optional.empty();
         }
